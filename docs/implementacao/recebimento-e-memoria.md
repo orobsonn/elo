@@ -83,3 +83,14 @@ A captura começa na ativação. Uma consulta completa significa que todas as p�
 ## Verificação
 
 Os testes em `tests/capture.test.ts`, `identity.test.ts`, `extraction.test.ts`, `memory.test.ts`, `import-batch.test.ts`, `actions.test.ts` e `operations.test.ts` exercitam D1/workerd, concorrência, replay, expiração, edição e fronteiras de permissão com dados e provedores controlados. [A validação publicada](validacao-publicada.md) registra as provas reais separadamente. Um teste controlado não é prova de callback real, uso no celular ou rotina agendada do cliente.
+
+## O que a revisão diária garante
+
+`review_page` percorre um snapshot por ingresso no dia/fuso escolhido e inclui edições antigas ainda pendentes. Ela não tem filtro por contato. A autorização de leitura deve cobrir o conjunto consultado; uma rotina restrita a um contato não deve chamar revisão global para contornar essa limitação.
+
+Cursor final não significa automaticamente cobertura completa: fontes indisponíveis e versões alteradas também contam. Na API atual, `review_complete` só conclui um run pronto; não oferece confirmação independente de cada página durante um run incompleto. A Skill deve declarar lacunas e não inventar marcação parcial ou ausência de urgências. Novas mensagens posteriores ao snapshot não entram retroativamente na execução já lida.
+
+
+## Diagnóstico técnico e evidência de operação
+
+`installation_status` mostra configuração, versão, última recepção e último erro registrado. O erro pode ser histórico, e a lista `pending` de validações é atualmente um checklist conservador, não uma dedução de todos os ensaios já feitos. “Configurada, não verificada” não é teste de desconexão atual. Confirme as evidências de cada recebimento/envio e não confunda esse diagnóstico com monitoramento ao vivo da Z-API.

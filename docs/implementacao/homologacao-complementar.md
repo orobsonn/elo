@@ -35,3 +35,7 @@ No Claude web pessoal Free, **Sonnet 5.5 Médio** executou `installation_status`
 Isso comprova conexão e leitura neste cliente. Skills instaladas/approve, escritas, renovação natural, revogação, Cowork agendado e aparelho físico no Claude continuam pendentes.
 
 Limite de interpretação: mesmo após o esclarecimento, o Claude descreveu `needs_review=false` como ausência na fila de revisão. A prova valida os retornos e a preservação de `state=pending`, não essa interpretação residual do indicador.
+
+## Continuação: Skills no Claude
+
+A instalação e os ensaios posteriores estão em [homologação das Skills no Claude](homologacao-skills-claude.md), com resultados persistidos, revisão parcial e limites de agendamento. Essa etapa complementa, sem generalizar, os testes anteriores.

@@ -1,0 +1,155 @@
+{
+  "date": "2026-10-17",
+  "origin": "https://elo.robsonlins.workers.dev",
+  "worker_commit": "5f5103d",
+  "worker_version": "16fe1435-291e-428b-aab3-8feb98d3023b",
+  "client": {
+    "surface": "Claude web / Chrome",
+    "plan": "Free",
+    "model": "Sonnet 5.5 Medium"
+  },
+  "installed_base_skills": [
+    {
+      "name": "approve",
+      "bytes": 4084,
+      "sha256": "d4e2af093cac7aaecd1fd54dfd70e1a099e260e8f1438c46f3d5dacb26eaa63d"
+    },
+    {
+      "name": "pos-reuniao",
+      "bytes": 4400,
+      "sha256": "bb58f5ab28beb8cb1fa1e4482b79d0b7dd73256683bae7f99cb0818608e99ffd"
+    },
+    {
+      "name": "revisao-diaria",
+      "bytes": 4470,
+      "sha256": "18d23764a0dd0eaa7a656d1818eb8db31ac19cc29d839ae4cff750453cef4b6c"
+    },
+    {
+      "name": "otimize-meu-processo",
+      "bytes": 3831,
+      "sha256": "2b0344d7cc09344ba3e19298340a042d9492b8ea94bc16bcf122db6d13042e6d"
+    }
+  ],
+  "loaded_paths": [
+    "/mnt/skills/plugins/approve/SKILL.md",
+    "/mnt/skills/plugins/pos-reuniao/SKILL.md",
+    "/mnt/skills/plugins/revisao-diaria/SKILL.md",
+    "/mnt/skills/plugins/otimize-meu-processo/SKILL.md"
+  ],
+  "pos_reuniao": {
+    "source_kind": "meeting",
+    "extraction_owner": "skill",
+    "application_state": "applied",
+    "backend_attempts": 0,
+    "memory_count": 3,
+    "confirmed": 2,
+    "pending": 1,
+    "tasks_open": 1,
+    "responsible": "consultor",
+    "due_date": "2026-10-26",
+    "pages_per_memory_read": 3,
+    "pages_per_tasks_read": 1,
+    "next_cursors": null,
+    "replay_with_paraphrases": true,
+    "independent_MCP_items_unchanged": true,
+    "injection_not_actionable": true,
+    "meeting_recorded": true,
+    "interaction_replay_tested": false,
+    "preexisting_conflict_tested": false,
+    "backend_attempts_verified_at": "2026-10-17T16:23:59.229Z"
+  },
+  "approve": {
+    "canonical_draft_shown": true,
+    "separate_turn_wait": true,
+    "cancellation_confirmed_in_Claude_and_native_MCP": true,
+    "backend_status": "cancelled",
+    "backend_claimed_at": null,
+    "backend_executing_events": 0,
+    "quoted_approval_not_used": true,
+    "homonyms_found": 3,
+    "ambiguous_recipient_not_prepared": true,
+    "attachments_refused": true,
+    "real_send_this_round": false
+  },
+  "daily_review": {
+    "owner_authorized_real_messages": true,
+    "day": "2026-10-17",
+    "timezone": "America/Fortaleza",
+    "outside_period_pending_edits_preflight": 0,
+    "successful_pages": 4,
+    "available_sources_seen": 18,
+    "unavailable_count": 11,
+    "expired_count": 1,
+    "active_without_text": 10,
+    "snapshot_seq": 41,
+    "backend_run_state": "unavailable",
+    "transient_connector_failure": 1,
+    "same_cursor_retry_preflight_unchanged": true,
+    "evaluation_finished": true,
+    "new_memory_writes": 0,
+    "new_task_writes": 0,
+    "review_complete_called": false,
+    "completion_marker_advanced": false,
+    "incoming": 5,
+    "outgoing": 5,
+    "meetings": 7,
+    "notes": 1,
+    "contacts": 10
+  },
+  "generated_skill": {
+    "name": "elo-pauta-lacunas",
+    "file": "docs/exemplos/elo-pauta-lacunas/SKILL.md",
+    "sha256": "3887fd4a77570a07d848590f5ffee0ec38eaec3ad52cb80409ffc69a3b6ba09d",
+    "process": "hypothetical",
+    "initial_name_rejected_as_reserved": true,
+    "independent_review_findings_fixed": 3,
+    "independent_review_before_install": "approved with stated limits",
+    "saved_to_personal_skills": true,
+    "loaded_in_new_chat": true,
+    "installed_execution_finished": true,
+    "human_validation": "pending",
+    "benefit_measured": false,
+    "execution_cases": [
+      {
+        "fixture": "Lia",
+        "memory": 3,
+        "tasks_open": 1,
+        "pending_preserved": 1
+      },
+      {
+        "fixture": "Mario trilhas",
+        "memory": 10,
+        "confirmed": 4,
+        "pending": 3,
+        "superseded_excluded": 2,
+        "discarded_excluded": 1,
+        "tasks_open": 3,
+        "other_contact_not_mixed": true
+      }
+    ]
+  },
+  "scheduling": {
+    "Claude_Cowork_Free": "upgrade_required_observed",
+    "purchase_made": false,
+    "Work_original_job_reused_once": true,
+    "Work_retry_next_run_time": null,
+    "Work_final_enabled": false,
+    "Work_previous_last_run_time_reported": "2026-10-17T15:07:17.590127Z",
+    "Work_result_with_authenticated_tools_proven": false,
+    "manual_run_substitution": false
+  },
+  "code_changes": false,
+  "new_deploy": false,
+  "controlled_tests_reference": "PR #9: 134 workerd/D1 +22 Node; not rerun for these documents",
+  "production_smokes_file": "smoke-skills-claude.json",
+  "remaining": [
+    "Claude real execute after exact human approval",
+    "client-specific Access renewal and revocation",
+    "physical mobile",
+    "complete daily review when sources unavailable",
+    "scheduled MCP routine result",
+    "positive production contact association",
+    "isolated restore and layperson pilot",
+    "human benefit validation"
+  ]
+}
