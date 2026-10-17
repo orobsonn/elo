@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-17",
+  "origin": "https://elo.robsonlins.workers.dev",
+  "worker_commit": "5f5103d",
+  "worker_version": "16fe1435-291e-428b-aab3-8feb98d3023b",
+  "send": {
+    "recipient_alias": "Lainny",
+    "surface": "native installed Elo connector in Codex chat",
+    "exact_recipient_and_text_approved_in_chat": true,
+    "execution_claims": 1,
+    "claimed_at": "2026-10-17T14:32:50.253Z",
+    "accepted_at": "2026-10-17T14:32:51.625Z",
+    "status_rechecked": "delivered",
+    "rechecked_at": "2026-10-17T14:59:08.969Z",
+    "read_receipt_claimed": false,
+    "expired_previous_draft_execution_claims": 0,
+    "delivered_action_event_claimed": false
+  },
+  "backend_cron": {
+    "before": "2026-10-17T14:58:32.976Z",
+    "after": "2026-10-17T15:02:01.691Z",
+    "new_backend_source_before": "pending",
+    "new_backend_source_after": "done",
+    "new_backend_source_attempts": 1,
+    "skill_source_attempts_before_and_after": 0,
+    "skill_source_applied": true,
+    "confirmed_preferences": 1,
+    "open_consultant_tasks": 1,
+    "task_due_on": "2026-10-24",
+    "calls_before": 27,
+    "calls_after": 28,
+    "failures_after": 0
+  },
+  "work_schedule": {
+    "name": "Elo homologação agendada",
+    "scheduled_at": "2026-10-17T15:05:00Z",
+    "timezone": "America/Fortaleza",
+    "count": 1,
+    "observed_at": "2026-10-17T15:06:21Z",
+    "last_run_time": null,
+    "next_run_time": null,
+    "execution_proven": false,
+    "manual_run": false,
+    "cause": "unknown",
+    "final_is_enabled": false,
+    "final_next_run_time": null,
+    "final_last_run_time": null
+  },
+  "claude": {
+    "personal_login_completed": true,
+    "plan": "Free",
+    "add_custom_connector": "disabled",
+    "elo_connected": false,
+    "other_connectors_modified": false,
+    "reason": "Free plan allows 1 custom connector. Upgrade for more."
+  },
+  "not_proven": [
+    "scheduled Work execution",
+    "Claude Elo calls",
+    "physical mobile",
+    "full daily review",
+    "positive production contact association",
+    "client-specific Access renewal and revocation",
+    "human pilot and benefit"
+  ]
+}

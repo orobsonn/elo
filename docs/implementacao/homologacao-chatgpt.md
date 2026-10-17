@@ -78,3 +78,7 @@ O Work recarregou `pos-reuniao` e `elo-preparar-pauta` do plugin 1.0.3, confirmo
 Leitura independente pelo conector e metadados D1 às 14:06:30 UTC confirmaram três memórias, uma tarefa do consultor até 23/10 e fonte da Skill aplicada, com zero tentativas backend. O recorte não é uma observação isolada de um novo disparo do cron; a exclusão das fontes da Skill também tem regressão controlada.
 
 A rotina gerada foi carregada da instalação e produziu quatro tópicos com fontes: finalidade da pauta, próximo encontro, objetivo com violão e possibilidade de mudança. Expôs lacunas e manteve validação humana pendente. Assim, criação, instalação e execução sintética foram comprovadas; benefício real e validação com pessoa continuam pendentes. Não houve envio, leitura de outro contato ou agendamento nesse ensaio.
+
+## Evidências posteriores
+
+[Rodada complementar](homologacao-complementar.md): envio à Lainny aprovado e entregue pelo conector nativo no Codex, cron técnico observado após nova fonte e bloqueios reais de Work/Claude. Essas provas posteriores não transformam o ensaio web acima em envio pela interface do ChatGPT.

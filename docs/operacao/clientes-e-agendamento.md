@@ -48,3 +48,7 @@ Após criação, confira nome, fuso, próxima execução, tools permitidas e pro
 5. [OpenAI: Plugins](https://learn.chatgpt.com/docs/plugins).
 6. [OpenAI: Build skills](https://learn.chatgpt.com/docs/build-skills).
 7. [Cloudflare: Secure MCP servers](https://developers.cloudflare.com/cloudflare-one/access-controls/ai-controls/secure-mcp-servers/).
+
+## Conferência posterior de 17/10
+
+O envio aprovado à Lainny foi entregue pelo conector instalado no **Codex**, não pela interface web ChatGPT. O cron técnico do backend processou uma nova fonte sem reprocessar o lote da Skill. O teste único do Work salvo para 12h05 não teve execução comprovada (`last_run_time=null`); foi pausado e não tem próxima execução. No Claude pessoal Free, o botão de conector personalizado estava desabilitado; a descrição acessível confirmou o limite de um conector personalizado do Free já ocupado. [Evidências e limites](../implementacao/homologacao-complementar.md).
