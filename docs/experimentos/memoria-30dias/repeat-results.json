@@ -1,0 +1,42 @@
+[
+  {
+    "contact_id": "ct_4b8x1k",
+    "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "stage": "repeat_baseline",
+    "success": true,
+    "status": 200,
+    "elapsed_ms": 4204,
+    "content": "{\"facts\": [{\"contact_id\": \"ct_4b8x1k\", \"field\": \"spouse_birthday\", \"value\": \"12-12\", \"status\": \"confirmed\", \"source_ids\": [\"b-m05\"]}, {\"contact_id\": \"ct_4b8x1k\", \"field\": \"has_children\", \"value\": false, \"status\": \"confirmed\", \"source_ids\": [\"b-m07\"]}, {\"contact_id\": \"ct_4b8x1k\", \"field\": \"preferred_period\", \"value\": \"evening\", \"status\": \"pending\", \"source_ids\": [\"b-m09\"]}]}",
+    "usage": {
+      "prompt_tokens": 934,
+      "completion_tokens": 138,
+      "total_tokens": 1072,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 53.170738220214844
+    },
+    "finish_reason": "stop",
+    "errors": []
+  },
+  {
+    "contact_id": "ct_5m1j7s",
+    "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "stage": "repeat_baseline",
+    "success": true,
+    "status": 200,
+    "elapsed_ms": 2385,
+    "content": "{\"facts':[{\": {\"contact_id\": \"ct_5m1j7s\", \"field\": \"preferred_channel\", \"value\": \"call\", \"status\": \"confirmed\", \"source_ids\": [\"e-m07\"]}}",
+    "usage": {
+      "prompt_tokens": 940,
+      "completion_tokens": 49,
+      "total_tokens": 989,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 35.10307312011719
+    },
+    "finish_reason": "stop",
+    "errors": []
+  }
+]

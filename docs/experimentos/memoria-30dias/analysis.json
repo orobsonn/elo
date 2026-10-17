@@ -1,0 +1,1452 @@
+{
+  "scoring": "strict canonical + separately adjudicated semantic; whole-contract rejection",
+  "baselines": {
+    "@cf/meta/llama-3.3-70b-instruct-fp8-fast": {
+      "development": {
+        "strict": {
+          "totals": {
+            "tp": 5,
+            "fp": 0,
+            "fn": 0,
+            "invalid_responses": 0
+          },
+          "conversations": [
+            {
+              "contact_id": "ct_7q2n9v",
+              "split": "development",
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            },
+            {
+              "contact_id": "ct_4b8x1k",
+              "split": "development",
+              "tp": 3,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            }
+          ]
+        },
+        "semantic_adjudicated": {
+          "totals": {
+            "tp": 5,
+            "fp": 0,
+            "fn": 0,
+            "invalid_responses": 0
+          },
+          "conversations": [
+            {
+              "contact_id": "ct_7q2n9v",
+              "split": "development",
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            },
+            {
+              "contact_id": "ct_4b8x1k",
+              "split": "development",
+              "tp": 3,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            }
+          ]
+        },
+        "gross_usd_equivalent": 0.0010810969810485839
+      },
+      "holdout": {
+        "strict": {
+          "totals": {
+            "tp": 5,
+            "fp": 2,
+            "fn": 3,
+            "invalid_responses": 1
+          },
+          "conversations": [
+            {
+              "contact_id": "ct_9r3w6d",
+              "split": "holdout",
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            },
+            {
+              "contact_id": "ct_2h6p8z",
+              "split": "holdout",
+              "tp": 2,
+              "fp": 1,
+              "fn": 1,
+              "schema_errors": [],
+              "unmatched_predictions": [
+                {
+                  "contact_id": "ct_2h6p8z",
+                  "field": "client_birthday",
+                  "value": "02-06 ou 02-07",
+                  "status": "pending",
+                  "source_ids": [
+                    "d-m07"
+                  ]
+                }
+              ],
+              "missing_gold_ids": [
+                "g10"
+              ]
+            },
+            {
+              "contact_id": "ct_5m1j7s",
+              "split": "holdout",
+              "tp": 0,
+              "fp": 0,
+              "fn": 1,
+              "schema_errors": [
+                "invalid_root_contract"
+              ],
+              "unmatched_predictions": [],
+              "missing_gold_ids": [
+                "g11"
+              ]
+            },
+            {
+              "contact_id": "ct_8f4t2c",
+              "split": "holdout",
+              "tp": 1,
+              "fp": 1,
+              "fn": 1,
+              "schema_errors": [],
+              "unmatched_predictions": [
+                {
+                  "contact_id": "ct_8f4t2c",
+                  "field": "relationship_context",
+                  "value": "Me separei. Não sou mais casada.",
+                  "status": "pending",
+                  "source_ids": [
+                    "f-m07"
+                  ]
+                }
+              ],
+              "missing_gold_ids": [
+                "g12"
+              ]
+            },
+            {
+              "contact_id": "ct_3a9u6e",
+              "split": "holdout",
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            },
+            {
+              "contact_id": "ct_6k2y5b",
+              "split": "holdout",
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            }
+          ]
+        },
+        "semantic_adjudicated": {
+          "totals": {
+            "tp": 7,
+            "fp": 0,
+            "fn": 1,
+            "invalid_responses": 1
+          },
+          "conversations": [
+            {
+              "contact_id": "ct_9r3w6d",
+              "split": "holdout",
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            },
+            {
+              "contact_id": "ct_2h6p8z",
+              "split": "holdout",
+              "tp": 3,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            },
+            {
+              "contact_id": "ct_5m1j7s",
+              "split": "holdout",
+              "tp": 0,
+              "fp": 0,
+              "fn": 1,
+              "schema_errors": [
+                "invalid_root_contract"
+              ],
+              "unmatched_predictions": [],
+              "missing_gold_ids": [
+                "g11"
+              ]
+            },
+            {
+              "contact_id": "ct_8f4t2c",
+              "split": "holdout",
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            },
+            {
+              "contact_id": "ct_3a9u6e",
+              "split": "holdout",
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            },
+            {
+              "contact_id": "ct_6k2y5b",
+              "split": "holdout",
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            }
+          ]
+        },
+        "gross_usd_equivalent": 0.002409777885437011
+      }
+    },
+    "@cf/qwen/qwen3-30b-a3b-fp8": {
+      "development": {
+        "strict": {
+          "totals": {
+            "tp": 2,
+            "fp": 2,
+            "fn": 3,
+            "invalid_responses": 1
+          },
+          "conversations": [
+            {
+              "contact_id": "ct_7q2n9v",
+              "split": "development",
+              "tp": 0,
+              "fp": 0,
+              "fn": 2,
+              "schema_errors": [
+                "fact_2:invalid_keys"
+              ],
+              "unmatched_predictions": [],
+              "missing_gold_ids": [
+                "g01",
+                "g02"
+              ]
+            },
+            {
+              "contact_id": "ct_4b8x1k",
+              "split": "development",
+              "tp": 2,
+              "fp": 2,
+              "fn": 1,
+              "schema_errors": [],
+              "unmatched_predictions": [
+                {
+                  "contact_id": "ct_4b8x1k",
+                  "field": "preferred_period",
+                  "value": "morning",
+                  "status": "confirmed",
+                  "source_ids": [
+                    "b-m01"
+                  ]
+                },
+                {
+                  "contact_id": "ct_4b8x1k",
+                  "field": "spouse_birthday",
+                  "value": "12-01",
+                  "status": "confirmed",
+                  "source_ids": [
+                    "b-m05"
+                  ]
+                }
+              ],
+              "missing_gold_ids": [
+                "g04"
+              ]
+            }
+          ]
+        },
+        "semantic_adjudicated": {
+          "totals": {
+            "tp": 2,
+            "fp": 2,
+            "fn": 3,
+            "invalid_responses": 1
+          },
+          "conversations": [
+            {
+              "contact_id": "ct_7q2n9v",
+              "split": "development",
+              "tp": 0,
+              "fp": 0,
+              "fn": 2,
+              "schema_errors": [
+                "fact_2:invalid_keys"
+              ],
+              "unmatched_predictions": [],
+              "missing_gold_ids": [
+                "g01",
+                "g02"
+              ]
+            },
+            {
+              "contact_id": "ct_4b8x1k",
+              "split": "development",
+              "tp": 2,
+              "fp": 2,
+              "fn": 1,
+              "schema_errors": [],
+              "unmatched_predictions": [
+                {
+                  "contact_id": "ct_4b8x1k",
+                  "field": "preferred_period",
+                  "value": "morning",
+                  "status": "confirmed",
+                  "source_ids": [
+                    "b-m01"
+                  ]
+                },
+                {
+                  "contact_id": "ct_4b8x1k",
+                  "field": "spouse_birthday",
+                  "value": "12-01",
+                  "status": "confirmed",
+                  "source_ids": [
+                    "b-m05"
+                  ]
+                }
+              ],
+              "missing_gold_ids": [
+                "g04"
+              ]
+            }
+          ]
+        },
+        "gross_usd_equivalent": 0.00021791559600830077
+      },
+      "holdout": {
+        "strict": {
+          "totals": {
+            "tp": 5,
+            "fp": 2,
+            "fn": 3,
+            "invalid_responses": 0
+          },
+          "conversations": [
+            {
+              "contact_id": "ct_9r3w6d",
+              "split": "holdout",
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            },
+            {
+              "contact_id": "ct_2h6p8z",
+              "split": "holdout",
+              "tp": 2,
+              "fp": 1,
+              "fn": 1,
+              "schema_errors": [],
+              "unmatched_predictions": [
+                {
+                  "contact_id": "ct_2h6p8z",
+                  "field": "client_birthday",
+                  "value": "02-06",
+                  "status": "pending",
+                  "source_ids": [
+                    "d-m07"
+                  ]
+                }
+              ],
+              "missing_gold_ids": [
+                "g10"
+              ]
+            },
+            {
+              "contact_id": "ct_5m1j7s",
+              "split": "holdout",
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            },
+            {
+              "contact_id": "ct_8f4t2c",
+              "split": "holdout",
+              "tp": 0,
+              "fp": 1,
+              "fn": 2,
+              "schema_errors": [],
+              "unmatched_predictions": [
+                {
+                  "contact_id": "ct_8f4t2c",
+                  "field": "relationship_context",
+                  "value": "Não casada.",
+                  "status": "pending",
+                  "source_ids": [
+                    "f-m07"
+                  ]
+                }
+              ],
+              "missing_gold_ids": [
+                "g12",
+                "g13"
+              ]
+            },
+            {
+              "contact_id": "ct_3a9u6e",
+              "split": "holdout",
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            },
+            {
+              "contact_id": "ct_6k2y5b",
+              "split": "holdout",
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            }
+          ]
+        },
+        "semantic_adjudicated": {
+          "totals": {
+            "tp": 5,
+            "fp": 2,
+            "fn": 3,
+            "invalid_responses": 0
+          },
+          "conversations": [
+            {
+              "contact_id": "ct_9r3w6d",
+              "split": "holdout",
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            },
+            {
+              "contact_id": "ct_2h6p8z",
+              "split": "holdout",
+              "tp": 2,
+              "fp": 1,
+              "fn": 1,
+              "schema_errors": [],
+              "unmatched_predictions": [
+                {
+                  "contact_id": "ct_2h6p8z",
+                  "field": "client_birthday",
+                  "value": "02-06",
+                  "status": "pending",
+                  "source_ids": [
+                    "d-m07"
+                  ]
+                }
+              ],
+              "missing_gold_ids": [
+                "g10"
+              ]
+            },
+            {
+              "contact_id": "ct_5m1j7s",
+              "split": "holdout",
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            },
+            {
+              "contact_id": "ct_8f4t2c",
+              "split": "holdout",
+              "tp": 0,
+              "fp": 1,
+              "fn": 2,
+              "schema_errors": [],
+              "unmatched_predictions": [
+                {
+                  "contact_id": "ct_8f4t2c",
+                  "field": "relationship_context",
+                  "value": "Não casada.",
+                  "status": "pending",
+                  "source_ids": [
+                    "f-m07"
+                  ]
+                }
+              ],
+              "missing_gold_ids": [
+                "g12",
+                "g13"
+              ]
+            },
+            {
+              "contact_id": "ct_3a9u6e",
+              "split": "holdout",
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            },
+            {
+              "contact_id": "ct_6k2y5b",
+              "split": "holdout",
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "schema_errors": [],
+              "unmatched_predictions": [],
+              "missing_gold_ids": []
+            }
+          ]
+        },
+        "gross_usd_equivalent": 0.00038060957932472227
+      }
+    }
+  },
+  "pipelines": {
+    "clef-flash": {
+      "strict": {
+        "totals": {
+          "tp": 9,
+          "fp": 3,
+          "fn": 4,
+          "invalid_responses": 1
+        },
+        "conversations": [
+          {
+            "contact_id": "ct_7q2n9v",
+            "split": "development",
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_4b8x1k",
+            "split": "development",
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_9r3w6d",
+            "split": "holdout",
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_2h6p8z",
+            "split": "holdout",
+            "tp": 2,
+            "fp": 1,
+            "fn": 1,
+            "schema_errors": [],
+            "unmatched_predictions": [
+              {
+                "contact_id": "ct_2h6p8z",
+                "field": "client_birthday",
+                "value": "02-06 ou 02-07",
+                "status": "pending",
+                "source_ids": [
+                  "d-m07"
+                ]
+              }
+            ],
+            "missing_gold_ids": [
+              "g10"
+            ]
+          },
+          {
+            "contact_id": "ct_5m1j7s",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "schema_errors": [
+              "invalid_root_contract"
+            ],
+            "unmatched_predictions": [],
+            "missing_gold_ids": [
+              "g11"
+            ]
+          },
+          {
+            "contact_id": "ct_8f4t2c",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 2,
+            "fn": 2,
+            "schema_errors": [],
+            "unmatched_predictions": [
+              {
+                "contact_id": "ct_8f4t2c",
+                "field": "relationship_context",
+                "value": "Me separei. Não sou mais casada.",
+                "status": "pending",
+                "source_ids": [
+                  "f-m07"
+                ]
+              },
+              {
+                "contact_id": "ct_8f4t2c",
+                "field": "followup_date",
+                "value": "2026-10-19",
+                "status": "pending",
+                "source_ids": [
+                  "f-m09"
+                ]
+              }
+            ],
+            "missing_gold_ids": [
+              "g12",
+              "g13"
+            ]
+          },
+          {
+            "contact_id": "ct_3a9u6e",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_6k2y5b",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          }
+        ]
+      },
+      "semantic_adjudicated": {
+        "totals": {
+          "tp": 11,
+          "fp": 1,
+          "fn": 2,
+          "invalid_responses": 1
+        },
+        "conversations": [
+          {
+            "contact_id": "ct_7q2n9v",
+            "split": "development",
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_4b8x1k",
+            "split": "development",
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_9r3w6d",
+            "split": "holdout",
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_2h6p8z",
+            "split": "holdout",
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_5m1j7s",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "schema_errors": [
+              "invalid_root_contract"
+            ],
+            "unmatched_predictions": [],
+            "missing_gold_ids": [
+              "g11"
+            ]
+          },
+          {
+            "contact_id": "ct_8f4t2c",
+            "split": "holdout",
+            "tp": 1,
+            "fp": 1,
+            "fn": 1,
+            "schema_errors": [],
+            "unmatched_predictions": [
+              {
+                "contact_id": "ct_8f4t2c",
+                "field": "followup_date",
+                "value": "2026-10-19",
+                "status": "pending",
+                "source_ids": [
+                  "f-m09"
+                ]
+              }
+            ],
+            "missing_gold_ids": [
+              "g13"
+            ]
+          },
+          {
+            "contact_id": "ct_3a9u6e",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_6k2y5b",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          }
+        ]
+      },
+      "changes": [
+        {
+          "contact_id": "ct_8f4t2c",
+          "field": "followup_date",
+          "action": "downgraded_to_pending",
+          "supported": 0.9157,
+          "can_confirm": 0.6682
+        }
+      ],
+      "gross_pipeline_usd_reconstructed": 0.003763372866485595,
+      "note": "Verifier decisions applied to frozen baseline candidates; cannot recover omitted facts or repair contract.",
+      "holdout_extra_input_tokens": 4197,
+      "holdout_extra_usd": 0.000159486
+    },
+    "clef": {
+      "strict": {
+        "totals": {
+          "tp": 9,
+          "fp": 3,
+          "fn": 4,
+          "invalid_responses": 1
+        },
+        "conversations": [
+          {
+            "contact_id": "ct_7q2n9v",
+            "split": "development",
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_4b8x1k",
+            "split": "development",
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_9r3w6d",
+            "split": "holdout",
+            "tp": 1,
+            "fp": 1,
+            "fn": 1,
+            "schema_errors": [],
+            "unmatched_predictions": [
+              {
+                "contact_id": "ct_9r3w6d",
+                "field": "followup_date",
+                "value": "2026-10-20",
+                "status": "pending",
+                "source_ids": [
+                  "c-m09"
+                ]
+              }
+            ],
+            "missing_gold_ids": [
+              "g07"
+            ]
+          },
+          {
+            "contact_id": "ct_2h6p8z",
+            "split": "holdout",
+            "tp": 2,
+            "fp": 1,
+            "fn": 1,
+            "schema_errors": [],
+            "unmatched_predictions": [
+              {
+                "contact_id": "ct_2h6p8z",
+                "field": "client_birthday",
+                "value": "02-06 ou 02-07",
+                "status": "pending",
+                "source_ids": [
+                  "d-m07"
+                ]
+              }
+            ],
+            "missing_gold_ids": [
+              "g10"
+            ]
+          },
+          {
+            "contact_id": "ct_5m1j7s",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "schema_errors": [
+              "invalid_root_contract"
+            ],
+            "unmatched_predictions": [],
+            "missing_gold_ids": [
+              "g11"
+            ]
+          },
+          {
+            "contact_id": "ct_8f4t2c",
+            "split": "holdout",
+            "tp": 1,
+            "fp": 1,
+            "fn": 1,
+            "schema_errors": [],
+            "unmatched_predictions": [
+              {
+                "contact_id": "ct_8f4t2c",
+                "field": "relationship_context",
+                "value": "Me separei. Não sou mais casada.",
+                "status": "pending",
+                "source_ids": [
+                  "f-m07"
+                ]
+              }
+            ],
+            "missing_gold_ids": [
+              "g12"
+            ]
+          },
+          {
+            "contact_id": "ct_3a9u6e",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_6k2y5b",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          }
+        ]
+      },
+      "semantic_adjudicated": {
+        "totals": {
+          "tp": 11,
+          "fp": 1,
+          "fn": 2,
+          "invalid_responses": 1
+        },
+        "conversations": [
+          {
+            "contact_id": "ct_7q2n9v",
+            "split": "development",
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_4b8x1k",
+            "split": "development",
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_9r3w6d",
+            "split": "holdout",
+            "tp": 1,
+            "fp": 1,
+            "fn": 1,
+            "schema_errors": [],
+            "unmatched_predictions": [
+              {
+                "contact_id": "ct_9r3w6d",
+                "field": "followup_date",
+                "value": "2026-10-20",
+                "status": "pending",
+                "source_ids": [
+                  "c-m09"
+                ]
+              }
+            ],
+            "missing_gold_ids": [
+              "g07"
+            ]
+          },
+          {
+            "contact_id": "ct_2h6p8z",
+            "split": "holdout",
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_5m1j7s",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "schema_errors": [
+              "invalid_root_contract"
+            ],
+            "unmatched_predictions": [],
+            "missing_gold_ids": [
+              "g11"
+            ]
+          },
+          {
+            "contact_id": "ct_8f4t2c",
+            "split": "holdout",
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_3a9u6e",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_6k2y5b",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          }
+        ]
+      },
+      "changes": [
+        {
+          "contact_id": "ct_9r3w6d",
+          "field": "followup_date",
+          "action": "downgraded_to_pending",
+          "supported": 0.7093,
+          "can_confirm": 0.6713
+        }
+      ],
+      "gross_pipeline_usd_reconstructed": 0.005211914866485595,
+      "note": "Verifier decisions applied to frozen baseline candidates; cannot recover omitted facts or repair contract.",
+      "holdout_extra_input_tokens": 4197,
+      "holdout_extra_usd": 0.00100728
+    }
+  },
+  "gates": {
+    "clef-flash": {
+      "rejected_contacts": [
+        "ct_7q2n9v",
+        "ct_5m1j7s",
+        "ct_3a9u6e",
+        "ct_6k2y5b"
+      ],
+      "gold_facts_in_rejected_conversations": 3,
+      "lost_gold_ids": [
+        "g01",
+        "g02",
+        "g11"
+      ],
+      "strict": {
+        "totals": {
+          "tp": 8,
+          "fp": 2,
+          "fn": 5,
+          "invalid_responses": 0
+        },
+        "conversations": [
+          {
+            "contact_id": "ct_7q2n9v",
+            "split": "development",
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": [
+              "g01",
+              "g02"
+            ]
+          },
+          {
+            "contact_id": "ct_4b8x1k",
+            "split": "development",
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_9r3w6d",
+            "split": "holdout",
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_2h6p8z",
+            "split": "holdout",
+            "tp": 2,
+            "fp": 1,
+            "fn": 1,
+            "schema_errors": [],
+            "unmatched_predictions": [
+              {
+                "contact_id": "ct_2h6p8z",
+                "field": "client_birthday",
+                "value": "02-06 ou 02-07",
+                "status": "pending",
+                "source_ids": [
+                  "d-m07"
+                ]
+              }
+            ],
+            "missing_gold_ids": [
+              "g10"
+            ]
+          },
+          {
+            "contact_id": "ct_5m1j7s",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": [
+              "g11"
+            ]
+          },
+          {
+            "contact_id": "ct_8f4t2c",
+            "split": "holdout",
+            "tp": 1,
+            "fp": 1,
+            "fn": 1,
+            "schema_errors": [],
+            "unmatched_predictions": [
+              {
+                "contact_id": "ct_8f4t2c",
+                "field": "relationship_context",
+                "value": "Me separei. Não sou mais casada.",
+                "status": "pending",
+                "source_ids": [
+                  "f-m07"
+                ]
+              }
+            ],
+            "missing_gold_ids": [
+              "g12"
+            ]
+          },
+          {
+            "contact_id": "ct_3a9u6e",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_6k2y5b",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          }
+        ]
+      },
+      "gross_pipeline_usd_reconstructed": 0.0023963446483154295,
+      "note": "Replayed baseline, not fresh end-to-end execution; rejected gold also counted independently."
+    },
+    "clef": {
+      "rejected_contacts": [
+        "ct_5m1j7s",
+        "ct_3a9u6e",
+        "ct_6k2y5b"
+      ],
+      "gold_facts_in_rejected_conversations": 1,
+      "lost_gold_ids": [
+        "g11"
+      ],
+      "strict": {
+        "totals": {
+          "tp": 10,
+          "fp": 2,
+          "fn": 3,
+          "invalid_responses": 0
+        },
+        "conversations": [
+          {
+            "contact_id": "ct_7q2n9v",
+            "split": "development",
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_4b8x1k",
+            "split": "development",
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_9r3w6d",
+            "split": "holdout",
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_2h6p8z",
+            "split": "holdout",
+            "tp": 2,
+            "fp": 1,
+            "fn": 1,
+            "schema_errors": [],
+            "unmatched_predictions": [
+              {
+                "contact_id": "ct_2h6p8z",
+                "field": "client_birthday",
+                "value": "02-06 ou 02-07",
+                "status": "pending",
+                "source_ids": [
+                  "d-m07"
+                ]
+              }
+            ],
+            "missing_gold_ids": [
+              "g10"
+            ]
+          },
+          {
+            "contact_id": "ct_5m1j7s",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 1,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": [
+              "g11"
+            ]
+          },
+          {
+            "contact_id": "ct_8f4t2c",
+            "split": "holdout",
+            "tp": 1,
+            "fp": 1,
+            "fn": 1,
+            "schema_errors": [],
+            "unmatched_predictions": [
+              {
+                "contact_id": "ct_8f4t2c",
+                "field": "relationship_context",
+                "value": "Me separei. Não sou mais casada.",
+                "status": "pending",
+                "source_ids": [
+                  "f-m07"
+                ]
+              }
+            ],
+            "missing_gold_ids": [
+              "g12"
+            ]
+          },
+          {
+            "contact_id": "ct_3a9u6e",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          },
+          {
+            "contact_id": "ct_6k2y5b",
+            "split": "holdout",
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          }
+        ]
+      },
+      "gross_pipeline_usd_reconstructed": 0.00406497150894165,
+      "note": "Replayed baseline, not fresh end-to-end execution; rejected gold also counted independently."
+    }
+  },
+  "stress": {},
+  "costs": {
+    "api_attempts": 60,
+    "responses_with_usage": 52,
+    "gross_usd_equivalent_known_usage": 0.011246531416571044,
+    "unknown_usage_attempts": 8,
+    "baseline_primary_eight_conversations_usd": 0.0034908748664855952,
+    "billing_note": "Table equivalent before free allocation; failed API calls have no usage returned, invoice not inspected."
+  },
+  "schema_targeted": {
+    "ct_2h6p8z": {
+      "errors": [],
+      "strict": {
+        "totals": {
+          "tp": 2,
+          "fp": 1,
+          "fn": 1,
+          "invalid_responses": 0
+        },
+        "conversations": [
+          {
+            "contact_id": "ct_2h6p8z",
+            "split": "holdout",
+            "tp": 2,
+            "fp": 1,
+            "fn": 1,
+            "schema_errors": [],
+            "unmatched_predictions": [
+              {
+                "contact_id": "ct_2h6p8z",
+                "field": "client_birthday",
+                "value": "02-06 ou 02-07",
+                "status": "pending",
+                "source_ids": [
+                  "d-m07"
+                ]
+              }
+            ],
+            "missing_gold_ids": [
+              "g10"
+            ]
+          }
+        ]
+      },
+      "semantic_adjudicated": {
+        "totals": {
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "invalid_responses": 0
+        },
+        "conversations": [
+          {
+            "contact_id": "ct_2h6p8z",
+            "split": "holdout",
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          }
+        ]
+      }
+    },
+    "ct_5m1j7s": {
+      "errors": [],
+      "strict": {
+        "totals": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "invalid_responses": 0
+        },
+        "conversations": [
+          {
+            "contact_id": "ct_5m1j7s",
+            "split": "holdout",
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          }
+        ]
+      },
+      "semantic_adjudicated": {
+        "totals": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "invalid_responses": 0
+        },
+        "conversations": [
+          {
+            "contact_id": "ct_5m1j7s",
+            "split": "holdout",
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "schema_errors": [],
+            "unmatched_predictions": [],
+            "missing_gold_ids": []
+          }
+        ]
+      }
+    }
+  },
+  "repeats": [
+    {
+      "contact_id": "ct_4b8x1k",
+      "same_content_as_baseline": true,
+      "schema_errors": []
+    },
+    {
+      "contact_id": "ct_5m1j7s",
+      "same_content_as_baseline": true,
+      "schema_errors": [
+        "invalid_root_contract"
+      ]
+    }
+  ],
+  "offline_replay": {
+    "first_count": 12,
+    "second_count": 12,
+    "identical": true,
+    "limit": "No D1, transactions, concurrency, source expiry or network recovery tested."
+  }
+}

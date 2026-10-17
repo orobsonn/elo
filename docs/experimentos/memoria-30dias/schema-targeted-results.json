@@ -1,0 +1,349 @@
+{
+  "exploratory_not_holdout_score": true,
+  "jobs": [
+    {
+      "input": {
+        "contact_id": "ct_2h6p8z",
+        "alias": "Mario Vale",
+        "known_memory": [],
+        "messages": [
+          {
+            "id": "d-m01",
+            "date": "2026-09-18T09:00:00-03:00",
+            "author": "client",
+            "text": "Bom dia!"
+          },
+          {
+            "id": "d-m02",
+            "date": "2026-09-22T11:00:00-03:00",
+            "author": "consultant",
+            "text": "Bom dia, tudo certo."
+          },
+          {
+            "id": "d-m03",
+            "date": "2026-09-27T16:00:00-03:00",
+            "author": "client",
+            "text": "Tenho uma filha."
+          },
+          {
+            "id": "d-m04",
+            "date": "2026-10-01T15:00:00-03:00",
+            "author": "consultant",
+            "text": "Obrigado pela informação."
+          },
+          {
+            "id": "d-m05",
+            "date": "2026-10-05T09:00:00-03:00",
+            "author": "client",
+            "text": "Minha filha faz aniversário em 3 de maio."
+          },
+          {
+            "id": "d-m06",
+            "date": "2026-10-08T11:00:00-03:00",
+            "author": "consultant",
+            "text": "Recebi."
+          },
+          {
+            "id": "d-m07",
+            "date": "2026-10-11T10:00:00-03:00",
+            "author": "client",
+            "text": "Sobre meu aniversário, acho que o cadastro usa 6 ou 7 de fevereiro. Não sei qual está certo e não consigo confirmar agora."
+          },
+          {
+            "id": "d-m08",
+            "date": "2026-10-13T14:00:00-03:00",
+            "author": "consultant",
+            "text": "Vou deixar essa data pendente de confirmação."
+          },
+          {
+            "id": "d-m09",
+            "date": "2026-10-15T15:00:00-03:00",
+            "author": "client",
+            "text": "Perfeito, obrigado."
+          },
+          {
+            "id": "d-m10",
+            "date": "2026-10-16T16:00:00-03:00",
+            "author": "consultant",
+            "text": "Boa tarde!"
+          }
+        ]
+      },
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "facts"
+        ],
+        "properties": {
+          "facts": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "contact_id",
+                "field",
+                "value",
+                "status",
+                "source_ids"
+              ],
+              "properties": {
+                "contact_id": {
+                  "type": "string",
+                  "enum": [
+                    "ct_2h6p8z"
+                  ]
+                },
+                "field": {
+                  "type": "string",
+                  "enum": [
+                    "preferred_channel",
+                    "preferred_period",
+                    "client_birthday",
+                    "spouse_birthday",
+                    "child_birthday",
+                    "meeting_date",
+                    "followup_date",
+                    "has_children",
+                    "relationship_context"
+                  ]
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "confirmed",
+                    "pending"
+                  ]
+                },
+                "source_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "d-m01",
+                      "d-m02",
+                      "d-m03",
+                      "d-m04",
+                      "d-m05",
+                      "d-m06",
+                      "d-m07",
+                      "d-m08",
+                      "d-m09",
+                      "d-m10"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": {
+        "contact_id": "ct_5m1j7s",
+        "alias": "Clara Ipê",
+        "known_memory": [],
+        "messages": [
+          {
+            "id": "e-m01",
+            "date": "2026-09-17T15:00:00-03:00",
+            "author": "client",
+            "text": "Olá, boa tarde."
+          },
+          {
+            "id": "e-m02",
+            "date": "2026-09-23T09:00:00-03:00",
+            "author": "consultant",
+            "text": "Olá!"
+          },
+          {
+            "id": "e-m03",
+            "date": "2026-09-28T14:00:00-03:00",
+            "author": "client",
+            "text": "Encaminhado de uma colega, sobre ela mesma: \"Meu aniversário é 9 de abril e tenho dois filhos.\" Essa mensagem não é sobre mim."
+          },
+          {
+            "id": "e-m04",
+            "date": "2026-10-02T11:00:00-03:00",
+            "author": "consultant",
+            "text": "Entendi que o encaminhado é sobre outra pessoa."
+          },
+          {
+            "id": "e-m05",
+            "date": "2026-10-06T15:00:00-03:00",
+            "author": "client",
+            "text": "Exemplo hipotético para um roteiro: se minha esposa fizesse aniversário em 22 de agosto, você sugeriria uma mensagem? É só uma hipótese, não é uma informação sobre minha família."
+          },
+          {
+            "id": "e-m06",
+            "date": "2026-10-09T10:00:00-03:00",
+            "author": "consultant",
+            "text": "Entendi que se trata apenas de um exemplo."
+          },
+          {
+            "id": "e-m07",
+            "date": "2026-10-12T16:00:00-03:00",
+            "author": "client",
+            "text": "Para nosso contato, meu canal preferido é ligação."
+          },
+          {
+            "id": "e-m08",
+            "date": "2026-10-14T11:00:00-03:00",
+            "author": "consultant",
+            "text": "Recebi sua preferência."
+          },
+          {
+            "id": "e-m09",
+            "date": "2026-10-15T09:00:00-03:00",
+            "author": "client",
+            "text": "Obrigada!"
+          },
+          {
+            "id": "e-m10",
+            "date": "2026-10-16T15:00:00-03:00",
+            "author": "consultant",
+            "text": "À disposição."
+          }
+        ]
+      },
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "facts"
+        ],
+        "properties": {
+          "facts": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "contact_id",
+                "field",
+                "value",
+                "status",
+                "source_ids"
+              ],
+              "properties": {
+                "contact_id": {
+                  "type": "string",
+                  "enum": [
+                    "ct_5m1j7s"
+                  ]
+                },
+                "field": {
+                  "type": "string",
+                  "enum": [
+                    "preferred_channel",
+                    "preferred_period",
+                    "client_birthday",
+                    "spouse_birthday",
+                    "child_birthday",
+                    "meeting_date",
+                    "followup_date",
+                    "has_children",
+                    "relationship_context"
+                  ]
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "confirmed",
+                    "pending"
+                  ]
+                },
+                "source_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "e-m01",
+                      "e-m02",
+                      "e-m03",
+                      "e-m04",
+                      "e-m05",
+                      "e-m06",
+                      "e-m07",
+                      "e-m08",
+                      "e-m09",
+                      "e-m10"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "results": [
+    {
+      "contact_id": "ct_2h6p8z",
+      "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+      "stage": "schema_targeted_exploratory",
+      "success": true,
+      "status": 200,
+      "elapsed_ms": 5424,
+      "content": "{\"facts\": [{\"contact_id\": \"ct_2h6p8z\", \"field\": \"has_children\", \"value\": true, \"status\": \"confirmed\", \"source_ids\": [\"d-m03\"]}, {\"contact_id\": \"ct_2h6p8z\", \"field\": \"child_birthday\", \"value\": \"filha:05-03\", \"status\": \"confirmed\", \"source_ids\": [\"d-m05\"]}, {\"contact_id\": \"ct_2h6p8z\", \"field\": \"client_birthday\", \"value\": \"02-06 ou 02-07\", \"status\": \"pending\", \"source_ids\": [\"d-m07\"]}]}",
+      "usage": {
+        "prompt_tokens": 892,
+        "completion_tokens": 147,
+        "total_tokens": 1039,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 53.893943786621094
+      },
+      "finish_reason": "stop",
+      "errors": []
+    },
+    {
+      "contact_id": "ct_5m1j7s",
+      "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+      "stage": "schema_targeted_exploratory",
+      "success": true,
+      "status": 200,
+      "elapsed_ms": 1843,
+      "content": "{\"facts\": [{\"contact_id\": \"ct_5m1j7s\", \"field\": \"preferred_channel\", \"value\": \"call\", \"status\": \"confirmed\", \"source_ids\": [\"e-m07\"]}]}",
+      "usage": {
+        "prompt_tokens": 940,
+        "completion_tokens": 48,
+        "total_tokens": 988,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 34.89826583862305
+      },
+      "finish_reason": "stop",
+      "errors": []
+    }
+  ]
+}

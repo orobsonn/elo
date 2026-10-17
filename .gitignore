@@ -1,0 +1,18 @@
+# Insumos locais com transcrições e contexto não destinado à publicação.
+/fontes/privadas/
+
+# Credenciais e estado local de desenvolvimento.
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+.wrangler/
+node_modules/
+.DS_Store
+
+
+# Artefatos locais de Python e testes.
+__pycache__/
+*.pyc
+coverage/

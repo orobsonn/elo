@@ -1,0 +1,555 @@
+# Pi Harness
+
+## Evidência de validação entre commits
+
+Os comandos finais da aplicação são vinculados à árvore dos inputs da aplicação,
+preservando o SHA Git original na evidência. Commits que só alteram documentos
+operacionais da raiz (`MEMORY.md`, `CONTEXT.md`, `kaizen.md`, `AGENTS.md`,
+`CLAUDE.md`, `README.md`, `CHANGELOG.md`) ou runtimes gerados em `.pi/`, `.claude/`,
+`.codex/`, `.opencode/`, `.agents/` não exigem repetir a suíte da aplicação.
+Código, testes, manifests/lockfiles, configurações, migrations, assets e demais
+arquivos permanecem no hash. Documentação fora dessa lista permanece incluída:
+por exemplo, Markdown consumido pelo build de um site também é input da aplicação.
+
+A árvore deve estar limpa, e a entrada e a saída do comando precisam comprovar
+os mesmos inputs. Uma falha posterior sobre esses inputs prevalece sobre um
+sucesso anterior; evidência de outra sessão, saída adulterada ou execução iniciada
+com alterações pendentes continua recusada. `git diff --check` e verificações
+estruturais declaradas pelo harvest exigem o HEAD documental atual.
+
+## Suítes Vitest grandes
+
+Se o projeto ainda usa `miniflare@4.20250906.0`, há um backport explícito da
+[correção upstream de keep-alive](https://github.com/cloudflare/workers-sdk/pull/14850):
+`node .pi/harness/bin/patch-miniflare-loopback.mjs`. Adicione-o ao `pretest` com
+escopo/autorização de infraestrutura do projeto. Ele corrige somente o timeout
+do servidor loopback, preservando versões, isolamento e assertions; é idempotente
+e recusa outras versões/blocos de código. Ao atualizar o Miniflare, revise/remova
+esse backport. O runner de shards não altera dependências automaticamente.
+
+O runner vendorizado `node .pi/harness/bin/vitest-shards.mjs --` pode ser adotado
+como script `test` do projeto, preservando o `pretest`. `npm test` executa a suíte
+completa em dois processos Vitest separados, usando o sharding nativo por arquivo;
+`npm test -- src/exemplo.spec.ts` mantém o teste focal em um processo. Nenhum teste
+é removido e o runner preserva a configuração de isolamento do projeto.
+Requer Vitest local com suporte a `--shard`; não baixa dependências.
+
+Configure `HARNESS_TEST_SHARDS` (1–32) e `HARNESS_TEST_TIMEOUT_SECONDS` (1–86400,
+default 3600) ou passe `--shards <n>` / `--timeout-seconds <n>` antes do separador
+`--` no script. Comece com dois processos em hosts compartilhados e meça o ganho;
+quatro processos são uma opção para CI com recursos disponíveis. Os filtros
+depois de `--` vão intactos ao Vitest em uma execução única.
+
+O processo só retorna zero quando todas as partes terminam com sucesso. Qualquer
+falha, timeout ou interrupção cancela os demais shards; cada shard completo usa
+`--bail=1` e um reporter adicional por IPC para cancelar na primeira falha
+terminal, mesmo quando o pool continua percorrendo hooks. Preserva os reporters
+configurados no projeto e imprime o diagnóstico original antes de cancelar.
+Falhas transitórias durante retries e testes `it.fails` não cancelam a execução.
+Em POSIX, cancela também
+os descendentes de cada processo (incluindo workerd). Os logs completos permanecem
+na saída do comando, capturados pela evidência nativa. A adoção muda infraestrutura
+do consumidor e exige autorização/escopo para `package.json`; não é automática
+durante uma task. O gate final continua exigindo o comando completo declarado
+no plano, no HEAD atual, sem aceitar fragmentos como uma execução completa.
+
+Este pacote porta o harness para o Pi. No fluxo operacional atual, esta é a lane
+principal de criação e entrega diária: ideia/issue → spec → plano → pipeline por
+task → integração → validação agregada → memória → revisões finais → shipping.
+
+No Orca, cada implementação usa uma worktree filha e um terminal próprio no ADE.
+Também é possível executar a pipeline localmente fora do Orca. O Codex entra
+depois como segunda superfície local de validação e debugging sobre o HEAD
+integrado. Não existe handoff automático; Git, plano, testes e recibos são o
+contrato compartilhado.
+
+## Pré-flight
+
+Na worktree onde o harness foi instalado, rode:
+
+```sh
+node .pi/harness/pi-harness.mjs --verify
+```
+
+O resultado precisa incluir `"ok":true`, `"runtimeVersion":"1.2.0"` e `"subagentsVersion":"23.0.0"`. Ele não chama modelo, lê credenciais, instala ou corrige dependências. Cache ausente ou alterado é um erro: execute o init/update do harness nesse host antes de iniciar a run.
+
+O init/update que inclui Pi prepara primeiro o runtime fixado em um cache do usuário (`~/.cache/claude-harness/pi-runtime`, ou sob `XDG_CACHE_HOME` absoluto). Worktrees no mesmo host reutilizam a mesma geração; plataformas e versões incompatíveis usam gerações distintas. O launcher não usa nem modifica o Pi global ou `node_modules` do produto. Uma falha de provisionamento impede a atualização dos arquivos do harness. O pacote nativo Pi mantém suas dependências próprias para preservar `pi install`; isso pode duplicar downloads no instalador npx, mas não muda o runtime isolado usado pelo launcher.
+
+## Uso normal
+
+Abra um terminal na worktree da issue, com o Pi Harness instalado:
+
+```sh
+node .pi/harness/pi-harness.mjs "Implemente a issue #<numero> de forma autônoma, seguindo a pipeline padrão de entrega até abrir um PR draft."
+```
+
+O comando acima abre o TUI; para headless, acrescente `--mode json -p` antes do pedido. A issue é a entrada de produto, não um atalho que dispensa spec e revisão adversarial.
+
+O runtime distribuído deixa os blocos privados de thinking ocultos no TUI por
+padrão. `Ctrl+T` alterna a visualização e persiste a preferência nativa do Pi;
+isso muda somente a apresentação, sem remover o bloco da sessão, do replay ou do
+contexto usado pelo modelo. Um `hideThinkingBlock: false` explícito do operador é
+preservado nas atualizações do harness.
+
+Cada execução operacional iniciada pelo launcher recebe uma sessão nova e mantém um lock único da worktree até o Pi terminar. Assim, outro pai fresh ou retomado não sobrepõe a mesma implementação. Para reabrir exatamente uma sessão existente, use `node .pi/harness/pi-harness.mjs --harness-resume <session-id> "Continue o plano."`; se o arquivo exato ou o preflight não conferir, nenhuma sessão substituta é criada. Depois de uma interrupção, a retomada reconcilia o owner e os processos registrados antes de liberar o lock; não apague o lock nem inicie um segundo pai manualmente.
+
+A mesma sessão também pode retomar uma spec em rascunho ou uma spec revisada antes da criação do plano. O preflight verifica os artefatos existentes e preserva os gates pendentes: reabrir a conversa não aprova a spec, o plano ou a implementação. Um plano ausente depois de haver evidência de progresso continua sendo erro, assim como arquivos inválidos ou divergentes.
+
+Os seletores nativos de sessão (`--continue`, `-c`, `--resume`, `-r`, `--session`, `--session-id`, `--session-dir`, `--fork` e `--no-session`) são recusados pelo launcher. Texto após `--` continua sendo prompt. Help, versão, export e comandos administrativos não abrem sessão nem disputam o lock. Essas garantias pertencem ao launcher vendorizado; executar o binário `pi` diretamente não passa por esse controle.
+
+O login segue a mesma regra do OpenCode: é **um por ambiente**, nunca por worktree. O launcher preserva roles, settings, extensões e sessões do harness na worktree, mas usa somente a credencial Pi do perfil do usuário do host (`~/.pi/agent/auth.json`).
+
+Para um motor headless/VPS, execute uma vez como o usuário de serviço, abra o Pi e use `/login` → ChatGPT Plus/Pro → **Device code login**. O código é aprovado no seu navegador e a credencial fica apenas no perfil persistente daquele host; todas as worktrees futuras a reutilizam. Em CI sem perfil persistente, use o secret manager para injetar uma credencial de API — não um `auth.json` no repositório.
+
+## Grill e Lavish (descoberta local)
+
+Numa sessão local/interativa fora da cerimônia, peça "faz o grill desta ideia" ou use a skill `harness-grill`. Ela produz o PRD em `docs/prd/` e usa o Lavish somente quando você pede um mockup. Lavish é uma referência privada da entrevista, não outra skill nem uma publicação externa. O olho `harness-discussion-adversary` revisa a proposta sem iniciar delivery ou gerar aprovação da pipeline. Os dez papéis de entrega permanecem separados desse olho de discussão.
+
+Grill não entrevista em headless, não implementa produto e não transforma hipóteses em respostas suas. A referência está em `skills/harness-grill/references/lavish-usage.md` no harness vendorizado; `share` e `setup hooks` continuam proibidos.
+
+## Progresso do plano
+
+Em uma run FULL, depois da aprovação do plan-reviewer e dentro do escopo autorizado, o Pi registra as tarefas em `harness_plan`. Um pedido explícito de implementação autônoma/headless não exige confirmação humana adicional para esse registro. O TUI mostra `Plano 2/5 · atual: Implementar`; tarefas que declaram validação própria adicionam uma segunda linha, por exemplo `Validação 1/2 · atual: Teste de regressão`. O mesmo snapshot aparece no resultado da ferramenta em JSON/headless. O estado acompanha a ramificação atual da sessão; é informativo, não é aprovação, scheduler nem prova de conclusão do código.
+
+Tarefas independentes podem aparecer juntas, por exemplo `Plano 1/5 · em andamento (2): API, UI`. Atualizar uma delas não devolve a outra para pendente. Quando uma tarefa concluída é retomada para correção, ela volta a `in_progress` e sua validação volta a `pending`. `harness_tasks` e seus recibos continuam sendo a autoridade de execução e integração.
+
+## Pipeline de implementação por tarefa
+
+Sessões novas LIGHT/FULL usam a pipeline por tarefa. Depois de a spec estar selada e o plan-reviewer aprovar os hashes atuais, o pai global usa uma única ferramenta:
+
+- `harness_tasks dispatch` inicia as tarefas prontas. Tarefas independentes ocupam worktrees e processos separados; uma dependente só inicia depois de suas dependências estarem integradas. Scopes sobrepostos são serializados e a concorrência tem limite finito.
+- `harness_tasks status` reconcilia os jobs registrados e mostra os resultados verificáveis. Os jobs são duráveis e destacados: abortar uma chamada de observação ou encerrar o pai global não cancela uma implementação que já começou.
+- `harness_tasks wait` aguarda o término no host, sem chamar o modelo repetidamente. No Orca, usa a espera nativa do terminal e revalida processo e recibos ao despertar. Use quando há tasks rodando e nenhum trabalho independente pronto.
+- `harness_tasks integrate` recebe `task_id`, `attempt_id` e `expected_head`, faz merge daquele SHA exato e grava o recibo global. O tip posterior da branch nunca substitui esse argumento.
+- `harness_tasks resume` reabre a mesma tentativa e sessão pai local após comprovar que o processo anterior terminou. Feedback volta para a task que produziu a mudança; resultado e validação antigos deixam de liberar integração enquanto a correção está ativa. Para corrigir uma dependência compartilhada, os descendentes já admitidos precisam estar integrados; uma barreira pausa novos dispatches e outras integrações até o novo recibo da dependência.
+
+Quando a reconciliação global com `main` invalidar uma evidência produzida por
+uma task integrada, retome a dona com `harness_tasks resume`, `task_id`,
+`attempt_id`, `instruction` descrevendo o finding e `reconcile_head` igual ao SHA
+completo do agregado atual. O host incorpora esse agregado antes do lançamento,
+preserva a base original e registra a prova do merge. Imports da base não ampliam
+o escopo da task. A recaptura, os testes e as revisões afetadas continuam
+obrigatórios; o merge não promove recibos antigos. Árvores sujas, HEAD obsoleto
+ou conflitos fora do escopo são recusados. A integração da PR com `main` continua
+sendo responsabilidade de `harness_memory reconcile` no pai global.
+
+Após a primeira admissão, plano e spec ficam fixos nessa sessão, inclusive quando todas as tasks terminarem. `resume` permite corrigir implementação dentro do contrato aprovado. Alterar o próprio plano exige nova sessão e aprovação, preservando worktrees e evidências; encerrar tasks não libera a substituição do plano antigo.
+
+Cada pai local executa a pipeline nativa completa da sua task: autoria de testes, fidelidade, freeze, executor, captura, revisões aplicáveis, sniper e re-gate. Ele não repete triagem, brainstorming, spec ou plano globais. Compliance, adversary e security de implementação podem rodar em paralelo, até o limite de três olhos incorporado pelo PR #902; mãos, fidelidade e revisão da spec mantêm exclusividade. O pai global integra os recibos e só então executa testes do conjunto, harvest, olhos finais no HEAD agregado e shipping. Uma correção integrada depois de seus consumers exige repetir esses gates agregados no novo HEAD.
+
+Ao iniciar o pai num terminal Orca, `ORCA_WORKTREE_ID` vincula o despacho àquela workspace. O harness usa `orca worktree create` com o SHA exato da base e `--parent-worktree`, seguido de `orca terminal create` para executar o worker do harness. A relação visual entre worktrees e a base Git são explícitas e independentes. O registry conserva as identidades de workspace, tentativa e terminal; retomadas não criam outra tentativa. Uma falha do Orca é reportada, sem migrar silenciosamente para execução invisível. O resultado `launches[].orca.surface: "visible"` comprova que o notifier/renderer do host adotou o terminal, não que um cliente remoto confirmou a navegação; `background` conserva o handle e a sessão continua listável e reanexável. Para revelar uma task escolhida num cliente conectado, use `worktree.activate` e `session.tabs.activate` com `navigation: "clients"` sobre a mesma worktree, tab e handle: isso não cria outro terminal. Essa navegação deve ser explícita, em vez de disputar o foco a cada despacho de tasks paralelas. Esses comportamentos usam as [primitivas oficiais de worktrees](https://www.onorca.dev/docs/model/worktrees) e [terminais](https://www.onorca.dev/docs/cli/reference).
+
+O launcher carrega explicitamente a extensão oficial `orca-agent-status.ts` instalada pelo Orca para publicar o estado do pai Pi no terminal correspondente. Novas tasks usam a TUI nativa do Pi nesse terminal, com a implementação como prompt inicial. A extensão `harness-task-events` registra o header real da sessão e os eventos nativos de ferramentas no job; ao fim da execução, solicita o encerramento normal do Pi para o pai verificar o resultado. Os filhos nativos continuam usando os recursos do harness. Retomadas conservam a apresentação original da tentativa, inclusive JSON em runtimes antigos. Não abra outra sessão Pi sobre o arquivo de uma task em andamento.
+
+Antes de encerrar uma resposta de trabalho, o host confere as obrigações pendentes da
+mesma sessão: tarefa em andamento, captura sem fechamento das revisões ou integração
+sem finalização global. Ele enfileira uma continuação nativa, sem nova mensagem do
+operador e sem aprovar gates. A mesma obrigação sem progresso recebe somente uma
+continuação, registrada na sessão; nova evidência pode permitir o próximo passo.
+Aborto, erro do provedor e pausa explícita não são reiniciados. Shipping comprovado
+encerra essa continuação: um PR draft não autoriza merge ou publicação automaticamente.
+Esse mecanismo é uma adaptação do ciclo de vida do Pi; o fluxo de revisão e reparo
+continua usando as ferramentas existentes do harness.
+
+O comando CLI segue `ORCA_CLI_COMMAND` ou `orca`; `PI_HARNESS_ORCA_CLI` permite selecionar um executável alternativo do host. Esse valor é um caminho/comando executável, sem argumentos de shell e sem credenciais.
+
+O despacho aceita `task_contexts: [{task_id, content}]` opcional: até 2 KiB UTF-8 de contexto curado por task. O snapshot pertence àquela tarefa e permanece imutável após a admissão; não herda o diário completo nem concede aprovação. Ao terminar, `context_return` devolve o diário da sessão local vinculado ao HEAD e ao resultado verificado. O pai global lê, revalida o que importa e incorpora explicitamente ao próprio `shared_context` usando `harness_memory update`. Não há concatenação automática de diários entre tasks.
+
+## Rails
+
+O launcher carrega as extensões numa ordem fixa (`core/pi/bin/pi-harness.mjs`). Hooks `tool_call` do Pi rodam na ordem de carga e o **primeiro `block` vence**, por isso `harness-policy` vem primeiro e a UI vem por último. Cada linha abaixo é uma negação real, com a mensagem idêntica à da lane OpenCode:
+
+| Extensão | O que nega |
+| --- | --- |
+| `harness-policy` | Leitura ou comando sobre caminho com segredo (`.env*`, `.dev.vars`, `~/.ssh`, `~/.aws`), comando destrutivo e mutação direta de caminho do harness (`.pi`, `.codex`, `.agents`). Em LIGHT/FULL, a mão designada escreve e edita dentro do escopo; o pai local verifica e cria os commits seletivos da task, enquanto o pai global apenas observa, despacha e integra o SHA validado. Grava recibo de auditoria de bash/write/subagent. |
+| `harness-dispatch` | Delegação para role não canônica, role sombreada por `.pi/agents/` do projeto, `run_in_background`, ou acima do limite de turnos. |
+| `harness-memory` | Herança automática de diário para filhos, atualização de contexto fora da sessão, harvest antes de aprovação final/retrabalho, shipping sem harvest persistido e limpeza antes da entrega. O patch exato de memória preserva aprovações finais; produto, spec/plano e parecer negativo novo não são dispensados. O pai recebe memória durável e o próprio `shared_context.md` em uma mensagem temporária limitada e substituível; só a ferramenta grava o diário. |
+| `harness-entry-gate` | Rails de bash de entrega (branch errada, zero commits, re-gate pendente, captura não verificada, `gh pr merge` sem evidência de CI, `harness:ready` sem pipeline fechado) e rails de despacho (cerimônia, fidelidade, re-gate). Reivindica o dispatch-record exato da mão que escreve e liga a sessão filha ao papel despachado. |
+| `harness-plan-gate` | Despacho de plan-reviewer/test-author/executor/sniper sem plano estável válido, e args de dispatch que divergem do marcador `HARNESS_TASK_CONTEXT` do brief. |
+| `harness-plan-write-gate` | Escrita de `gate-state.json`/`triage.json`, de qualquer JSON sob `.pi/harness/state/`, dos scripts marcadores e do tooling congelado; escrita do plano canônico por quem não é `harness-planner` em despacho; escrita fora do `scope_paths` da tarefa; e mutação literal do estado/plano por Bash. |
+| `harness-marker` | Carimbo de marcador sem autorização, clonado, com replay ou com identidade divergente do dispatch-record. O `final-review` exige captura válida para cada tarefa do plano canônico atual. |
+| `harness-task-run` | Em um pai local, chamada de cerimônia global, sibling task, harvest, shipping ou integração; mantém toda mão e todo marcador presos à task concedida. |
+| `harness-classify` | `classify` chamado de dentro de uma sessão filha. |
+| `harness-lavish-gate` | `lavish-axi share` (publica o mockup num host de terceiros) e `lavish-axi setup hooks` (instala hook que compete com o do harness). |
+
+`run_hand` está propositalmente desabilitado: ele iniciava outro processo sem a identidade in-process que liga uma filha ao dispatch atual. A cerimônia usa somente o `subagent` nativo, cuja identidade é capturada no evento de criação da sessão filha.
+
+Nunca bloqueiam, só observam ou injetam contexto: `harness-obs`, `harness-idle-nudge`, `harness-reinject-state`, `harness-version-check`, `harness-context-files` (reintroduz `AGENTS.md`/`CLAUDE.md` do projeto, já que o launcher desliga a descoberta nativa) e `harness-plan-tracker` (UI).
+
+Autoridade do plano canônico: no OpenCode ela vem do SDK (`session.agent === 'planner'`). O `SessionHeader` do Pi não carrega o nome do agente, então a lane grava a identidade da filha em `.pi/harness/state/<pai>/child-identity/` no evento `subagents:child:session-created` do pi-subagents, e o gate lê dali. O wrapper vincula cada chamada à filha exata antes de ligar suas extensões. Um binding ausente ou divergente interrompe a criação; três filhos podem terminar fora de ordem sem trocar papéis ou recibos.
+
+## Revisão de testes
+
+`harness-test-reviewer` avalia somente se os testes representam a tarefa aprovada,
+as fixtures estabelecem as precondições e a evidência executável exigida é suficiente.
+Retorna parecer curto e achados concretos, com `Verdict: APPROVE|REVISE|BLOCKED`.
+O pai local corrige o necessário, revalida as linhas afetadas e encerra ao aprovar.
+Compliance continua responsável pela implementação e pela entrega final.
+
+O corte é o pré-freeze do Claude Code: não há ledger obrigatório por rodada,
+taxonomia de achados ou reconstrução histórica de Git pelo reviewer. Os olhos podem
+ler qualquer código, teste, documentação ou evidência relevante do projeto; os paths
+do brief são ponto de partida, não limite de leitura. Segredos e credenciais ficam protegidos.
+
+O objetivo é o RED fiel ao comportamento aprovado, não uma contraprova por decisão
+interna nem uma matriz exaustiva de alternativas. Verifique o contrato real no ponto
+observável (por exemplo, o JSON da rota, não o código de uma exceção interna).
+Correções reabrem apenas falhas e evidências afetadas. Uma evidência ausente pede
+o artefato legível, não outro autor de testes.
+
+Os briefs recebem automaticamente paths absolutos de snapshot Git, diff e índice
+de saídas de testes/tipagem. O pacote é transporte, não novo gate: indisponibilidade
+é informada e a evidência original continua utilizável. Saídas anteriores explicitamente
+citadas mantêm seus metadados; commit ou mudança de arquivos não as transforma
+silenciosamente em evidência atual.
+
+Se só o teste estava errado e o produto já está correto, faça o commit seletivo do
+produto e `capture-verified` com árvore limpa **antes do primeiro autor corretivo**.
+A saída desse marker registra a baseline observada pelo host. Autor/reviewer podem
+corrigir os testes em várias rodadas, seguidas de freeze/capture e olhos atuais,
+sem executor cosmético. A integração verifica que desde aquela baseline só mudaram
+os testes/fixtures travados. Sessões antigas sem essa observação não ganham a prova
+retroativamente; o fluxo tradicional de execução continua disponível.
+
+## Revisores em paralelo
+
+Olhos de implementação e finais exigem produto commitado antes do despacho.
+`harness_reviews` informa `preparation` com os paths staged, unstaged ou untracked
+pendentes; a revisão de testes continua antes do freeze. Se uma dependente for
+bloqueada por captura do último executor/sniper, valide seu record e use
+`mark(action="capture-verified", task_id="…")`: o host aceita o SHA ancestral do
+produtor mesmo após um commit posterior. Isso preserva olhos ainda válidos e evita
+repetir fidelidade para resolver somente a captura. Alterações posteriores em HEAD,
+index, arquivos, plano ou spec continuam invalidando seus recibos de revisão.
+
+O harness inicia com até três revisores em paralelo. Para consultar ou alterar o
+limite, use `.pi/harness/runtime/harness.json` antes de iniciar a run:
+
+```json
+{ "maxParallelEyes": 3 }
+```
+
+O padrão é `3` revisores em paralelo; os valores válidos são `1`, `2` e `3`. Use `1` para ativar o fallback serial.
+Configuração inválida bloqueia a inicialização. O limite é do harness e não substitui
+`maxConcurrent` do plugin, que governa trabalhos em background.
+Na instalação nativa com `pi install`, o mesmo arquivo fica no diretório de dados
+selecionado pelo Pi (`getAgentDir()`), junto de `agents/`. A ponte prepara o cache
+fixado na primeira carga quando necessário; não usa dependências do projeto como fallback.
+
+Somente `harness-adversary`, `harness-compliance` e `harness-security`, em revisão de
+implementação por tarefa ou final, podem rodar juntos. Os filhos têm sessões e contextos
+separados, mas compartilham a worktree, o processo, RAM e quota do provider. O pai aguarda
+todos os despachados antes de corrigir, testar, fazer staging/commit ou atualizar gates.
+Escrita, autoria de testes, test-fidelity, planejamento, revisão de spec e entrega
+continuam seriais. As dependências e evidências da própria tarefa continuam obrigatórias.
+Antes do primeiro prompt de cada filho, a ponte confere o carregamento dos bloqueios
+de ferramentas, de entrada e de escrita, além das skills do harness. Falha de carga
+interrompe aquele filho. Os revisores só podem usar `read`, `grep`, `find` e `ls`.
+Extensões e skills adicionais configuradas pelo operador são preservadas. A atualização
+substitui somente caminhos registrados como gerenciados pelo harness; esses extras
+continuam sendo código confiado pelo operador no mesmo processo.
+
+Cada revisão é vinculada a HEAD, index, arquivos da worktree e plano/spec canônicos.
+Uma resposta interrompida, malformada, com pergunta pendente ou com achados não aprova um
+gate. O host preserva recibos saudáveis de irmãos. `harness_reviews` consulta a sessão
+atual. Na fase task, lista `required`, `available`, `accepted` e `missing`: adversary é
+obrigatório; compliance e security de implementação são opcionais até serem despachados.
+Depois de qualquer despacho desses olhos, inclusive interrompido ou REVISE, a task exige
+um recibo atual e saudável daquele papel antes de integrar. `available` não torna todos
+os papéis obrigatórios. Depois da primeira rodada, somente `missing` deve ser despachado.
+Um papel aceito cuja obrigação ou trigger explícito foi materialmente afetado pode ser
+movido para `missing` na consulta task com `affected_roles` e `affected_reason`; um HEAD
+novo sozinho não justifica repetir os irmãos. O entry-gate recusa o redispatch de papel
+que a consulta atual preservou em `accepted`. Na fase final, a consulta lista `accepted` e `missing`.
+Após retomada, despache os olhos aplicáveis pendentes. Na fase final, mudar o conteúdo
+invalida a evidência anterior; na task, vale a preservação seletiva descrita acima. O plano torna security final
+obrigatória com `final_review.security: true`; adversary e compliance são sempre exigidos.
+
+A fila é simples e vive na sessão; os recibos existentes são a autoridade de retomada.
+Consultas nativas e as cinco ferramentas consultivas do planner (`harness_complexity`,
+`harness_plan_analysis`, `mv_recall`, `mv_get_note`, `mp_retrieve`) não adquirem lease de
+escrita e podem continuar durante outra consulta ou revisão. Isso não altera os papéis
+autorizados a usá-las nem libera o adaptador MCP geral ou shell como consulta.
+Cancelar o pai fecha a fila, aborta os filhos e aguarda sua execução efetiva terminar.
+Uma morte forçada continua sujeita ao lock e à recuperação do launcher descritos acima.
+A captura inicial não suporta submódulos: ela bloqueia explicitamente para não aprovar
+conteúdo interno que não foi capturado. Repositórios Git aninhados não rastreados também
+precisam ser ignorados no Git ou movidos para fora da árvore revisada; o erro identifica
+o caminho. Mudança externa que é restaurada entre capturas
+não é detectável por esse mecanismo; ele não é isolamento de sistema operacional.
+
+Concorrência pode reduzir espera do provider, mas aumenta RAM ativa e disputa CPU/quota.
+Se houver contenção entre os olhos, reduza para `2` ou ative o fallback `1`. A
+concorrência de implementações é separada: cada task usa outro processo e worktree,
+enquanto cada processo mantém seu próprio limite de revisores.
+
+## Limites
+
+`harness-*` preserva os papéis do harness. Dentro de cada pai local, mãos e fases globais continuam exclusivas; somente os três revisores de implementação e revisão final podem compartilhar o limite configurado. O gate não aceita role do projeto com o mesmo nome. Isso é controle de workflow. Pi roda com as permissões do usuário que o iniciou: **não é sandbox de sistema** e não isola processo, rede nem credenciais. Os rails são determinísticos e best-effort sobre nome de ferramenta e caminho: comando ofuscado e caminho construído em runtime estão fora do alcance deles.
+
+## Modelo
+
+O launcher não injeta provedor nem `--model`. O default vem de `core/pi/runtime/settings.json`, materializado em `.pi/harness/runtime/settings.json` na primeira execução, e aponta para `openai-codex/*` (assinatura Codex do operador). As mãos são restritas pelo rail de dispatch à rota canônica `openai-codex/*`.
+
+## Rota de modelos
+
+O orquestrador usa Terra/high como padrão no runtime materializado, inclusive quando
+o Pi ignora recursos de projeto não confiável. Preferências explícitas usam a
+precedência nativa do Pi; o harness não contorna trust. O rail mantém planner
+Sol/high, plan-reviewer Astra/high, adversary Sol/medium, security Sol padrão,
+compliance Terra/high, test-reviewer Luna/xhigh e shipper/harvester Luna/high.
+Test-author usa Terra/high para low/medium e Sol/high para high/max legado,
+sempre pela task canônica; complexity omitida é herdada, divergência é rejeitada.
+Executor/sniper mantêm low Luna/high, medium Terra/medium, high/max Terra/xhigh.
+O transporte mantém limite de inatividade de 15 minutos por chamada de modelo.
+
+Sessões novas usam temporariamente `openai-economy-terra` por padrão: pais global e
+local em Terra 5.6/medium; executor/sniper low em Luna 6/high, medium em Terra
+5.6/medium e high/max em Terra 5.6/xhigh. Planner, suporte, autor de testes e
+avaliações usam Sol 6.1; plan-reviewer usa Astra 6/high; harvester e shipper
+continuam em Luna 6/high. O perfil usa a autenticação Codex do operador.
+O perfil histórico `openai-economy` mantém Luna nos dois pais; seus snapshots
+não são reescritos. A seleção de recuperação continua única por sessão.
+
+O perfil explícito `verboo-orchestration-deepseek` continua disponível. Nele,
+DeepSeek V4.1 Flash orquestra os pais global e local; executor, sniper e
+test-author usam DeepSeek em low/medium/high/max. `max` permanece somente como
+fallback defensivo para planos legados; o planner deve decompor a task antes da
+admissão. Os olhos continuam no Codex. `trial-hands-deepseek` mantém os pais no
+Codex e move executor, sniper e test-author integralmente para DeepSeek V4.1 Flash; planner,
+test-reviewer e demais olhos continuam no Codex. `trial-hands-glm` é o braço
+explícito somente-GLM. `trial-orchestration-deepseek` também move os pais global
+e local para DeepSeek, ou eles podem ser escolhidos separadamente com
+`--harness-global-parent deepseek` e `--harness-local-parent deepseek`.
+
+```bash
+# inspeção offline, sem credencial ou inferência
+pi-harness --harness-profile-inspect --harness-profile trial-hands-deepseek
+
+# sessão nova no default OpenAI economy
+pi-harness
+
+# rollback explícito para uma sessão nova totalmente Codex
+pi-harness --harness-profile baseline
+```
+
+Toda sessão nova grava um snapshot imutável de rota em
+`.pi/harness/state/model-profiles/<session-id>.json`. Retomada usa somente
+`--harness-resume <session-id>` e recusa overrides comuns de perfil. Para uma
+recuperação autorizada pelo operador após perda de cota, use
+`--harness-resume <session-id> --harness-recovery-profile openai-economy-terra`.
+O launcher valida o plano contra o snapshot original e grava uma seleção de
+rotas separada, vinculada ao hash original. Próximas retomadas reutilizam essa
+seleção; o snapshot original, plano, grants e recibos permanecem intactos.
+A retomada continua exigindo o lock exclusivo e o preflight da sessão exata.
+Essa troca altera despachos futuros e não concede aprovação de implementação.
+O orçamento opcional
+é metadado de auditoria; não é um teto local, e o painel Ollama continua sendo a
+autoridade externa de créditos. Para rollback, inicie sessões novas com
+`--harness-profile baseline`; sessões, worktrees e evidências anteriores permanecem.
+Perfis novos limitam DeepSeek e GLM no Pi a 262.144 tokens para antecipar a
+compactação. Sessões admitidas antes dessa mudança preservam o limite de 1M no
+snapshot e na retomada exata; a atualização do vendor não altera uma sessão ativa.
+
+Planner e plan-reviewer recebem `harness_complexity`, usando diretamente a lógica
+do scorer do Claude Code. A tool recebe o `path` de um arquivo existente e o host
+lê seu conteúdo; não aceita source inline, pseudocódigo ou resumo. O resultado é
+a complexidade do arquivo, uma aproximação para julgar a mudança da task.
+`should_split` é consultivo e não muda o schema do plano.
+`mv_recall` e `mv_get_note` consultam os métodos homônimos do MV; `mp_retrieve`
+constrói somente chamadas de leitura para o `code` do MP. A integração usa o
+`pi-mcp-adapter` instalado e configurado pelo operador em `~/.pi/agent`; não
+instala MCP nem copia credenciais. Ausência, falha ou timeout permitem continuar.
+Plan-reviewer usa essas lentes somente na revisão INITIAL, sem redescoberta em REVISE.
+
+## Fornecedor DeepSeek: Ollama ou Verboo
+
+Para escolher Ollama neste host, configure
+`~/.config/claude-harness/providers.json` com `{"deepseek":"ollama"}`;
+`{"deepseek":"verboo"}` seleciona Verboo explicitamente. A escolha afeta somente pais novos: sessões retomadas e filhos
+conservam seus snapshots admitidos. Para o padrão temporário OpenAI, use
+`{"model_profile":"openai-economy-terra"}` no mesmo arquivo; essa preferência prevalece
+sobre `deepseek`. Um `--harness-profile` explícito prevalece sobre o host.
+O mesmo harness atende ambos os fornecedores; não há uma distribuição separada.
+
+Para usar DeepSeek V4.1 Flash no endpoint Verboo nos pais e em todas as mãos,
+selecione `--harness-profile verboo-orchestration-deepseek`. Os olhos de revisão
+preservam as rotas Codex. O perfil fica fixado na sessão e é herdado pelas tasks.
+Configure `VERBOO_API_KEY` no ambiente do host ou uma credencial Pi do tipo
+`api_key` para o provider `verboo` em `~/.pi/agent/auth.json` (permissão 0600).
+Nunca grave a chave no projeto. Uma task lançada pelo Orca pode ler a mesma
+credencial do host sem transportar o segredo no comando ou no job JSON.
+
+O provider anuncia contexto de 1.048.576 tokens. Seus custos locais são zero por
+se tratar de assinatura; esse valor não representa o saldo gratuito nem uma
+confirmação de ausência de limites contratuais. A API mantém seus limites de
+concorrência e RPM. O cliente precisa respeitar `Retry-After` ao receber 429;
+não retome automaticamente uma resposta parcialmente transmitida.
+
+Nos runtimes Pi 0.87.1, 0.99.1, 1.0.2 e 1.2.0, o retry do provider foi validado em fixture
+offline para honrar `Retry-After`. O bootstrap de sessões admitidas Verboo
+usa o transporte nativo do SDK com até 30 novas tentativas HTTP e máximo de
+60 segundos por espera indicada pelo servidor, sem modificar settings ou
+providers Ollama/Codex.
+Overrides explícitos de retry continuam prevalecendo. A política equivalente
+do SDK é:
+
+```json
+{ "retry": { "provider": { "maxRetries": 30, "maxRetryDelayMs": 60000 } } }
+```
+
+Esse orçamento mantém a mesma inferência aberta durante erros temporários antes
+do stream, sem reiniciar sessão, task, ferramentas ou efeitos externos. Uma
+sequência persistente encerra após no máximo 31 requests por invocação do
+adaptador. O backoff nativo sem `Retry-After` acumula aproximadamente três minutos
+de espera; latência, fila e instruções do servidor podem ampliar esse tempo.
+O retry de conversa do Pi continua com seu próprio limite e pode chamar o
+adaptador novamente; portanto 31 não é o limite de uma tarefa inteira. Não há
+loop adicional de retomada, mudança automática de provider nem garantia de
+recuperação de uma queda arbitrariamente longa. Cancelamento interrompe a espera;
+400/401/402/403 não são repetidos normalmente. Streams parcialmente entregues
+não recebem replay adicional pelo transporte. Limites explícitos, inclusive
+`maxRetries: 0`, continuam prevalecendo.
+
+O retry externo de conversa do Pi não substitui essa configuração: seu backoff
+padrão pode terminar antes do reset de RPM. A retomada com
+`--harness-resume <session-id>` também aceita uma descoberta classificada ainda
+sem spec, desde que não haja artefatos ou evidências posteriores contraditórios;
+essa retomada preserva a conversa e não aprova spec, plano ou implementação.
+
+Para medir tentativas HTTP sem gravar prompts, respostas ou credenciais, crie
+`~/.config/claude-harness/provider-tracing.json` no host com
+`{"verboo":{"directory":"/caminho/absoluto/para/traces"}}`. Somente lançamentos
+Verboo ativam o preload. O arquivo por processo registra início, headers de
+limite/status, primeiro byte e término de stream; isso permite distinguir uma
+chamada lógica do agente das tentativas HTTP do SDK. Processos já iniciados
+mantêm a instrumentação carregada. A captura de metadados é opcional e
+independente do controle de admissão. `max_local_concurrency` no perfil é
+metadado; a proteção efetiva abaixo conta cada tentativa HTTP, inclusive os
+retries internos do SDK, sem reexecutar ferramentas.
+
+Novos lançamentos Verboo admitem tentativas em uma fila única neste host Linux,
+com dois requests ativos por padrão e no máximo 38 admissões em uma
+janela móvel de 60 segundos, incluindo retries HTTP. Pais e filhos compartilham
+um coordenador local por socket Unix privado; ele recebe apenas a conexão de
+admissão, sem prompts ou chaves, e encerra após cinco minutos sem trabalho.
+O slot dura até o fim/cancelamento da resposta, não durante ferramentas locais.
+Cancelar a espera ou encerrar o processo libera a conexão; perder o coordenador
+aborta o transporte em andamento. A fila tem até 128 esperas, com prazo de
+15 minutos, e falha explicitamente quando não consegue admitir uma tentativa.
+
+Essa proteção afeta somente o endpoint Verboo e não modifica os
+perfis de modelo. Processos já iniciados e clientes externos ao Pi não entram
+automaticamente na fila. O orçamento é compartilhado neste host; usar a mesma
+conta em outro host exige considerar também suas chamadas. Um override explícito
+`~/.config/claude-harness/provider-request-control.json` com `{"verboo":false}`
+desativa o controle em novos lançamentos; o padrão Verboo mantém a proteção ativa.
+
+O mesmo arquivo aceita limites explícitos do host:
+
+```json
+{"verboo":{"enabled":true,"maxConcurrent":2,"taskTimeoutMs":21600000}}
+```
+
+`maxConcurrent` aceita 1 a 6 e deve corresponder à concorrência contratada.
+Mantenha 2 no plano atual; configurar 4 ou 6 não contrata o upgrade.
+O coordenador lê os slots ao iniciar: para aplicar uma mudança, deixe a fila
+drenar e o processo encerrar após cinco minutos ocioso, antes dos novos lançamentos.
+O limite de 38 admissões/minuto permanece independente dos slots.
+Tarefas Verboo têm prazo finito de seis horas por lançamento, incluindo ferramentas
+e espera; `taskTimeoutMs` aceita de um minuto a 24 horas. Outros fornecedores
+mantêm duas horas. Um timeout preserva a tentativa para retomada explícita pelo
+fluxo existente; não há loop novo de retomada automática.
+
+Para projetos Vitest com layout `test/`, o comando focal
+`node .pi/harness/bin/pi-verify.mjs --pool test/exemplo.test.ts` executa o runner
+instalado diretamente. A opção `--node test/node/exemplo.test.ts` exige
+`vitest.config.node.ts`. Use somente quando essas configurações correspondem ao
+projeto e preserve seu setup obrigatório. O helper não instala dependências,
+preserva saída e exit code e permite a captura automática de evidências; a suite
+agregada continua no gate final. Pais de task recusam `git commit --amend` para
+preservar os SHAs de produtores já capturados; correções usam commits seletivos novos.
+O runtime usa tema `dark` por padrão e preserva um tema explicitamente configurado.
+
+Quando só restam tasks em execução, use `harness_tasks` com `action="wait"`
+e, opcionalmente, `task_id`, sem `wait_seconds`. A espera ocorre no host e não
+gera novas inferências. `wait_seconds` pertence somente à consulta `status`;
+repetir essa consulta retransmite o contexto e ocupa capacidade do provider.
+
+O [estudo de uso com quatro pipelines](../../docs/evaluations/verboo-2026-10-03.html)
+documenta filas, disponibilidade, custo, entregas e as proteções implementadas.
+
+## Runtime Pi 1.0
+
+A distribuição fixa Pi e pi-ai em `1.2.0`, com pi-subagents `23.0.0`,
+compatível com a major 1.0. O cache do runtime continua sendo provisionado
+e verificado pelo init/update; gerações anteriores não são sobrescritas.
+Autenticação compartilhada, retomada exata e validação dos recursos das filhas
+continuam protegidas pelos overlays verificados. O padrão temporário de modelos
+é `openai-economy-terra`; os perfis DeepSeek continuam disponíveis explicitamente.
+
+O Pi 1.0 usa TUI fullscreen por padrão; para manter o scrollback tradicional,
+configure `tuiMode: "regular"` nas configurações do Pi. Subagentes agora expõem
+o orçamento de turnos em `turnBudget` e recebem orçamento novo ao retomar;
+a conclusão da task continua dependendo dos recibos e gates do harness.
+
+Referências: [changelog do Pi](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/CHANGELOG.md)
+e [changelog dos subagentes](https://github.com/gotgenes/pi-packages/blob/main/packages/pi-subagents/CHANGELOG.md).
+
+### Auditoria de recuperação da entrega (Victor #403)
+
+O runtime deve recuperar pendências internas pelos caminhos nativos, sem converter
+um estado histórico em nova obrigação nem exigir que o operador renove uma
+autorização existente. A matriz abaixo registra os caminhos auditados; não é uma
+garantia de ausência de falhas futuras. Estado, diário ou lembrete nunca aprovam
+implementação, testes ou entrega.
+
+| Caminho | Recuperação e limite verificados |
+| --- | --- |
+| Pai encerra com filho ativo | Espera nativa fora do lock; mudança reconciliada acorda o pai sem polling pelo modelo. Pausa/shutdown cancelam a observação. |
+| Reinício após despacho | Autorização de acompanhamento é persistida/restaurada; pausa explícita continua prevalecendo. |
+| Re-gate após merge de reconciliação | Continuação e `harness_reviews` reconhecem a absolvição ancestral que a inspeção nativa já aceita. Não exigir outro marker/olho apenas pelo HEAD novo. |
+| Re-gate sem marker ancestral nem review corrente | Status e despacho permitem atualizar exatamente um review aceito para obter a âncora host-owned exigida pelo marker; irmãos aceitos permanecem protegidos e negativos têm prioridade. |
+| Review negativo, identidade estrangeira ou ancestralidade inválida | Permanecem pendentes; marker anterior não apaga review negativo nem concede captura. |
+| Retorno antigo do diário | `context_return_notice` distingue snapshot consultivo de veredito atual. Confrontar último job, saída bruta e recibos antes de reabrir task. |
+| Timeout/concorrência do runner | Pai pode usar somente `HARNESS_TEST_SHARDS=1..32 npm test`, mantendo o ciclo npm completo. Evidência guarda comando literal; falha posterior em outra quantidade de shards revoga sucesso anterior. |
+| Filtro, env arbitrário ou alteração de lifecycle | Não equivalem à suíte completa; não são admitidos pela exceção de shards. |
+| Commit vazio/documental após testes | Preparação final usa a prova nativa compatível com os inputs da aplicação. Mudanças no runner efetivamente consumido ou no produto exigem nova validação. |
+| Falha de suíte | Focal isolado é diagnóstico, não aprovação agregada. Não repetir suíte inalterada sem causa e recuperação concreta. |
+| Nova implementação/escopo/frozen test | Continuam exigindo contrato aprovado, fidelidade, produtor/captura nativos e olhos aplicáveis. Nenhuma correção desta auditoria amplia paths por prosa. |
+| Provider, processo ou observação indisponível | Abort/erro não vira sucesso. Preservar evidência e informar erro exato; não fabricar recibos ou repetir indefinidamente uma falha inalterada. |
+| Flag antiga de final-review | O encaminhamento para shipping exige recibos finais atuais, incluindo o carry documental nativo; o booleano sozinho não basta. |
+| Harvest/shipping/finalização | Reutilizar apenas recibos compatíveis; entrega não infere autorização de merge, deploy ou release. Pausa e fronteira de entrega concluída continuam sendo paradas válidas. |
+
+Cobertura: `delivery-continuation`, `harness-reviews`, `policy`, `pi-final-checks`,
+`task-coordinator`, `task-receipts`, `harness-entry-gate`, `harness-command-evidence`
+e testes do prompt. A integração do SDK Pi testa continuação com um único prompt
+inicial. Gates de captura e review final mantêm suas validações independentes.
+
+### Auditoria das paradas de Lainny #370 e Victor #412 (2026-10-16)
+
+A investigação confrontou os transcripts nativos dos pais, tentativas dos filhos,
+recibos de integração, árvores Git e logs completos das suítes. Foram encontrados
+os seguintes atritos no harness, com correções na fonte e testes de regressão:
+
+| Atrito confirmado | Correção |
+| --- | --- |
+| Retomada sem delta bloqueada após merge de reconciliação com árvore idêntica | [#1148](https://github.com/orobsonn/claude-harness/pull/1148) preserva a integração selada quando diário, árvore, processos e reviews comprovam que não há nova entrega; mantém o histórico `BLOCKED`. |
+| Resolver conflito exigia reproduzir integralmente cada hunk, inclusive o LF final | [#1148](https://github.com/orobsonn/claude-harness/pull/1148) admite o hash exato do hunk do preview, preservando hash do arquivo, ordem e resolução de todos os conflitos. |
+| Exceção de finalização recusava `gh issue edit` com seleção explícita do mesmo repositório | [#1148](https://github.com/orobsonn/claude-harness/pull/1148) admite `-R`/`--repo` compatíveis, após provar merge da branch, fechamento da issue e identidade do repositório. |
+| Launcher externo copiava testes do harness para o runtime consumidor; Vitest tentava executá-los | [#1150](https://github.com/orobsonn/claude-harness/pull/1150) exclui testes da materialização e remove somente os quatro vazamentos gerados conhecidos, sem esconder arquivos no runner do produto. |
+| Planner precisava reescrever o plano inteiro para ajustar uma obrigação | [#1151](https://github.com/orobsonn/claude-harness/pull/1151) libera `edit` apenas no plano canônico, com a mesma identidade, validação integral e revisão já exigidas para `write`. |
+| Ferramentas consultivas eram tratadas como mutação pelo controle de concorrência | [#1153](https://github.com/orobsonn/claude-harness/pull/1153) classifica as cinco consultas do planner como leitura; não libera shell, MCP geral ou ferramentas desconhecidas. |
+
+Na Victor #412, o runtime instalado também estava atrasado em relação à exceção
+canônica de `HARNESS_TEST_SHARDS=1 npm test`; relançar a mesma sessão com a fonte
+atual admitiu a execução serial sem mudar o lifecycle ou filtrar testes. Retomadas
+externas preservam as tentativas e reconhecem a proveniência histórica conforme
+[#1146](https://github.com/orobsonn/claude-harness/pull/1146).
+
+Nem toda parada era um bloqueio inútil: as revisões encontraram exposição de dados
+excluídos pelo contrato da Lainny e precedência incorreta do erro de seleção congelada
+na Victor. As suítes também expuseram fixture dependente de UTC/BRT e um teste que
+concentrava dezoito requisições no mesmo timeout. Esses casos exigem correção no
+produto ou nos testes consumidores e nova evidência; remover o review, ignorar o
+teste ou editar o estado para marcar sucesso não resolve a causa.

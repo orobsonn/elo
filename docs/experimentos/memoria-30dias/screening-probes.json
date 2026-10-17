@@ -1,0 +1,60 @@
+[
+  {
+    "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+    "status": 200,
+    "success": true,
+    "elapsed_ms": 850,
+    "content": "{\"facts\": [{\"field\": \"spouse_birthday\", \"value\": \"03-12\", \"status\": \"confirmed\", \"source_ids\": [\"m1\"]}]}",
+    "reasoning_chars": 2,
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 100,
+      "completion_tokens": 42,
+      "total_tokens": 142,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 1.7423985004425049
+    },
+    "errors": []
+  },
+  {
+    "model": "@cf/zai-org/glm-4.7-flash",
+    "status": 200,
+    "success": true,
+    "elapsed_ms": 9572,
+    "content": "{\n  \"facts\": [\n    {\n      \"field\": \"spouse_birthday\",\n      \"value\": \"03-12\",\n      \"status\": \"confirmed\",\n      \"source_ids\": [\n        \"m1\"\n      ]\n    }\n  ]\n}",
+    "reasoning_chars": 1889,
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 87,
+      "completion_tokens": 596,
+      "total_tokens": 683,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 22.172900000000002
+    },
+    "errors": []
+  },
+  {
+    "model": "@cf/zai-org/glm-4.7-flash",
+    "thinking_requested": "disabled",
+    "status": 200,
+    "success": true,
+    "elapsed_ms": 11841,
+    "content": null,
+    "reasoning_chars": 2211,
+    "finish_reason": "length",
+    "usage": {
+      "prompt_tokens": 48,
+      "completion_tokens": 600,
+      "total_tokens": 648,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 22.104
+    },
+    "errors": []
+  }
+]

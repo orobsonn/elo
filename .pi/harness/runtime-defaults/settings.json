@@ -1,0 +1,8 @@
+{
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-6.1-sol",
+  "defaultThinkingLevel": "high",
+  "hideThinkingBlock": true,
+  "theme": "dark",
+  "httpIdleTimeoutMs": 900000
+}

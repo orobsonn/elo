@@ -1,0 +1,18 @@
+{
+  "sha256": {
+    "analysis.json": "30a450dcd77661bae39fae69aae2889ef83b0d9977d1fc1c5980eac8b0ca830e",
+    "baseline-development.json": "0cea1d75b1d67c048b69aa14a761921bae90446ccf76910e2f7218977c50043d",
+    "baseline-holdout.json": "0c043b7b1ea7f13bef14ccfa4e59712af40df72e5d12f2b44344ce6d68599b48",
+    "dataset.json": "e3fa8ec98743c941e888adaf6a3fb65d970da29acbe99af19bf2d6db388bfeee",
+    "gate-results.json": "5cdd421856281a885b238ddc65462709115b31fbbc4c3ae50c6def6e753d179a",
+    "mutation-stress.json": "03af3a1b32e08f5bc25d27ecc4d77a887b453327288772552d62cbe4ede96f61",
+    "protocol.json": "53698380367fc1369d49eaf3c8e05c3e609b0d72975b30b83dd2df5846fbfed9",
+    "repeat-results.json": "b0c398def85a45ff0048029bc70105d93ca046e56191215440b93b092ccd3d14",
+    "schema-compatibility-probe.json": "b9bb3534add69d93309e284cd1a9a3739267fe9e5629d2bda9aa1db57be1f31a",
+    "schema-results.json": "fc11b929c6da5bf1cf7d647416aaa475c6c8ea5c3ce6bb5d11cfd3ea3e4c1b13",
+    "schema-targeted-results.json": "e7c3cfdf4f2279876140dfc60a6976fe2780b0c7bc970062eb03f9996ba77715",
+    "screening-probes.json": "ee62cf954e2f74883a50433c129a65d24909508b38f683f2652fce50c640a412",
+    "verification-results.json": "e7cb9b825c7458adcf3d7238c604c761b43aa7b216a477371ce11a0012240309",
+    "workload-projection.json": "68580df55c58e9b0d7b2b35982b781751d457ff2c22353a528e519947bd43cc2"
+  }
+}

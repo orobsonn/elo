@@ -1,0 +1,254 @@
+[
+  {
+    "contact_id": "ct_9r3w6d",
+    "split": "holdout",
+    "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+    "stage": "baseline",
+    "success": true,
+    "status": 200,
+    "elapsed_ms": 1343,
+    "content": "{\"facts\":[{\"contact_id\":\"ct_9r3w6d\",\"field\":\"meeting_date\",\"value\":\"2026-10-17\",\"status\":\"confirmed\",\"source_ids\":[\"c-m08\"]},{\"contact_id\":\"ct_9r3w6d\",\"field\":\"followup_date\",\"value\":\"2026-10-20\",\"status\":\"confirmed\",\"source_ids\":[\"c-m09\"]}]}",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 981,
+      "completion_tokens": 94,
+      "total_tokens": 1075,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 7.40134334564209
+    },
+    "errors": []
+  },
+  {
+    "contact_id": "ct_9r3w6d",
+    "split": "holdout",
+    "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "stage": "baseline",
+    "success": true,
+    "status": 200,
+    "elapsed_ms": 3573,
+    "content": "{\"facts\": [{\"contact_id\": \"ct_9r3w6d\", \"field\": \"meeting_date\", \"value\": \"2026-10-17\", \"status\": \"confirmed\", \"source_ids\": [\"c-m08\"]}, {\"contact_id\": \"ct_9r3w6d\", \"field\": \"followup_date\", \"value\": \"2026-10-20\", \"status\": \"confirmed\", \"source_ids\": [\"c-m09\"]}]}",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 897,
+      "completion_tokens": 102,
+      "total_tokens": 999,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 44.81104278564453
+    },
+    "errors": []
+  },
+  {
+    "contact_id": "ct_2h6p8z",
+    "split": "holdout",
+    "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+    "stage": "baseline",
+    "success": true,
+    "status": 200,
+    "elapsed_ms": 1613,
+    "content": "{\"facts\":[{\"contact_id\":\"ct_2h6p8z\",\"field\":\"has_children\",\"value\":true,\"status\":\"confirmed\",\"source_ids\":[\"d-m03\"]},{\"contact_id\":\"ct_2h6p8z\",\"field\":\"child_birthday\",\"value\":\"filha:05-03\",\"status\":\"confirmed\",\"source_ids\":[\"d-m05\"]},{\"contact_id\":\"ct_2h6p8z\",\"field\":\"client_birthday\",\"value\":\"02-06\",\"status\":\"pending\",\"source_ids\":[\"d-m07\"]}]}",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 969,
+      "completion_tokens": 123,
+      "total_tokens": 1092,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 8.229616165161133
+    },
+    "errors": []
+  },
+  {
+    "contact_id": "ct_2h6p8z",
+    "split": "holdout",
+    "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "stage": "baseline",
+    "success": true,
+    "status": 200,
+    "elapsed_ms": 5408,
+    "content": "{\"facts\": [{\"contact_id\": \"ct_2h6p8z\", \"field\": \"has_children\", \"value\": true, \"status\": \"confirmed\", \"source_ids\": [\"d-m03\"]}, {\"contact_id\": \"ct_2h6p8z\", \"field\": \"child_birthday\", \"value\": \"filha:05-03\", \"status\": \"confirmed\", \"source_ids\": [\"d-m05\"]}, {\"contact_id\": \"ct_2h6p8z\", \"field\": \"client_birthday\", \"value\": \"02-06 ou 02-07\", \"status\": \"pending\", \"source_ids\": [\"d-m07\"]}]}",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 892,
+      "completion_tokens": 147,
+      "total_tokens": 1039,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 53.893943786621094
+    },
+    "errors": []
+  },
+  {
+    "contact_id": "ct_5m1j7s",
+    "split": "holdout",
+    "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+    "stage": "baseline",
+    "success": true,
+    "status": 200,
+    "elapsed_ms": 528,
+    "content": "{\"facts\":[{\"contact_id\":\"ct_5m1j7s\",\"field\":\"preferred_channel\",\"value\":\"call\",\"status\":\"confirmed\",\"source_ids\":[\"e-m07\"]}]}",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 1017,
+      "completion_tokens": 41,
+      "total_tokens": 1058,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 5.952664852142334
+    },
+    "errors": []
+  },
+  {
+    "contact_id": "ct_5m1j7s",
+    "split": "holdout",
+    "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "stage": "baseline",
+    "success": true,
+    "status": 200,
+    "elapsed_ms": 1685,
+    "content": "{\"facts':[{\": {\"contact_id\": \"ct_5m1j7s\", \"field\": \"preferred_channel\", \"value\": \"call\", \"status\": \"confirmed\", \"source_ids\": [\"e-m07\"]}}",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 940,
+      "completion_tokens": 49,
+      "total_tokens": 989,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 35.10307312011719
+    },
+    "errors": []
+  },
+  {
+    "contact_id": "ct_8f4t2c",
+    "split": "holdout",
+    "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+    "stage": "baseline",
+    "success": true,
+    "status": 200,
+    "elapsed_ms": 648,
+    "content": "{\"facts\":[{\"contact_id\":\"ct_8f4t2c\",\"field\":\"relationship_context\",\"value\":\"Não casada.\",\"status\":\"pending\",\"source_ids\":[\"f-m07\"]}]}",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 990,
+      "completion_tokens": 43,
+      "total_tokens": 1033,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 5.888751029968262
+    },
+    "errors": []
+  },
+  {
+    "contact_id": "ct_8f4t2c",
+    "split": "holdout",
+    "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "stage": "baseline",
+    "success": true,
+    "status": 200,
+    "elapsed_ms": 4364,
+    "content": "{\"facts\": [{\"contact_id\": \"ct_8f4t2c\", \"field\": \"relationship_context\", \"value\": \"Me separei. Não sou mais casada.\", \"status\": \"pending\", \"source_ids\": [\"f-m07\"]}, {\"contact_id\": \"ct_8f4t2c\", \"field\": \"followup_date\", \"value\": \"2026-10-19\", \"status\": \"confirmed\", \"source_ids\": [\"f-m09\"]}]}",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 908,
+      "completion_tokens": 106,
+      "total_tokens": 1014,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 45.923606872558594
+    },
+    "errors": []
+  },
+  {
+    "contact_id": "ct_3a9u6e",
+    "split": "holdout",
+    "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+    "stage": "baseline",
+    "success": true,
+    "status": 200,
+    "elapsed_ms": 327,
+    "content": "{\"facts\":[]}",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 691,
+      "completion_tokens": 8,
+      "total_tokens": 699,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 3.4393839836120605
+    },
+    "errors": []
+  },
+  {
+    "contact_id": "ct_3a9u6e",
+    "split": "holdout",
+    "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "stage": "baseline",
+    "success": true,
+    "status": 200,
+    "elapsed_ms": 968,
+    "content": "{\"facts\": []}",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 663,
+      "completion_tokens": 6,
+      "total_tokens": 669,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 18.909496307373047
+    },
+    "errors": []
+  },
+  {
+    "contact_id": "ct_6k2y5b",
+    "split": "holdout",
+    "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+    "stage": "baseline",
+    "success": true,
+    "status": 200,
+    "elapsed_ms": 485,
+    "content": "{\"facts\":[]}",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 745,
+      "completion_tokens": 8,
+      "total_tokens": 753,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 3.6891114711761475
+    },
+    "errors": []
+  },
+  {
+    "contact_id": "ct_6k2y5b",
+    "split": "holdout",
+    "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "stage": "baseline",
+    "success": true,
+    "status": 200,
+    "elapsed_ms": 676,
+    "content": "{\"facts\": []}",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 720,
+      "completion_tokens": 6,
+      "total_tokens": 726,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 20.429553985595703
+    },
+    "errors": []
+  }
+]

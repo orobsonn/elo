@@ -1,0 +1,7 @@
+{
+  "window_days": 30,
+  "messages_once": 70,
+  "message_appearances_daily_full_rescan": 945,
+  "repeat_factor": 13.5,
+  "limit": "Counts message appearances only, not tokenizer input, fees or tested incremental extraction quality."
+}
