@@ -43,7 +43,11 @@ interface UpstreamTokens {
   expires_in?: number;
   refresh_expires_in?: number;
 }
-class AuthUnavailable extends Error {}
+class AuthUnavailable extends Error {
+  constructor(readonly safeCode = "auth_indisponivel") {
+    super(safeCode);
+  }
+}
 const FLOW_COOKIE = "__Host-elo-flow";
 const SESSION_COOKIE = "__Host-elo-session";
 const MAX_AUTH_SECONDS = 7 * 24 * 60 * 60;
@@ -403,11 +407,16 @@ async function upstreamTokens(
       redirect: "error",
       signal: AbortSignal.timeout(10000),
     });
-  } catch {
-    throw new AuthUnavailable();
+  } catch (error) {
+    const timeout =
+      error instanceof Error &&
+      ["AbortError", "TimeoutError"].includes(error.name);
+    throw new AuthUnavailable(
+      timeout ? "auth_upstream_timeout" : "auth_upstream_transport",
+    );
   }
   if (response.status >= 500 || response.status === 429)
-    throw new AuthUnavailable();
+    throw new AuthUnavailable(`auth_upstream_http_${response.status}`);
   if (
     !response.ok ||
     Number(response.headers.get("Content-Length") ?? 0) > 32768
@@ -739,6 +748,12 @@ export async function defaultAuthHandler(
       headers: secureHeaders(),
     });
   } catch (error) {
+    if (error instanceof AuthUnavailable) {
+      await env.DB.prepare("UPDATE settings SET last_error=? WHERE id=1")
+        .bind(error.safeCode)
+        .run()
+        .catch(() => {});
+    }
     return responseError(
       error instanceof AuthUnavailable
         ? 503
@@ -759,8 +774,7 @@ type ApiHandler = {
 export function makeOAuth(apiHandler: ApiHandler) {
   // Instance per origin: immutable metadata; no redirect or resource derived from Host.
   let configured:
-    | { origin: string; provider: OAuthProvider<AppEnv> }
-    | undefined;
+    { origin: string; provider: OAuthProvider<AppEnv> } | undefined;
   return {
     async fetch(request: Request, env: AppEnv, ctx: ExecutionContext) {
       try {

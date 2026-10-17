@@ -142,6 +142,45 @@ describe("Access owner boundary", () => {
       ).status,
     ).toBe(503);
   });
+  it.each(["transport", "server"])(
+    "records only safe upstream diagnosis for %s failure",
+    async (failure) => {
+      const f = await start();
+      const privateMarker = "never-log-synthetic-credential";
+      vi.stubGlobal(
+        "fetch",
+        vi.fn(async () => {
+          if (failure === "transport") throw new Error(privateMarker);
+          return new Response(privateMarker, { status: 503 });
+        }),
+      );
+      const r = await defaultAuthHandler(
+        new Request(
+          `${callback}?code=synthetic-code&state=${f.url.searchParams.get("state")}`,
+          { headers: { Cookie: f.cookie } },
+        ),
+        appEnv,
+        ctx,
+      );
+      expect(r.status).toBe(503);
+      expect(await r.text()).not.toContain(privateMarker);
+      const diagnostic = await appEnv.DB.prepare(
+        "SELECT last_error FROM settings WHERE id=1",
+      ).first();
+      expect(diagnostic).toMatchObject({
+        last_error:
+          failure === "transport"
+            ? "auth_upstream_transport"
+            : "auth_upstream_http_503",
+      });
+      expect(JSON.stringify(diagnostic)).not.toContain(privateMarker);
+      expect(
+        await appEnv.DB.prepare(
+          "SELECT value FROM auth_state WHERE key='owner_binding'",
+        ).first(),
+      ).toBeNull();
+    },
+  );
   it("starts upstream login with browser state, nonce and S256 PKCE", async () => {
     const f = await start();
     expect(f.url.pathname).toContain("/authorization");
