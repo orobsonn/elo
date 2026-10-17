@@ -64,3 +64,7 @@ No Free, Cowork apresentou Fazer Upgrade; nenhum plano foi contratado nem job Cl
 ## Retomada às 16h de 17/10
 
 A sessão existente no Chrome permitiu nova leitura manual no Work/GPT-6.1 Sol High: memória e tarefa fictícias preservadas, com uso de Elo indicado pela interface e conferência independente dos dados. A tarefa única continua pausada; não foi localizado resultado agendado nem exposto histórico detalhado pelo cliente. [Evidência e limites](../implementacao/work-retomada-1710.md).
+
+### Tentativa posterior pela interface
+
+O mesmo teste único foi configurado no editor nativo, sem repetição, para 16h15/Fortaleza. Depois o cliente relatou última execução em16h14min59s e estado desabilitado/sem próxima execução; o resultado isolado com MCP continua sem prova, pois a conversa recebeu entradas manuais simultâneas. Preparo/espera/cancelamento foram exercitados separadamente no computador, sem envio. O relato provisório do iPhone não comprovou criação de rascunho. [Detalhes e limites](../implementacao/work-ensaio-unico-interface-1710.md).
