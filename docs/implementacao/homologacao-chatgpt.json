@@ -102,8 +102,7 @@
     "physical mobile validation",
     "scheduled client routine execution",
     "full daily review over real conversations",
-    "positive contact association in production",
-    "new real send through installed plugin before exact human approval"
+    "positive contact association in production"
   ],
   "correction": {
     "tests_workerd_D1": 134,
@@ -150,5 +149,6 @@
     "generated_skill_1_0_3_loaded_and_executed": true,
     "human_pauta_validation": "pending",
     "cron_after_new_import_not_separately_observed": true
-  }
+  },
+  "followup_report": "homologacao-complementar.json"
 }

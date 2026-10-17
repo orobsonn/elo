@@ -72,3 +72,7 @@ Issues [#1](https://github.com/orobsonn/elo/issues/1), [#2](https://github.com/o
 1. Conectar e exercitar Claude. ChatGPT já conectado, com quatro Skills instaladas e ensaio de memória/tarefas; conferir os recortes e limites na [homologação](homologacao-chatgpt.md). Renovação natural Access e revogação pela remoção do plugin ainda exigem prova específica em cada cliente.
 2. Recepção e primeiro envio real autorizado já comprovados, incluindo entrega. Concluir novo approve/envio pelo plugin instalado, preservando destinatário e texto exatos. Revisão diária integral e associação positiva de remetente em produção ainda não foram exercitadas nesta bateria.
 3. Validar no celular, executar rotina Work/Cowork no horário solicitado e fazer piloto com pessoa leiga, incluindo recuperação e “Otimize meu processo”. Nenhuma recorrência criada sem pedido de horário/rotina.
+
+## Complemento de homologação
+
+Em 17/10, [nova rodada sanitizada](homologacao-complementar.md) confirmou envio aprovado à Lainny como entregue e execução real do cron técnico com separação backend/Skill. O teste único do Work não teve execução comprovada e foi pausado; Claude pessoal apresentou criação de conector desabilitada. Issues #1–#4 continuam abertas.
