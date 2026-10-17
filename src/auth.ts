@@ -43,6 +43,11 @@ interface UpstreamTokens {
   expires_in?: number;
   refresh_expires_in?: number;
 }
+class AuthDenied extends Error {
+  constructor(readonly safeCode = "auth_negado") {
+    super(safeCode);
+  }
+}
 class AuthUnavailable extends Error {
   constructor(readonly safeCode = "auth_indisponivel") {
     super(safeCode);
@@ -67,8 +72,7 @@ const unb64 = (s: string) =>
 const random = () => b64(crypto.getRandomValues(new Uint8Array(32)));
 const digest = async (s: string) =>
   b64(new Uint8Array(await crypto.subtle.digest("SHA-256", enc.encode(s))));
-const denied = () =>
-  new Error("Sessão inválida. Conecte novamente pelo Cloudflare Access.");
+const denied = () => new AuthDenied();
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 const secureHeaders = () =>
@@ -362,6 +366,25 @@ async function verifyIdToken(
       ...(refresh ? [] : ["nonce"]),
     ],
     maxTokenAge: refresh ? "5m" : "24h",
+  }).catch((error: unknown) => {
+    const e = error as { code?: unknown; claim?: unknown };
+    const claims = [
+      "email_verified",
+      "nonce",
+      "aud",
+      "iss",
+      "exp",
+      "iat",
+      "sub",
+      "email",
+    ];
+    if (
+      e?.code === "ERR_JWT_CLAIM_VALIDATION_FAILED" &&
+      typeof e.claim === "string" &&
+      claims.includes(e.claim)
+    )
+      throw new AuthDenied(`auth_identity_claim_${e.claim}`);
+    throw new AuthDenied("auth_identity_token_invalid");
   });
   if (
     (payload.azp !== undefined && payload.azp !== env.ACCESS_CLIENT_ID) ||
@@ -417,11 +440,10 @@ async function upstreamTokens(
   }
   if (response.status >= 500 || response.status === 429)
     throw new AuthUnavailable(`auth_upstream_http_${response.status}`);
-  if (
-    !response.ok ||
-    Number(response.headers.get("Content-Length") ?? 0) > 32768
-  )
-    throw denied();
+  if (!response.ok)
+    throw new AuthDenied(`auth_upstream_http_${response.status}`);
+  if (Number(response.headers.get("Content-Length") ?? 0) > 32768)
+    throw new AuthDenied("auth_upstream_invalid_response");
   const text = await response.text();
   if (text.length > 32768) throw denied();
   const tokens = JSON.parse(text) as UpstreamTokens;
@@ -748,7 +770,10 @@ export async function defaultAuthHandler(
       headers: secureHeaders(),
     });
   } catch (error) {
-    if (error instanceof AuthUnavailable) {
+    if (
+      error instanceof AuthUnavailable ||
+      (error instanceof AuthDenied && error.safeCode !== "auth_negado")
+    ) {
       await env.DB.prepare("UPDATE settings SET last_error=? WHERE id=1")
         .bind(error.safeCode)
         .run()

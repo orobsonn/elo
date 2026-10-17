@@ -208,6 +208,42 @@ describe("Access owner boundary", () => {
       ).first(),
     ).toBeNull();
   });
+  it("diagnoses a missing verified-email claim without exposing token content", async () => {
+    const r = await finish(await start(), { email_verified: undefined });
+    expect(r.status).toBe(401);
+    expect(
+      await appEnv.DB.prepare(
+        "SELECT last_error FROM settings WHERE id=1",
+      ).first(),
+    ).toMatchObject({ last_error: "auth_identity_claim_email_verified" });
+    expect(
+      await appEnv.DB.prepare(
+        "SELECT value FROM auth_state WHERE key='owner_binding'",
+      ).first(),
+    ).toBeNull();
+  });
+  it("diagnoses an upstream rejection using only its status", async () => {
+    const f = await start();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => new Response("private-upstream-body", { status: 400 })),
+    );
+    const r = await defaultAuthHandler(
+      new Request(
+        `${callback}?code=synthetic-code&state=${f.url.searchParams.get("state")}`,
+        { headers: { Cookie: f.cookie } },
+      ),
+      appEnv,
+      ctx,
+    );
+    expect(r.status).toBe(401);
+    expect(await r.text()).not.toContain("private-upstream-body");
+    expect(
+      await appEnv.DB.prepare(
+        "SELECT last_error FROM settings WHERE id=1",
+      ).first(),
+    ).toMatchObject({ last_error: "auth_upstream_http_400" });
+  });
   it("starts upstream login with browser state, nonce and S256 PKCE", async () => {
     const f = await start();
     expect(f.url.pathname).toContain("/authorization");
