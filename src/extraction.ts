@@ -154,7 +154,7 @@ export async function runExtraction(env: AppEnv, maxJobs = 3) {
     const t = now();
     const j = await sql(
       db,
-      `SELECT s.id,s.contact_id,s.version,s.content,s.occurred_at,s.attempts,c.generation contact_generation,x.data_generation FROM sources s JOIN contacts c ON c.id=s.contact_id CROSS JOIN settings x WHERE x.id=1 AND c.deleted=0 AND s.deleted=0 AND s.content IS NOT NULL AND s.expires_at>? AND s.attempts<3 AND ((s.extract_state='pending' AND s.next_attempt<=?) OR (s.extract_state='processing' AND s.lease_until<=?)) ORDER BY s.seq LIMIT 1`,
+      `SELECT s.id,s.contact_id,s.version,s.content,s.occurred_at,s.attempts,c.generation contact_generation,x.data_generation FROM sources s JOIN contacts c ON c.id=s.contact_id CROSS JOIN settings x WHERE x.id=1 AND c.deleted=0 AND s.deleted=0 AND s.extraction_owner='backend' AND s.content IS NOT NULL AND s.expires_at>? AND s.attempts<3 AND ((s.extract_state='pending' AND s.next_attempt<=?) OR (s.extract_state='processing' AND s.lease_until<=?)) ORDER BY s.seq LIMIT 1`,
       t,
       t,
       t,
@@ -164,7 +164,7 @@ export async function runExtraction(env: AppEnv, maxJobs = 3) {
     const claim = await db.batch([
       sql(
         db,
-        `UPDATE sources SET extract_state='processing',lease=?,lease_until=?,attempts=attempts+1 WHERE id=? AND version=? AND attempts<3 AND deleted=0 AND expires_at>? AND ((extract_state='pending' AND next_attempt<=?) OR (extract_state='processing' AND lease_until<=?)) AND EXISTS(SELECT 1 FROM usage WHERE day=? AND calls<50) AND EXISTS(SELECT 1 FROM contacts WHERE id=? AND deleted=0 AND generation=?)`,
+        `UPDATE sources SET extract_state='processing',lease=?,lease_until=?,attempts=attempts+1 WHERE id=? AND version=? AND extraction_owner='backend' AND attempts<3 AND deleted=0 AND expires_at>? AND ((extract_state='pending' AND next_attempt<=?) OR (extract_state='processing' AND lease_until<=?)) AND EXISTS(SELECT 1 FROM usage WHERE day=? AND calls<50) AND EXISTS(SELECT 1 FROM contacts WHERE id=? AND deleted=0 AND generation=?)`,
         lease,
         t + 90000,
         j.id,
@@ -297,9 +297,12 @@ export async function runExtraction(env: AppEnv, maxJobs = 3) {
         ...taskWrites.map((w) => w.statement),
         sql(
           db,
-          `UPDATE sources SET extract_state='done',lease=NULL,lease_until=NULL,safe_error=NULL WHERE id=? AND ${guard.query}`,
-          j.id,
+          // The CHECK on skill_applied makes a failed final fence abort all
+          // earlier inserts, including expiry crossing the middle of the batch.
+          `UPDATE sources SET skill_applied=CASE WHEN ${guard.query} THEN skill_applied ELSE 2 END,extract_state='done',lease=NULL,lease_until=NULL,safe_error=NULL WHERE id=? AND lease=?`,
           ...guard.params,
+          j.id,
+          lease,
         ),
       ]);
       if (!committed.at(-1)!.meta.changes) {

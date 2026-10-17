@@ -42,15 +42,6 @@ const calendarDay = z
     const d = new Date(v + "T12:00:00Z");
     return !Number.isNaN(+d) && d.toISOString().slice(0, 10) === v;
   });
-export const importSourceSchema = z
-  .object({
-    contact_id: internalId,
-    source_key: z.string().min(1).max(200),
-    occurred_at: z.number().int().min(946684800000),
-    text: z.string().min(1).max(16000),
-    kind: z.enum(["meeting", "note"]),
-  })
-  .strict();
 export const memoryQuerySchema = z
   .object({
     contact_id: internalId,
@@ -81,6 +72,22 @@ export const taskSchema = taskFieldsSchema
     contact_id: internalId,
     source_id: internalId,
     source_version: z.number().int().positive().optional(),
+  })
+  .strict();
+export const importSourceSchema = z
+  .object({
+    contact_id: internalId,
+    source_key: z.string().min(1).max(200),
+    occurred_at: z.number().int().min(946684800000),
+    text: z.string().min(1).max(16000),
+    kind: z.enum(["meeting", "note"]),
+    extraction: z
+      .object({
+        facts: z.array(factSchema).max(12),
+        tasks: z.array(taskFieldsSchema.omit({ state: true }).strict()).max(6),
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 export const taskQuerySchema = z
@@ -168,6 +175,7 @@ export type SourceFence = {
   contact_generation: number;
   data_generation: number;
   lease?: string;
+  skill_apply?: boolean;
 };
 export async function sourceFence(
   db: D1Database,
@@ -196,7 +204,7 @@ export function fenceSQL(
   t = now(),
 ): { query: string; params: (string | number | null)[] } {
   return {
-    query: `EXISTS(SELECT 1 FROM sources fs JOIN contacts fc ON fc.id=fs.contact_id CROSS JOIN settings fx WHERE fx.id=1 AND fs.id=? AND fs.contact_id=? AND fs.version=? AND fc.generation=? AND fx.data_generation=? AND fs.deleted=0 AND fc.deleted=0 AND fs.content IS NOT NULL AND fs.expires_at>MAX(?,CAST((julianday('now')-2440587.5)*86400000 AS INTEGER)) ${f.lease ? "AND fs.lease=? AND fs.extract_state='processing' AND fs.lease_until>?" : ""})`,
+    query: `EXISTS(SELECT 1 FROM sources fs JOIN contacts fc ON fc.id=fs.contact_id CROSS JOIN settings fx WHERE fx.id=1 AND fs.id=? AND fs.contact_id=? AND fs.version=? AND fc.generation=? AND fx.data_generation=? AND fs.deleted=0 AND fc.deleted=0 AND fs.content IS NOT NULL AND fs.expires_at>MAX(?,CAST((julianday('now')-2440587.5)*86400000 AS INTEGER)) ${f.lease ? "AND fs.extraction_owner='backend' AND fs.lease=? AND fs.extract_state='processing' AND fs.lease_until>?" : ""} ${f.skill_apply ? "AND fs.extraction_owner='skill' AND fs.skill_applied=0" : ""})`,
     params: [
       f.source_id,
       f.contact_id,
@@ -277,7 +285,7 @@ export async function importSource(db: D1Database, input: unknown) {
   const expired = p.occurred_at + 30 * DAY <= t;
   await sql(
     db,
-    `INSERT OR IGNORE INTO sources(id,contact_id,dedup_key,kind,occurred_at,received_at,expires_at,content,extract_state) SELECT ?,?,?,?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM contacts WHERE id=? AND deleted=0)`,
+    `INSERT OR IGNORE INTO sources(id,contact_id,dedup_key,kind,occurred_at,received_at,expires_at,content,extract_state,extraction_owner) SELECT ?,?,?,?,?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM contacts WHERE id=? AND deleted=0)`,
     sid,
     p.contact_id,
     key,
@@ -286,18 +294,96 @@ export async function importSource(db: D1Database, input: unknown) {
     t,
     p.occurred_at + 30 * DAY,
     expired ? null : p.text,
-    expired ? "done" : "pending",
+    expired || p.extraction ? "done" : "pending",
+    p.extraction ? "skill" : "backend",
     p.contact_id,
   ).run();
-  const s = await sql(
+  let s = await sql(
     db,
-    "SELECT id source_id,expires_at,content FROM sources WHERE dedup_key=?",
+    "SELECT id source_id,expires_at,content,occurred_at,extraction_owner,skill_applied FROM sources WHERE dedup_key=? AND deleted=0 AND contact_id=?",
     key,
-  ).first<{ source_id: string; expires_at: number; content: string | null }>();
+    p.contact_id,
+  ).first<{
+    source_id: string;
+    expires_at: number;
+    content: string | null;
+    occurred_at: number;
+    extraction_owner: string;
+    skill_applied: number;
+  }>();
   if (!s) throw new SafeError("contato_indisponivel", 404);
+  let available = s.expires_at > now() && s.content !== null;
+  if (p.extraction && s.extraction_owner === "skill" && available) {
+    if (s.content !== p.text || s.occurred_at !== p.occurred_at)
+      throw new SafeError("origem_ja_importada_com_conteudo_diferente", 409);
+    if (!s.skill_applied) {
+      const fence: SourceFence = {
+        ...(await sourceFence(db, p.contact_id, s.source_id)),
+        skill_apply: true,
+      };
+      const facts = await Promise.all(
+        p.extraction.facts.map((f) =>
+          memoryStatement(
+            db,
+            { ...f, contact_id: p.contact_id, source_id: s!.source_id },
+            fence,
+          ),
+        ),
+      );
+      const tasks = await Promise.all(
+        p.extraction.tasks.map((task) =>
+          taskStatement(
+            db,
+            {
+              ...task,
+              contact_id: p.contact_id,
+              source_id: s!.source_id,
+              state: "open",
+            },
+            fence,
+          ),
+        ),
+      );
+      const guard = fenceSQL(fence);
+      try {
+        await db.batch([
+          ...facts.map((w) => w.statement),
+          ...tasks.map((w) => w.statement),
+          sql(
+            db,
+            // 2 violates the CHECK constraint and rolls the whole D1 batch back if
+            // eligibility expires between earlier inserts and this final marker.
+            `UPDATE sources SET skill_applied=CASE WHEN ${guard.query} THEN 1 ELSE 2 END WHERE id=? AND extraction_owner='skill' AND skill_applied=0`,
+            ...guard.params,
+            s.source_id,
+          ),
+        ]);
+      } catch {
+        throw new SafeError("aplicacao_nao_concluida", 409);
+      }
+      // A concurrent application may have won; a stale/expired fence must not claim success.
+      s = await sql(
+        db,
+        "SELECT id source_id,expires_at,content,occurred_at,extraction_owner,skill_applied FROM sources WHERE id=? AND contact_id=? AND deleted=0 AND EXISTS(SELECT 1 FROM contacts WHERE id=? AND deleted=0)",
+        s.source_id,
+        p.contact_id,
+        p.contact_id,
+      ).first<typeof s>();
+      if (!s || !s.skill_applied) throw new SafeError("fonte_alterada", 409);
+      available = s.expires_at > now() && s.content !== null;
+    }
+  }
   return {
     source_id: s.source_id,
-    source_available: s.expires_at > t && s.content !== null,
+    source_available: available,
+    extraction_owner: s.extraction_owner,
+    application_state: !available
+      ? "unavailable"
+      : s.extraction_owner === "backend"
+        ? "automatic"
+        : s.skill_applied
+          ? "applied"
+          : "pending",
   };
 }
 export async function getMemory(db: D1Database, input: unknown) {
@@ -858,7 +944,7 @@ export function toolDefinitions(
   return [
     [
       "source_import",
-      "Importa reunião/anotações autorizadas por chave estável; reimportação é idempotente. Texto pode conter dados pessoais.",
+      "Importa reunião/anotações por chave estável. Com extraction aplica fatos/tarefas uma vez em lote atômico pela Skill; sem extraction processa no backend. Replay preserva o produtor original. Texto pode conter dados pessoais.",
       importSourceSchema,
       (p) => importSource(db, p),
       false,
