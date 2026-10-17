@@ -1,0 +1,24 @@
+{
+  "at": "2026-10-17T14:01:20.429Z",
+  "origin": "https://16fe1435-elo.robsonlins.workers.dev",
+  "health": {
+    "ok": true,
+    "version": "16fe1435-291e-428b-aab3-8feb98d3023b",
+    "commit": "5f5103d",
+    "database": true
+  },
+  "blocked": [
+    {
+      "path": "/mcp",
+      "status": 403
+    },
+    {
+      "path": "/setup",
+      "status": 403
+    },
+    {
+      "path": "/authorize",
+      "status": 403
+    }
+  ]
+}

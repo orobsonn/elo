@@ -4,6 +4,14 @@ Sua instalação pessoal está em **https://elo.robsonlins.workers.dev**. Para c
 
 Este guia acompanha a instalação assistida. Não comprova uma instalação concluída. A URL publicada, o ponto de entrada do instalador e a versão efetiva devem vir da evidência de deploy da própria instalação; não há link fictício de botão neste guia. Use os [ensaios de aceite](ensaios.md) e a [matriz de clientes](clientes-e-agendamento.md).
 
+## Nesta instalação do Robson
+
+O [plugin pessoal Elo no ChatGPT](https://chatgpt.com/plugins/plugin_asdk_app_6ad36d6a59f881919b3de4f512858abf) já está conectado e contém as quatro Skills de base, além da rotina de pauta criada no ensaio. Abra o plugin na mesma conta, inicie uma conversa com Elo e peça “registre esta reunião”, “faça minha revisão diária” ou “otimize meu processo”. Se pedir reconexão, faça o login Access com o e-mail autorizado e aceite o consentimento. O agente cuida da configuração técnica; não cole senhas ou códigos no chat.
+
+A página [Configurar WhatsApp](https://elo.robsonlins.workers.dev/setup) é o ponto de entrada para conexão Z-API e webhook. Não é necessário refazer o cadastro MCP para usar o Elo já conectado. Esse link de plugin é particular desta conta; outra instalação precisa do seu próprio provisionamento e autorização.
+
+[Resultados e limitações dos testes no ChatGPT](../implementacao/homologacao-chatgpt.md). Claude, celular e rotina agendada ainda têm aceites próprios pendentes; conexão no computador não os comprova.
+
 ## O que você precisa fazer
 
 1. Abra o ponto de entrada fornecido com sua instalação, preferencialmente no computador. Autorize a IA instaladora na **sua conta Cloudflare** e confira o nome da conta antes de prosseguir. Ela deve executar a configuração; você não precisa estudar OAuth, criar políticas ou copiar IDs técnicos.

@@ -5,15 +5,23 @@ Conta confirmada por conector e Wrangler: **Robson Lins**, `ab9f6d8988145943bf8b
 
 ## Código e publicação
 
-[PR #5](https://github.com/orobsonn/elo/pull/5) e [PR #6](https://github.com/orobsonn/elo/pull/6) integrados. [PR #7](https://github.com/orobsonn/elo/pull/7) corrige as diferenças encontradas no login publicado. Código ativo do Worker: `a5d9a0d`. Versão **`0d7c4ac6-c494-4fa0-9e46-15ebc5c8fc2a`**, promovida a **100%** após preview saudável, rejeição das três rotas privadas no preview e revisão independente.
+[PR #5](https://github.com/orobsonn/elo/pull/5) e [PR #6](https://github.com/orobsonn/elo/pull/6) integrados. [PR #7](https://github.com/orobsonn/elo/pull/7) corrige as diferenças encontradas no login publicado. Código daquela publicação inicial: `a5d9a0d`. Versão **`0d7c4ac6-c494-4fa0-9e46-15ebc5c8fc2a`**, promovida a **100%** após preview saudável, rejeição das três rotas privadas no preview e revisão independente.
 
-CI do código ativo: [push](https://github.com/orobsonn/elo/actions/runs/39017738444), [PR](https://github.com/orobsonn/elo/actions/runs/39017740998), ambos verdes. **120 testes workerd/D1 e 20 testes Node do instalador**, TypeScript/build aprovados. Os 44 testes de auth passaram também na revisão independente. Z-API, JWKS/OIDC e IA são respostas controladas nos testes locais; a prova live está separada abaixo. Concorrência usa o D1 real local do workerd.
+CI daquela versão: [push](https://github.com/orobsonn/elo/actions/runs/39017738444), [PR](https://github.com/orobsonn/elo/actions/runs/39017740998), ambos verdes. **120 testes workerd/D1 e 20 testes Node do instalador**, TypeScript/build aprovados. Os 44 testes de auth passaram também na revisão independente. Z-API, JWKS/OIDC e IA são respostas controladas nos testes locais; a prova live está separada abaixo. Concorrência usa o D1 real local do workerd.
 
 `node scripts/smoke.mjs` na versão acima: **6/6** — página, saúde com D1, MCP sem login 401, bearer forjado 401, webhook sem configuração fechado e descoberta OAuth/PKCE S256. Saúde confirmou commit/versão exatos. Resultado em [smoke-auth-corrigido.json](smoke-auth-corrigido.json).
 
 Versão anterior `1a529373-d6b0-49f2-b031-b5b41f9700bf` (`bd87021`) contém a extração corrigida, mas tem defeitos no login real; não recomendada para rollback funcional de autenticação. Bootstrap fechado anterior: `3f2bc7db-fc25-42aa-86a7-fb6304e6911b` (serviço indisponível, sem exposição de dados).
 
-Rollback do Worker não desfaz D1. Não promover versão com epoch antigo após restauração/rotação; publicar código anterior com o epoch atual. Migrações 0001–0004 são aditivas e aplicadas.
+Rollback do Worker não desfaz D1. Não promover versão com epoch antigo após restauração/rotação; publicar código anterior com o epoch atual. Naquela etapa, migrações 0001–0004 estavam aplicadas.
+
+## Atualização da homologação — 17/10, 14:01 UTC
+
+Código ativo final **`5f5103d`**, versão **`16fe1435-291e-428b-aab3-8feb98d3023b`**, promovida a **100%**. A migração aditiva 0005 foi aplicada antes do upload. Preview confirmou saúde/versão e negou `/mcp`, `/setup` e `/authorize` com 403; os seis smokes passaram novamente em produção. [Preview](smoke-homologacao-preview.json), [produção](smoke-homologacao-publicada.json).
+
+A pós-reunião agora aplica fatos/tarefas uma vez em lote atômico; fontes da Skill não são reextraídas pelo cron. Falha no fence final desfaz o lote completo, inclusive expiração durante a transação. **134 testes Worker/D1 e 22 Node**, TypeScript e build aprovados; revisões Sol e Astra sem achado material pendente. [Ensaio ChatGPT, achados e limites](homologacao-chatgpt.md), [lógica de recebimento e memória](recebimento-e-memoria.md).
+
+Rollback de código preserva o schema 0005. A versão anterior não oferece o novo contrato `source_import.extraction`: não reverter apenas o Worker e alegar que a Skill 1.0.3 continua compatível. Manter o epoch vigente e a migração; uma recuperação por snapshot reaplica migrations antes de limpar/reabrir. Não foi executado restore na base pessoal nesta atualização.
 
 ## Access e MCP
 
@@ -29,7 +37,7 @@ Após **mais de três horas** desde a primeira chamada MCP (08:33→12:06 UTC), 
 
 `scripts/live-mcp-operations.mjs` também passou escrita/leitura de dois fatos, paginação de memória e contatos, allowlists da projeção e diagnóstico seguro. Revogou **somente o grant do cliente sintético**, depois confirmou access antigo 401 e refresh antigo 400. [Relatório das operações](mcp-operacoes-publicadas.json). Sessão de configuração do navegador é independente dessa revogação.
 
-Essa prova é do cliente HTTP próprio. **Claude, ChatGPT, smartphone, rotinas Work/Cowork e instalação por pessoa leiga continuam sem execução comprovada.** Refresh do MCP e refresh natural do Access são camadas distintas.
+Essa prova inicial é do cliente HTTP próprio. Posteriormente, o ChatGPT foi conectado e exercitado com dados fictícios; veja [homologação do consultor](homologacao-chatgpt.md). Claude, smartphone, rotinas agendadas Work/Cowork e instalação por pessoa leiga continuam sem execução comprovada. Refresh do MCP e refresh natural do Access são camadas distintas.
 
 ## DeepSeek e retenção
 
@@ -47,7 +55,7 @@ Fonte sintética de 31 dias teve texto removido pelo cron e estado encerrado; me
 
 Ensaio isolado em `elo-recovery-check`, D1 `d4888a47-e750-40d8-946a-866c11210ad0`; nunca restaurou `elo-data`. Resultado observado por bookmark exato: memória “Aprender francês” restaurada, texto expirado nulo, ação preparada cancelada, envios pausados, geração de dados avançada e sessões removidas preservando somente owner_binding. Evidência em `recuperacao-resultado.json`. O ensaio por timestamp escolheu snapshot anterior ao fixture; repetição por bookmark evitou confundir ausência com preservação. Teste do gate de reabertura detectou configuração isolada incompleta e reaplicou manutenção. Após completar o fixture isolado (KV próprio e OWNER_EMAIL sintético), a recuperação terminou e reabriu a versão `bcc09b20-65ba-4f59-8ea1-49e4a544b9dd`: `/health` confirmou versão exata e `/mcp` recusou acesso sem login com 401. Não equivale a testar token OAuth antigo real nem uma pessoa leiga executando recuperação. Worker/D1/KV `elo-recovery-check` contêm somente este fixture isolado, sem cron.
 
-Na validação inicial não havia instância Z-API. Em 17/10, o dono contratou e configurou a instância: status/device retornaram 200, conexão ativa e identidade do aparelho igual à registrada pelo Elo. Recebimento e mensagens próprias já estavam configurados; os callbacks de entrega e status estavam ausentes e foram completados por API, com releitura confirmando os três endereços exatos. Envios continuam pausados. `last_received` segue nulo; os seis registros anteriores são fixtures. [Prova sem identificadores/segredos](zapi-conexao-publicada.json). Ainda não houve ensaio de recepção ou envio real autorizado, nem leitura de conversas pelo agente. Adaptador, ingestão, associação explícita de identidade, estados fora de ordem, replay, approve individual, CAS concorrente e timeout incerto estão cobertos localmente com provedor controlado. A Skill exige nova aprovação humana no chat; backend não alega provar autoria humana independentemente do modelo.
+Na validação inicial não havia instância Z-API. Em 17/10, o dono contratou e configurou a instância: status/device retornaram 200, conexão ativa e identidade do aparelho igual à registrada pelo Elo. Recebimento e mensagens próprias já estavam configurados; os callbacks de entrega e status estavam ausentes e foram completados por API, com releitura confirmando os três endereços exatos. Naquele snapshot, envios estavam pausados e `last_received` era nulo; os seis registros anteriores eram fixtures. [Prova sem identificadores/segredos](zapi-conexao-publicada.json). Depois desse snapshot, o dono autorizou a consulta da mensagem de teste e um envio individual exato. A recepção foi persistida, os envios foram habilitados e a ação foi aceita e posteriormente confirmada como entregue pelo callback; o dono também confirmou o recebimento. Esse envio usou o cliente HTTP MCP próprio autenticado, sem escrita direta de envio no banco. A homologação posterior pelo conector instalado confirmou outra recepção autorizada, com 697 ms entre evento e persistência. Não foram publicados conteúdo ou identificadores reais. O novo teste de envio pelo plugin instalado depende de revisão do texto exato. Adaptador, ingestão, associação explícita de identidade, estados fora de ordem, replay, approve individual, CAS concorrente e timeout incerto estão cobertos localmente com provedor controlado. A Skill exige nova aprovação humana no chat; backend não alega provar autoria humana independentemente do modelo.
 
 ## Custos observados
 
@@ -61,6 +69,6 @@ Amostra GraphQL do Worker, 02:30–03:01 UTC: 51 requisições, zero exceções 
 
 Issues [#1](https://github.com/orobsonn/elo/issues/1), [#2](https://github.com/orobsonn/elo/issues/2), [#3](https://github.com/orobsonn/elo/issues/3) e [#4](https://github.com/orobsonn/elo/issues/4) ficam abertas. Implementação entregue não encerra seus aceites materiais ainda não exercitados.
 
-1. Conectar Claude e ChatGPT e instalar as quatro Skills; confirmar leitura/escrita, renovação/revogação em cada cliente. Login/consentimento Access e cliente HTTP próprio já foram concluídos.
-2. Z-API já conectada e callbacks conferidos. Enviar uma mensagem sintética de outro aparelho para validar recepção ponta a ponta; depois indicar/autorizar destino controlado e approve exato para ensaio de envio individual. Não habilitar ou executar envio apenas por ter salvado credenciais.
+1. Conectar e exercitar Claude. ChatGPT já conectado, com quatro Skills instaladas e ensaio de memória/tarefas; conferir os recortes e limites na [homologação](homologacao-chatgpt.md). Renovação natural Access e revogação pela remoção do plugin ainda exigem prova específica em cada cliente.
+2. Recepção e primeiro envio real autorizado já comprovados, incluindo entrega. Concluir novo approve/envio pelo plugin instalado, preservando destinatário e texto exatos. Revisão diária integral e associação positiva de remetente em produção ainda não foram exercitadas nesta bateria.
 3. Validar no celular, executar rotina Work/Cowork no horário solicitado e fazer piloto com pessoa leiga, incluindo recuperação e “Otimize meu processo”. Nenhuma recorrência criada sem pedido de horário/rotina.
