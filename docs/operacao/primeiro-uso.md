@@ -10,7 +10,7 @@ O [plugin pessoal Elo no ChatGPT](https://chatgpt.com/plugins/plugin_asdk_app_6a
 
 A página [Configurar WhatsApp](https://elo.robsonlins.workers.dev/setup) é o ponto de entrada para conexão Z-API e webhook. Não é necessário refazer o cadastro MCP para usar o Elo já conectado. Esse link de plugin é particular desta conta; outra instalação precisa do seu próprio provisionamento e autorização.
 
-[Resultados e limitações dos testes no ChatGPT](../implementacao/homologacao-chatgpt.md). Claude, celular e rotina agendada ainda têm aceites próprios pendentes; conexão no computador não os comprova.
+[Resultados e limitações dos testes no ChatGPT](../implementacao/homologacao-chatgpt.md). O Claude pessoal também foi conectado e as quatro Skills foram instaladas/exercitadas, com revisão diária parcial; veja [a evidência específica do Claude](../implementacao/homologacao-skills-claude.md). Celular e rotina agendada continuam com aceites próprios pendentes; conexão no computador não os comprova.
 
 ## O que você precisa fazer
 
@@ -20,7 +20,7 @@ A página [Configurar WhatsApp](https://elo.robsonlins.workers.dev/setup) é o p
 4. Quando tiver contratado sua própria instância Z-API, insira as credenciais pela superfície protegida de configuração, autorize a conexão do número controlado e siga o pareamento. A instância ainda não contratada deve aparecer como **WhatsApp não configurado**. Não compre automaticamente por seguir este guia.
 5. Somente com autorização específica para o número de teste, faça receber um texto sintético, consulte-o por ID interno, prepare outro com a Skill approve, confira destinatário/texto, aprove no chat e consulte o resultado. Aceito pelo provedor não significa entregue.
 
-Uso diário: peça “faça minha revisão diária”, “registre esta reunião” ou “otimize meu processo”. A revisão mostra cobertura e pendências. Enviar exige uma revisão concreta no chat. Não é necessário terminal no uso diário; a experiência no celular precisa do ensaio real por cliente.
+Uso diário: peça “faça minha revisão diária”, “registre esta reunião” ou “otimize meu processo”. A revisão mostra cobertura e pendências. Enviar exige uma revisão concreta no chat. Não é necessário terminal no uso diário; o dono confirmou uma consulta sintética no ChatGPT/iPhone; revisão e aprovação no celular ainda precisam de ensaio. [Recorte da confirmação](../implementacao/mobile-chatgpt-1710.md).
 
 ## O que a instalação deve executar por você
 
