@@ -52,3 +52,5 @@ Após criação, confira nome, fuso, próxima execução, tools permitidas e pro
 ## Conferência posterior de 17/10
 
 O envio aprovado à Lainny foi entregue pelo conector instalado no **Codex**, não pela interface web ChatGPT. O cron técnico do backend processou uma nova fonte sem reprocessar o lote da Skill. O teste único do Work salvo para 12h05 não teve execução comprovada (`last_run_time=null`); foi pausado e não tem próxima execução. No Claude pessoal Free, o botão de conector personalizado estava desabilitado; a descrição acessível confirmou o limite de um conector personalizado do Free já ocupado. [Evidências e limites](../implementacao/homologacao-complementar.md).
+
+Retomada posterior: o dono autorizou liberar a vaga removendo os quatro cadastros personalizados antigos e confirmou o consentimento Claude. O Elo conectou com 23 tools; diagnóstico, memória e tarefas fictícias foram consultados no Claude web Free/Sonnet 5.5 Médio. O bloqueio de criação foi resolvido; as demais jornadas Claude ainda não foram homologadas. [Prova atualizada](../implementacao/homologacao-complementar.md#retomada-conexão-claude-concluída).
