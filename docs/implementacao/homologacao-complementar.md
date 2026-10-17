@@ -23,3 +23,13 @@ A sessão Claude Team foi encerrada somente neste navegador e o login pessoal fo
 ## Pendências materiais
 
 Issues #1–#4 continuam abertas: jornadas Claude e aparelho físico, execução agendada autenticada, renovação/revogação por cliente, revisão diária integral, associação positiva em produção e piloto/avaliação humana. Os **134 testes workerd/D1 + 22 Node** e TypeScript/build referem-se ao código final já publicado e revisado no PR #9; não foram repetidos para esta atualização documental.
+
+## Retomada: conexão Claude concluída
+
+Após autorização explícita do dono para substituir os cadastros personalizados antigos, foram removidos somente os quatro cadastros dessa conta Claude, liberando a vaga do Free. Nenhum serviço de origem foi alterado. O Elo foi adicionado com login OAuth obrigatório e DCR. O dono confirmou o consentimento `elo` e `offline_access`; o callback retornou sucesso e o Claude exibiu **Conectado a Elo**, com sete tools de leitura e dezesseis de escrita. As permissões permaneceram em “Requer aprovação”.
+
+Uma tela de consentimento anterior não pôde concluir; reiniciar o mesmo fluxo permitiu autorizar. Isso não comprova renovação natural ou revogação por esse cliente.
+
+No Claude web pessoal Free, **Sonnet 5.5 Médio** executou `installation_status`, `memory_get` e `tasks_get` somente no contato fictício autorizado. Os retornos de memória/tarefas tinham cursor nulo: três memórias (duas confirmadas e uma pendente) e uma tarefa aberta do consultor até **23/10/2026**, com fonte. O diagnóstico confirmou código/versão publicados. Nenhuma escrita ou mensagem foi executada. A resposta inicial descreveu `needs_review=false` como ausência de revisão, apesar de preservar `state=pending`; o pedido seguinte explicitou que a incerteza e a validação continuam pendentes. O erro de WhatsApp do diagnóstico é histórico; esta leitura não testa o provedor.
+
+Isso comprova conexão e leitura neste cliente. Skills instaladas/approve, escritas, renovação natural, revogação, Cowork agendado e aparelho físico no Claude continuam pendentes.

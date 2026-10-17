@@ -56,11 +56,39 @@
   },
   "not_proven": [
     "scheduled Work execution",
-    "Claude Elo calls",
     "physical mobile",
     "full daily review",
     "positive production contact association",
     "client-specific Access renewal and revocation",
     "human pilot and benefit"
-  ]
+  ],
+  "claude_followup": {
+    "personal_plan": "Free",
+    "custom_connector_slots_freed_with_explicit_owner_authorization": true,
+    "removed_custom_connector_registrations": 4,
+    "origin_services_modified": false,
+    "oauth": "DCR, owner Access session, consent elo + offline_access",
+    "callback_success": true,
+    "connected": true,
+    "tools_read": 7,
+    "tools_write": 16,
+    "tool_permissions": "Needs approval",
+    "renewal_and_revocation_proven": false,
+    "read_test": {
+      "model": "Sonnet 5.5 Medium",
+      "installation_status": true,
+      "memory_get": true,
+      "tasks_get": true,
+      "memory_count": 3,
+      "confirmed": 2,
+      "pending": 1,
+      "tasks_open": 1,
+      "responsible": "consultor",
+      "due_date": "2026-10-23",
+      "memory_cursor": null,
+      "tasks_cursor": null,
+      "writes": false,
+      "whatsapp": false
+    }
+  }
 }
