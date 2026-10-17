@@ -76,3 +76,7 @@ Issues [#1](https://github.com/orobsonn/elo/issues/1), [#2](https://github.com/o
 ## Complemento de homologação
 
 Em 17/10, [nova rodada sanitizada](homologacao-complementar.md) confirmou envio aprovado à Lainny como entregue e execução real do cron técnico com separação backend/Skill. O teste único do Work não teve execução comprovada e foi pausado; Claude pessoal apresentou criação de conector desabilitada. Issues #1–#4 continuam abertas.
+
+## Atualização de 17/10 — diagnóstico das fontes
+
+Versão ativa `fa8c0a95-b3e7-4529-8e6e-521946abe863`, código `4a3945b`, tráfego 100%, PR #13 integrado. Preview e 6 smokes publicados aprovados; 149 testes Worker/D1 e 22 Node. Corrige preenchimento tardio de texto e conclusão concorrente de revisão. Time Travel real foi exercitado somente numa D1 temporária sintética, removida ao final; a base pessoal não foi restaurada. [Causas, evidências e limites](fontes-indisponiveis-1710.md).

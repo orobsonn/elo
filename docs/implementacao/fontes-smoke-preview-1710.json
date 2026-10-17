@@ -1,0 +1,16 @@
+{
+  "at": "2026-10-17T18:28:11.855Z",
+  "origin": "https://fa8c0a95-elo.robsonlins.workers.dev",
+  "health": {
+    "ok": true,
+    "version": "fa8c0a95-b3e7-4529-8e6e-521946abe863",
+    "commit": "4a3945bc7642774c582c2b8b66bb2563970736cb",
+    "database": true
+  },
+  "private_routes": {
+    "/mcp": 403,
+    "/setup": 403,
+    "/authorize": 403
+  },
+  "passed": 4
+}

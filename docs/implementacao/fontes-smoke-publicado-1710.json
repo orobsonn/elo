@@ -1,0 +1,1 @@
+{"origin":"https://elo.robsonlins.workers.dev","health":{"ok":true,"version":"fa8c0a95-b3e7-4529-8e6e-521946abe863","commit":"4a3945bc7642774c582c2b8b66bb2563970736cb","database":true},"checks":["home","health_D1","unauthenticated_MCP","invalid_bearer","protected_webhook","OAuth_discovery_PKCE"],"passed":6}
