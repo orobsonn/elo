@@ -59,4 +59,4 @@ Antes de habilitar recursos pagos, meça um período sintético representativo, 
 | Mídia | Eventos/bytes recebidos, descartados/não interpretados | Não presumir transcrição ou anexos V0; sem cobrança opcional silenciosa |
 | Serviços externos | Plano da IA/cron, Access elegível e instância Z-API | Exibir cobranças separadas e custos antes de ativação |
 
-Resultado inicial deste documento: **sem medições**. Preencha consumo, preço consultado/data, premissas e margem antes de dar estimativa. Não tratar US$5 como teto da stack nem confundir número de logins Access com contatos do Elo.
+O resultado inicial era sem medições. A atualização de 17/10 registra o [perfil observado](perfil-de-uso.md), com fonte/data, premissas, estimativas e limites; não substitui o ensaio de carga representativa. Não tratar US$5 como teto da stack nem confundir número de logins Access com contatos do Elo.
