@@ -20,7 +20,7 @@ Nenhuma tarefa foi reativada, editada ou executada por Run now. Esta leitura man
 
 ## Claude e saúde publicada
 
-No Claude web/Sonnet 5.5 Médio, foi autorizada uma única `review_page` para o mesmo dia, `limit=1`, sem completar ou continuar a revisão. O cliente retornou snapshot **53**, uma fonte nesta página e cursor seguinte presente: **14 indisponíveis = 1 expired + 13 unsupported_format + 0 missing_text**. Cobertura `complete`, `available_complete` e `current_versions_complete` falsas; versões novas pendentes e fontes não mostradas pendentes iguais a zero; completude externa desconhecida.
+No Claude web/Sonnet 5.5 Médio, foi autorizada uma única `review_page` para o mesmo dia, `limit=1`, sem completar ou continuar a revisão. O cliente retornou snapshot **53**, uma fonte nesta página e cursor seguinte presente: **14 indisponíveis = 1 expired + 13 unsupported_format + 0 missing_text**. Cobertura `complete`, `available_complete` e `current_versions_complete` falsas; `newer_versions_pending=0` e `unseen_sources_pending=0`; completude externa desconhecida. `unseen_sources_pending=0` não significa ausência de páginas restantes: o cursor seguinte está presente.
 
 O primeiro resumo do Claude sugeriu incorretamente que `unsupported_format` contradizia a descrição anterior “ativas sem texto”. Foi solicitada correção sem novas ferramentas: a categoria significa ausência de representação textual utilizável; `missing_text` é outra categoria operacional. Não deduzir mídia exata ou recuperação. Os snapshots anteriores 41/49 e o atual 53 são conjuntos diferentes.
 
