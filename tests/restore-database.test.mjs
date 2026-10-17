@@ -18,7 +18,7 @@ test("restores the snapshot, migrates it, then invalidates old authorizations be
           ),
         );
         db.exec(
-          "UPDATE settings SET sends_paused=0; INSERT INTO contacts(id,alias,created_at) VALUES('ct_demo','Lia',1); INSERT INTO sources(id,contact_id,dedup_key,kind,occurred_at,received_at,expires_at,content) VALUES('src_demo','ct_demo','demo','meeting',1,1,2,'expired fixture'); INSERT INTO auth_state VALUES('owner_binding','synthetic'),('old-session','synthetic');",
+          "UPDATE settings SET sends_paused=0; INSERT INTO contacts(id,alias,created_at) VALUES('ct_demo','Lia',1); INSERT INTO sources(id,contact_id,dedup_key,kind,occurred_at,received_at,expires_at,content) VALUES('src_demo','ct_demo','demo','meeting',1,1,2,'expired fixture'); INSERT INTO auth_state VALUES('owner_binding','synthetic'),('old-session','synthetic'); INSERT INTO actions(id,contact_id,alias,content,content_hash,address,address_version,connection_generation,epoch,status,prepared_at,expires_at) VALUES('act_expired','ct_demo','Lia','expired action fixture','synthetic','5511000000000',1,1,'old','awaiting_approval',1,2);",
         );
       }
       if (args[1] === "migrations") {
@@ -78,6 +78,7 @@ test("restores the snapshot, migrates it, then invalidates old authorizations be
       .map((x) => x.key),
     ["owner_binding"],
   );
+  assert.deepEqual({...db.prepare("SELECT content,address,status FROM actions WHERE id='act_expired'").get()}, {content:"",address:"",status:"cancelled"});
   db.close();
 });
 

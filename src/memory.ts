@@ -761,6 +761,12 @@ type ReviewRun = {
   last_page_token: string | null;
   state: string;
 };
+// A source can enter the scope behind the persisted cursor, even without text.
+// Never complete a run that omitted it; already-shown versions are separate.
+const unseenReviewSources = `FROM sources s JOIN contacts c ON c.id=s.contact_id
+  WHERE s.seq<=r.snapshot_seq AND ((s.received_at>=r.from_at AND s.received_at<r.to_at) OR (s.version>1 AND s.version>s.reviewed_version))
+  AND s.deleted=0 AND c.deleted=0
+  AND NOT EXISTS(SELECT 1 FROM review_items ri WHERE ri.run_id=r.id AND ri.source_id=s.id)`;
 export async function reviewPage(db: D1Database, input: unknown = {}) {
   const p = parse(reviewPageSchema, input);
   let run: ReviewRun | null;
@@ -821,14 +827,24 @@ export async function reviewPage(db: D1Database, input: unknown = {}) {
     now(),
     limit + 1,
   ).all<ReviewItem>();
-  const unavailable = (await sql(
+  const coverageTime = now();
+  const unavailableRows = (await sql(
     db,
-    `SELECT COUNT(*) n FROM sources s JOIN contacts c ON c.id=s.contact_id WHERE s.seq<=? AND ((s.received_at>=? AND s.received_at<?) OR (s.version>1 AND s.version>s.reviewed_version)) AND c.deleted=0 AND s.deleted=0 AND (s.expires_at<=? OR s.content IS NULL)`,
+    `SELECT COUNT(*) n,
+      COALESCE(SUM(CASE WHEN s.expires_at<=? THEN 1 ELSE 0 END),0) expired,
+      COALESCE(SUM(CASE WHEN s.expires_at>? AND s.content IS NULL AND m.kind='unsupported_media' THEN 1 ELSE 0 END),0) unsupported_format,
+      COALESCE(SUM(CASE WHEN s.expires_at>? AND s.content IS NULL AND (m.kind IS NULL OR m.kind!='unsupported_media') THEN 1 ELSE 0 END),0) missing_text
+      FROM sources s JOIN contacts c ON c.id=s.contact_id LEFT JOIN messages m ON m.source_id=s.id
+      WHERE s.seq<=? AND ((s.received_at>=? AND s.received_at<?) OR (s.version>1 AND s.version>s.reviewed_version)) AND c.deleted=0 AND s.deleted=0 AND (s.expires_at<=? OR s.content IS NULL)`,
+    coverageTime,
+    coverageTime,
+    coverageTime,
     run.snapshot_seq,
     run.from_at,
     run.to_at,
-    now(),
-  ).first<{ n: number }>())!.n;
+    coverageTime,
+  ).first<{ n: number; expired: number; unsupported_format: number; missing_text: number }>())!;
+  const unavailable = unavailableRows.n;
   const items = result.results.slice(0, limit),
     availableDone = result.results.length <= limit,
     complete = availableDone && unavailable === 0,
@@ -856,14 +872,20 @@ export async function reviewPage(db: D1Database, input: unknown = {}) {
         token,
       ),
     ),
+    sql(db, `UPDATE review_runs AS r SET state='unavailable' WHERE id=? AND last_page_token=? AND state='ready' AND EXISTS(SELECT 1 ${unseenReviewSources})`, run.id, token),
   ]);
   if (!pageCommit[0].meta.changes)
     throw new SafeError("pagina_invalida_ou_concorrente", 409);
-  const changed = (await sql(
+  const progress = (await sql(
     db,
-    "SELECT COUNT(*) n FROM review_items ri JOIN sources s ON s.id=ri.source_id WHERE ri.run_id=? AND s.deleted=0 AND s.version>ri.version",
+    `SELECT (SELECT COUNT(*) FROM review_items ri JOIN sources s ON s.id=ri.source_id WHERE ri.run_id=r.id AND s.deleted=0 AND s.version>ri.version) changed,
+      (SELECT COUNT(*) ${unseenReviewSources}) unseen,
+      (SELECT COUNT(*) ${unseenReviewSources} AND s.content IS NOT NULL AND s.expires_at>CAST((julianday('now')-2440587.5)*86400000 AS INTEGER)) readable
+      FROM review_runs r WHERE r.id=?`,
     run.id,
-  ).first<{ n: number }>())!.n;
+  ).first<{ changed:number; unseen:number; readable:number }>())!;
+  const changed = progress.changed;
+  const covered = complete && progress.unseen === 0;
   return {
     run_id: run.id,
     page_token: token,
@@ -871,9 +893,15 @@ export async function reviewPage(db: D1Database, input: unknown = {}) {
     next_cursor: availableDone ? null : token,
     coverage: {
       unavailable_count: unavailable,
+      unavailable_reasons: {
+        expired: unavailableRows.expired,
+        unsupported_format: unavailableRows.unsupported_format,
+        missing_text: unavailableRows.missing_text,
+      },
       newer_versions_pending: changed,
-      current_versions_complete: complete && changed === 0,
-      available_complete: availableDone,
+      current_versions_complete: covered && changed === 0,
+      available_complete: availableDone && progress.readable === 0,
+      unseen_sources_pending: availableDone ? progress.unseen : 0,
       day: run.day,
       timezone: run.timezone,
       from: run.from_at,
@@ -881,10 +909,10 @@ export async function reviewPage(db: D1Database, input: unknown = {}) {
       basis: "received_at_or_unreviewed_edit",
       snapshot_seq: run.snapshot_seq,
       through_seq: after,
-      complete,
+      complete: covered,
       external_completeness: "unknown",
       message:
-        "Cobertura das versões mostradas na base capturada; inclui edições pendentes de outros dias e preserva datas originais",
+        "Cobertura das versões mostradas na base capturada; inclui edições pendentes de outros dias e preserva datas originais. Se unseen_sources_pending>0, há fontes não mostradas, inclusive indisponíveis; uma nova revisão só poderá avaliá-las se estiverem legíveis",
     },
   };
 }
@@ -893,7 +921,7 @@ export async function reviewComplete(db: D1Database, input: unknown) {
   const result = await db.batch([
     sql(
       db,
-      "UPDATE review_runs SET state='complete' WHERE id=? AND last_page_token=? AND state='ready'",
+      `UPDATE review_runs AS r SET state='complete' WHERE id=? AND last_page_token=? AND state='ready' AND NOT EXISTS(SELECT 1 ${unseenReviewSources})`,
       p.run_id,
       p.page_token,
     ),
@@ -1014,7 +1042,7 @@ export function toolDefinitions(
     ],
     [
       "review_page",
-      "Revisa fontes do dia local de ingresso e edições ainda pendentes, mesmo de outro dia; preserva data original, tipo e direção (in=contato, out=consultor; null para reunião/nota). Não atribua falas do consultor ao contato. Avança somente usando o token persistido da página anterior.",
+      "Revisa fontes do dia local de ingresso e edições ainda pendentes, mesmo de outro dia; preserva data original, tipo e direção (in=contato, out=consultor; null para reunião/nota). Não atribua falas do consultor ao contato. Avança somente usando o token persistido da página anterior. unavailable_reasons separa expired, unsupported_format (registro sem representação textual utilizável; subtipo desconhecido) e missing_text. Não prometa recuperação nem conclusão com lacunas.",
       reviewPageSchema,
       (p) => reviewPage(db, { timezone, ...parse(reviewPageSchema, p) }),
       false,

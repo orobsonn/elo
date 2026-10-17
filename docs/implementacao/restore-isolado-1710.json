@@ -1,0 +1,23 @@
+{
+  "at": "2026-10-17T18:21:34.951Z",
+  "account": "ab9f6d8988145943bf8bbab313e45e6e",
+  "database": "elo-restore-qa-1710-mvcq2fgm",
+  "database_id": "68e91f77-c7cf-48d4-a7ec-344817b3cd0d",
+  "synthetic_only": true,
+  "personal_database_touched": false,
+  "checks": [
+    "real_Time_Travel_bookmark",
+    "schema_v1_restored_then_5_migrations_applied",
+    "contact_and_configuration_preserved",
+    "memory_and_tasks_restored",
+    "raw_source_retention",
+    "expired_action_content_and_address_erased",
+    "old_approval_cancelled",
+    "inflight_action_uncertain",
+    "old_auth_removed_owner_preserved",
+    "sends_paused"
+  ],
+  "passed": 10,
+  "scope": "D1 remoto e helper restoreDatabase; não prova Worker maintenance/epoch nem piloto leigo",
+  "cleanup": "temporary_database_deleted"
+}

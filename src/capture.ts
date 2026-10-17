@@ -121,12 +121,39 @@ export async function ingest(
     return { ignored: "deleted" };
   const existing = await sql(
     db,
-    "SELECT m.source_id,m.contact_id,c.address FROM messages m JOIN contacts c ON c.id=m.contact_id WHERE m.provider_key=?",
+    "SELECT m.source_id,m.contact_id,m.direction,c.address FROM messages m JOIN contacts c ON c.id=m.contact_id WHERE m.provider_key=?",
     key,
-  ).first<{ source_id: string; contact_id: string; address: string }>();
+  ).first<{ source_id: string; contact_id: string; direction: string; address: string }>();
+  const fillMutation = mutation;
+  async function fillMissingText(record: NonNullable<typeof existing>) {
+    if (record.address !== address) throw new SafeError("identidade_do_evento_diverge",409);
+    if (e.fromMe !== undefined && record.direction !== (e.fromMe ? "out" : "in"))
+      throw new SafeError("direcao_do_evento_diverge",409);
+    // Transaction-local claim makes a losing replay a no-op.
+    const claim = id("hydrate");
+    const recovered = await db.batch([
+      sql(db, `UPDATE sources SET content=?,version=version+1,extract_state='pending',attempts=0,next_attempt=0,lease=?,lease_until=NULL,safe_error=NULL
+        WHERE id=? AND contact_id=? AND content IS NULL AND deleted=0
+        AND expires_at>CAST((julianday('now')-2440587.5)*86400000 AS INTEGER)
+        AND occurred_at>CAST((julianday('now')-2440587.5)*86400000 AS INTEGER)-2592000000
+        AND NOT EXISTS(SELECT 1 FROM tombstones WHERE provider_key=?)
+        AND EXISTS(SELECT 1 FROM contacts WHERE id=sources.contact_id AND deleted=0 AND address=?)
+        AND EXISTS(SELECT 1 FROM messages WHERE source_id=sources.id AND kind='unsupported_media' AND mutation_at<=?)
+        AND EXISTS(SELECT 1 FROM settings WHERE id=1 AND (connection_generation=0 OR connection_generation=?))`,
+        e.text!.message, claim, record.source_id, record.contact_id, key, address, fillMutation, generation),
+      sql(db, "UPDATE messages SET kind='text',mutation_at=MAX(mutation_at,?) WHERE source_id=? AND EXISTS(SELECT 1 FROM sources WHERE id=messages.source_id AND lease=?)", fillMutation, record.source_id, claim),
+      sql(db, "UPDATE memory SET needs_review=1 WHERE source_id=? AND EXISTS(SELECT 1 FROM sources WHERE id=memory.source_id AND lease=?)", record.source_id, claim),
+      sql(db, "UPDATE sources SET lease=NULL WHERE id=? AND lease=?", record.source_id, claim),
+    ]);
+    return { persisted: true, duplicate: !recovered[0].meta.changes };
+  }
   if (existing) {
     if (existing.address !== address)
       throw new SafeError("identidade_do_evento_diverge", 409);
+    if (e.fromMe !== undefined && existing.direction !== (e.fromMe ? "out" : "in"))
+      throw new SafeError("direcao_do_evento_diverge", 409);
+    if (!e.isEdit && !e.isEdited && e.text?.message)
+      return fillMissingText(existing);
     const deleted = e.deleted || e.isDeleted;
     if (deleted || e.isEdited || e.isEdit) {
       const mutationQuery = deleted
@@ -178,7 +205,7 @@ export async function ingest(
     message = id("msg");
   const text = e.text?.message ?? null;
   const kind = text === null ? "unsupported_media" : "text";
-  await db.batch([
+  const inserted = await db.batch([
     sql(
       db,
       "INSERT OR IGNORE INTO contacts(id,alias,address,created_at) SELECT ?,'Contato provisório',?,? WHERE NOT EXISTS(SELECT 1 FROM tombstones WHERE provider_key=?)",
@@ -219,6 +246,14 @@ export async function ingest(
     ),
     sql(db, "UPDATE settings SET last_received=? WHERE id=1", t),
   ]);
+  // Both initial callbacks can observe no row. If this insert lost, re-read
+  // the winner once and apply the same guarded fill instead of losing text.
+  if (!inserted[2].meta.changes && text && !e.isEdit && !e.isEdited) {
+    const winner = await sql(db,
+      "SELECT m.source_id,m.contact_id,m.direction,c.address FROM messages m JOIN contacts c ON c.id=m.contact_id JOIN sources s ON s.id=m.source_id WHERE m.provider_key=? AND c.deleted=0 AND s.deleted=0 AND NOT EXISTS(SELECT 1 FROM tombstones WHERE provider_key=m.provider_key)", key,
+    ).first<NonNullable<typeof existing>>();
+    if (winner) return fillMissingText(winner);
+  }
   return { persisted: true };
 }
 export async function listContacts(
