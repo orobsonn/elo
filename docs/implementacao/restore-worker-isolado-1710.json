@@ -1,0 +1,65 @@
+{
+  "at": "2026-10-17T18:48:17.701Z",
+  "origin": "https://elo-restore-e2e-mvcqwdw6.robsonlins.workers.dev",
+  "account": "ab9f6d8988145943bf8bbab313e45e6e",
+  "worker": "elo-restore-e2e-mvcqwdw6",
+  "database_id": "7b0f8e2f-aa82-4fd1-92bd-1eba33999dfb",
+  "kv_id": "785902aca93c44ac8dc3227f25f7dfa4",
+  "commit": "0df4eac61cee6316f977da1d80fd7d2274834c2e",
+  "version": "228dbc96-8e22-4eec-85e2-7f13c05be16c",
+  "synthetic_only": true,
+  "production_resources_touched": false,
+  "ai_enabled": false,
+  "crons": [],
+  "maintenance": {
+    "samples_503": 75,
+    "observed_span_ms": 77337,
+    "scope": "Amostras HTTP, não captura contínua; espera55s não comprova drenagem de operações reais em voo"
+  },
+  "reopened_health": {
+    "ok": true,
+    "version": "228dbc96-8e22-4eec-85e2-7f13c05be16c",
+    "commit": "0df4eac61cee6316f977da1d80fd7d2274834c2e",
+    "database": true
+  },
+  "anonymous_MCP_status": 401,
+  "checks": [
+    "initial_MCP_closed",
+    "maintenance_HTTP_503_observed",
+    "restore_script_exit_0",
+    "reopened_active_version_matches",
+    "data_restored",
+    "retention_reapplied",
+    "old_approval_cancelled",
+    "inflight_fixture_uncertain",
+    "auth_state_cleaned",
+    "sends_paused",
+    "five_migrations"
+  ],
+  "script_declared_epoch_rotated": true,
+  "real_old_token_revocation_tested": false,
+  "layperson_tested": false,
+  "cleanup": {
+    "at": "2026-10-17T18:48:46.969Z",
+    "worker_deleted": true,
+    "kv_deleted": true,
+    "database_deleted": true
+  },
+  "observed_bindings": {
+    "DB": "7b0f8e2f-aa82-4fd1-92bd-1eba33999dfb",
+    "OAUTH_KV": "785902aca93c44ac8dc3227f25f7dfa4"
+  },
+  "observed_schedules": [],
+  "personal_health_after": {
+    "ok": true,
+    "version": "fa8c0a95-b3e7-4529-8e6e-521946abe863",
+    "commit": "4a3945bc7642774c582c2b8b66bb2563970736cb",
+    "database": true
+  },
+  "initial_bootstrap_failures": {
+    "count": 2,
+    "phase": "build before Worker upload",
+    "reason": "redundant tsconfig path resolved relative to external config; omitted field after dry-run succeeded",
+    "production_impact": false
+  }
+}
