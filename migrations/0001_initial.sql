@@ -1,0 +1,25 @@
+CREATE TABLE auth_state (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+CREATE TABLE settings (id INTEGER PRIMARY KEY CHECK(id=1), capture_from INTEGER NOT NULL, sends_paused INTEGER NOT NULL DEFAULT 1, connection_generation INTEGER NOT NULL DEFAULT 0, connection_cipher TEXT, last_received INTEGER, last_error TEXT, data_generation INTEGER NOT NULL DEFAULT 1);
+INSERT INTO settings(id,capture_from) VALUES(1,unixepoch()*1000);
+CREATE TABLE contacts (id TEXT PRIMARY KEY, alias TEXT NOT NULL, relationship TEXT NOT NULL DEFAULT 'provisional', address TEXT UNIQUE, address_version INTEGER NOT NULL DEFAULT 1, cadence_days INTEGER, snooze_until TEXT, generation INTEGER NOT NULL DEFAULT 1, deleted INTEGER NOT NULL DEFAULT 0, created_at INTEGER NOT NULL);
+CREATE TABLE sources (seq INTEGER PRIMARY KEY AUTOINCREMENT, id TEXT NOT NULL UNIQUE, contact_id TEXT NOT NULL REFERENCES contacts(id), dedup_key TEXT NOT NULL UNIQUE, kind TEXT NOT NULL, occurred_at INTEGER NOT NULL, received_at INTEGER NOT NULL, expires_at INTEGER NOT NULL, content TEXT, version INTEGER NOT NULL DEFAULT 1, deleted INTEGER NOT NULL DEFAULT 0, extract_state TEXT NOT NULL DEFAULT 'pending', attempts INTEGER NOT NULL DEFAULT 0, next_attempt INTEGER NOT NULL DEFAULT 0, lease TEXT, lease_until INTEGER, safe_error TEXT);
+CREATE INDEX sources_contact ON sources(contact_id,seq);
+CREATE INDEX sources_retention ON sources(expires_at);
+CREATE INDEX sources_jobs ON sources(extract_state,next_attempt,seq);
+CREATE TABLE messages (id TEXT PRIMARY KEY, source_id TEXT NOT NULL UNIQUE REFERENCES sources(id), provider_key TEXT NOT NULL UNIQUE, contact_id TEXT NOT NULL REFERENCES contacts(id), direction TEXT NOT NULL, kind TEXT NOT NULL, status_rank INTEGER NOT NULL DEFAULT 0, mutation_at INTEGER NOT NULL DEFAULT 0);
+CREATE INDEX messages_contact ON messages(contact_id,source_id);
+CREATE TABLE tombstones (provider_key TEXT PRIMARY KEY, deleted_at INTEGER NOT NULL);
+CREATE TABLE actions (id TEXT PRIMARY KEY, contact_id TEXT NOT NULL REFERENCES contacts(id), alias TEXT NOT NULL, content TEXT NOT NULL, content_hash TEXT NOT NULL, address TEXT NOT NULL, address_version INTEGER NOT NULL, connection_generation INTEGER NOT NULL, epoch TEXT NOT NULL, status TEXT NOT NULL, prepared_at INTEGER NOT NULL, expires_at INTEGER NOT NULL, claimed_at INTEGER, provider_id TEXT, safe_error TEXT);
+CREATE INDEX actions_provider ON actions(provider_id);
+CREATE TABLE action_events (id INTEGER PRIMARY KEY AUTOINCREMENT, action_id TEXT NOT NULL REFERENCES actions(id), state TEXT NOT NULL, at INTEGER NOT NULL);
+CREATE TABLE memory (id TEXT PRIMARY KEY, contact_id TEXT NOT NULL REFERENCES contacts(id), field TEXT NOT NULL, value TEXT NOT NULL, state TEXT NOT NULL, reason TEXT NOT NULL, source_id TEXT NOT NULL REFERENCES sources(id), source_version INTEGER NOT NULL, occurred_at INTEGER NOT NULL, recorded_at INTEGER NOT NULL, confirmed_at INTEGER, dedup_key TEXT NOT NULL UNIQUE, needs_review INTEGER NOT NULL DEFAULT 0);
+CREATE UNIQUE INDEX memory_confirmed ON memory(contact_id,field) WHERE state='confirmed';
+CREATE INDEX memory_contact ON memory(contact_id,state,id);
+CREATE TABLE tasks (id TEXT PRIMARY KEY, contact_id TEXT NOT NULL REFERENCES contacts(id), subject TEXT NOT NULL, responsible TEXT, reason TEXT NOT NULL, due_date TEXT, date_note TEXT, state TEXT NOT NULL DEFAULT 'open', source_id TEXT NOT NULL REFERENCES sources(id), dedup_key TEXT NOT NULL UNIQUE, updated_at INTEGER NOT NULL);
+CREATE INDEX tasks_due ON tasks(state,due_date,id);
+CREATE TABLE special_dates (id TEXT PRIMARY KEY, contact_id TEXT NOT NULL REFERENCES contacts(id), relation TEXT NOT NULL, label TEXT NOT NULL, month INTEGER NOT NULL, day INTEGER NOT NULL, leap_policy TEXT NOT NULL, UNIQUE(contact_id,relation,label));
+CREATE TABLE interactions (id TEXT PRIMARY KEY,contact_id TEXT NOT NULL REFERENCES contacts(id),kind TEXT NOT NULL,at INTEGER NOT NULL,source_id TEXT NOT NULL REFERENCES sources(id),UNIQUE(contact_id,kind,source_id));
+CREATE TABLE review_runs (id TEXT PRIMARY KEY, day TEXT NOT NULL, timezone TEXT NOT NULL, from_at INTEGER NOT NULL,to_at INTEGER NOT NULL,snapshot_seq INTEGER NOT NULL, after_seq INTEGER NOT NULL DEFAULT 0, last_page_token TEXT, state TEXT NOT NULL DEFAULT 'reading', created_at INTEGER NOT NULL);
+CREATE TABLE usage (day TEXT PRIMARY KEY,calls INTEGER NOT NULL DEFAULT 0,input_tokens INTEGER NOT NULL DEFAULT 0,output_tokens INTEGER NOT NULL DEFAULT 0, failures INTEGER NOT NULL DEFAULT 0);
+
+CREATE TABLE provider_status (provider_key TEXT PRIMARY KEY, status_rank INTEGER NOT NULL DEFAULT 0, failed INTEGER NOT NULL DEFAULT 0, updated_at INTEGER NOT NULL);

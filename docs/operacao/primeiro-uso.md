@@ -1,0 +1,35 @@
+# Primeiro uso do Elo
+
+Este guia acompanha a instalação assistida. Não comprova uma instalação concluída. A URL publicada, o ponto de entrada do instalador e a versão efetiva devem vir da evidência de deploy da própria instalação; não há link fictício de botão neste guia. Use os [ensaios de aceite](ensaios.md) e a [matriz de clientes](clientes-e-agendamento.md).
+
+## O que você precisa fazer
+
+1. Abra o ponto de entrada fornecido com sua instalação, preferencialmente no computador. Autorize a IA instaladora na **sua conta Cloudflare** e confira o nome da conta antes de prosseguir. Ela deve executar a configuração; você não precisa estudar OAuth, criar políticas ou copiar IDs técnicos.
+2. Faça o login e os consentimentos solicitados. Segredos entram em campos protegidos ou no gerenciador de segredos do instalador, nunca no chat ou em capturas de tela. Se a IA não tiver permissão para executar uma etapa, a instalação deve dizer exatamente qual autorização falta e retomar depois dela.
+3. Peça para conectar o Elo no Claude ou ChatGPT escolhido e instalar as quatro Skills deste pacote. Faça o login Cloudflare Access quando o cliente abrir a autorização. Teste consulta e memória fictícias antes de conectar WhatsApp.
+4. Quando tiver contratado sua própria instância Z-API, insira as credenciais pela superfície protegida de configuração, autorize a conexão do número controlado e siga o pareamento. A instância ainda não contratada deve aparecer como **WhatsApp não configurado**. Não compre automaticamente por seguir este guia.
+5. Somente com autorização específica para o número de teste, faça receber um texto sintético, consulte-o por ID interno, prepare outro com a Skill approve, confira destinatário/texto, aprove no chat e consulte o resultado. Aceito pelo provedor não significa entregue.
+
+Uso diário: peça “faça minha revisão diária”, “registre esta reunião” ou “otimize meu processo”. A revisão mostra cobertura e pendências. Enviar exige uma revisão concreta no chat. Não é necessário terminal no uso diário; a experiência no celular precisa do ensaio real por cliente.
+
+## O que a instalação deve executar por você
+
+Este é o contrato do instalador/IA, não uma lista de tarefas técnicas para o aluno. Se alguma parte não estiver implementada ou falhar, registrar **instalação incompleta**, mantendo o diagnóstico por etapa.
+
+- Identificar conta e recursos existentes do Elo para retomar sem recriar/apagar dados; provisionar somente recursos deste projeto.
+- Configurar Cloudflare Access for SaaS/OIDC, acesso restrito ao dono, callbacks e segredos/bindings. Integrar o login à autorização MCP e vincular identidade validada ao dono autorizado. A referência oficial é [Secure MCP servers](https://developers.cloudflare.com/cloudflare-one/access-controls/ai-controls/secure-mcp-servers/). Esse caminho documentado não prova que a conta e os dois clientes já passaram no Elo.
+- Usar a URL publicada do próprio Elo. Não exigir compra de domínio por analogia com Access de aplicações web quando OIDC em workers.dev atender. Não trocar autenticação por cookie de navegador, cabeçalho fixo ou exceção pública para facilitar o teste.
+- Testar descoberta e fluxo de autorização, identidade indevida, expiração/renovação e revogação; conferir que origem/preview não contornam autenticação. Webhook tem autenticação própria e não abre as tools.
+- Configurar a conexão do cliente pelo recurso disponível naquela conta. Login e consentimento humano continuam necessários. Falta de permissão organizacional deve aparecer como bloqueio concreto.
+- Instalar/adaptar o pacote de Skills no mecanismo suportado pelo cliente e comprovar que está selecionável. Apenas baixar os arquivos não conclui a instalação.
+- Exibir diagnóstico seguro por etapa com versão, conexão, última recepção e erro seguro, sem mensagens, nomes completos, telefones, tokens ou URLs privadas.
+
+## Quando pode chamar de concluído
+
+Autenticação e leitura/escrita sintéticas podem ser verificadas sem Z-API. A instalação completa só termina depois de autenticação, recebimento real autorizado, consulta por ID interno, envio aprovado a destino controlado e consulta do estado. Enquanto a Z-API não existir, registrar essa dependência sem simular eventos reais. Os testes com cliente, celular e pessoa leiga são aceites próprios, não consequências de testes do servidor.
+
+## Custos e privacidade
+
+Antes de habilitar recurso pago, a instalação deve mostrar a cobrança e pedir a autorização que faltar. Plano da IA, Cloudflare/Workers/D1/Access, inferência e Z-API são custos separados; US$5 não é teto da solução. O uso do DeepSeek exige Paid/créditos conforme o caminho de inferência escolhido, com elegibilidade confirmada na conta. Nenhuma medição de consumo é apresentada neste guia.
+
+Texto de conversa pode identificar pessoas. O Elo restringe identificadores estruturados de entrega ao backend, mas não promete anonimização universal. O histórico bruto ativo dura até 30 dias; memória concisa e pendências têm vida distinta. Exclusão de uma camada não apaga automaticamente backups, Z-API ou histórico do chat de IA.

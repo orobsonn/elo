@@ -1,0 +1,56 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "elo",
+  "main": "src/index.ts",
+  "account_id": "ab9f6d8988145943bf8bbab313e45e6e",
+  "compatibility_date": "2026-10-16",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "preview_urls": true,
+  "vars": {
+    "PUBLIC_ORIGIN": "https://elo.robsonlins.workers.dev",
+    "ACCESS_TEAM_DOMAIN": "orobsonn.cloudflareaccess.com",
+    "ACCESS_CLIENT_ID": "07ffb20a5a7d9d32679bd7611ad779e06a022b7c6d16a1933e007be0567ce31a",
+    "MAINTENANCE": "false",
+    "AI_MODEL": "@cf/deepseek-ai/deepseek-v4-flash-0731",
+    "AI_ENABLED": "true",
+    "TIMEZONE": "America/Fortaleza",
+    "BUILD_COMMIT": "development",
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "elo-data",
+      "database_id": "832389af-77f6-45db-b22e-35f3d8aeeb0b",
+      "migrations_dir": "migrations",
+    },
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "OAUTH_KV",
+      "id": "ce878767d3af48df8179280672f31574",
+    },
+  ],
+  "ai": {
+    "binding": "AI",
+  },
+  "version_metadata": {
+    "binding": "VERSION",
+  },
+  "triggers": {
+    "crons": ["*/10 * * * *"],
+  },
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "invocation_logs": false,
+    },
+    "traces": {
+      "enabled": false,
+    },
+  },
+  "limits": {
+    "cpu_ms": 30000,
+  },
+}

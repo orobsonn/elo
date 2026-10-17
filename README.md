@@ -1,35 +1,25 @@
 # Elo
 
-Memória de relacionamento e WhatsApp na IA que o consultor já usa, por MCP e Skills, com infraestrutura individual Cloudflare.
+Memória de relacionamento e WhatsApp assistido no Claude/ChatGPT, com infraestrutura individual Cloudflare.
 
-**Estado:** PRD v1.1 fechado, quatro issues organizadas; aplicação ainda não implementada. O uso diário acontece em Claude/ChatGPT. A única tela própria prevista configura Z-API e fornece o webhook.
+[Comece pelo guia de primeiro uso](docs/operacao/primeiro-uso.md). Login padrão Cloudflare Access integrado ao OAuth MCP. A configuração Z-API é a única tela própria; uso diário e approve individual acontecem no chat.
 
-## Comece aqui
+## V0
 
-- [PRD v1.1](docs/prd/elo-v1.md): requisitos, decisões, limites e aceites da V0.
-- [Quatro entregas e dependências](docs/entregas/elo-v0.md): rastreabilidade dos 49 requisitos da V0.
-- [Prompt para iniciar o goal de implementação](docs/prompts/implementar-elo-v0.md): nova sessão, qualidade do Pi Harness sem sua cerimônia, deploy na conta pessoal Cloudflare e validação publicada.
-- [Issues no GitHub](https://github.com/orobsonn/elo/issues): padrão Pi completo, `enhancement`/`harness:ready`, prioridade P1, tamanho L e dependências validadas.
-
-## Recorte da V0
-
-- WhatsApp individual: captura/consulta de mensagens e envio de texto após approve pela Skill no chat.
-- IDs e aliases para contatos; endereço de envio restrito ao backend. Texto da conversa pode conter dados pessoais; não há promessa de anonimização universal.
-- Histórico bruto ativo até 30 dias, memória concisa, datas e informação pendente para avaliar.
-- Extração auxiliar generativa no backend; DeepSeek V4 Flash como escolha inicial, schema/validação local e sem Clef obrigatório. Modelo exige Paid/créditos e ainda será validado no Elo.
-- Rotinas em Skills no harness da pessoa, cron no Work/Cowork. **Otimize meu processo** entrevista, avalia recursos reais, cria/adapta uma Skill e testa junto com o consultor.
-- Instalação guiada fácil, atualização, recuperação e diagnóstico. Sem grupos, anexos, CRM/dashboard ou agendador próprio de agentes.
-
-## Evidência e contexto
-
-[Experimento generativo × Clef](docs/experimentos/memoria-30dias/RELATORIO.md), [referências de código](docs/pesquisa/referencias.md), [WhatsApp e clientes](docs/pesquisa/whatsapp-clientes.md), [Cloudflare](docs/pesquisa/instalacao-cloudflare.md), [método](docs/pesquisa/metodo.md) e [fontes públicas](FONTES.md).
-
-O experimento sintético usou Llama 3.3/Qwen e Clef; não testou DeepSeek ou Scout. Relatórios históricos e [rascunhos de telas arquivados](docs/pesquisa/adiados/README.md) não prevalecem sobre o PRD. Nenhum mock foi aprovado. [BRIEF.md](BRIEF.md) e [CONTEXT.md](CONTEXT.md) preservam contexto histórico.
+- MCP tipado com contatos por ID/alias, histórico paginado, memória rastreável, conflitos pendentes, tarefas, datas e revisão diária com cobertura de versões.
+- Z-API: captura individual normalizada, callbacks com autenticação própria e texto aprovado com consumo atômico. Sem instância, indica `whatsapp_nao_configurado`; não simula envio.
+- Histórico bruto até 30 dias da data original; expurgo técnico independente da IA. Memória concisa pode permanecer. Texto livre pode conter dados pessoais.
+- Extração DeepSeek V4 Flash configurável na Workers AI, com limites de entrada/saída, três tentativas e orçamento diário. Plano Paid/créditos e demais custos são separados.
+- [Skills](skills/): approve, revisão diária, pós-reunião e Otimize meu processo. Agendamento pertence a Work/Cowork. [Matriz de clientes e aceites humanos](docs/operacao/clientes-e-agendamento.md).
 
 ## Desenvolvimento
 
-Harness Pi vendorizado em `.pi/`, solicitado para este projeto. Leia [AGENTS.md](AGENTS.md). Ainda não há comandos de build/teste da aplicação; serão adicionados durante a implementação.
+Node 22+; `npm ci`, `npm run test:all`, `npm run check`, `npm run build`. Os testes workerd usam D1 local, identidades sintéticas e respostas de provedores controladas. Não dependem de Z-API nem chamam inferência paga.
 
-Transcrições, apresentações, credenciais e estado local não são publicados. O corpus de experimento é sintético. `fontes/privadas/` permanece local e ignorado pelo Git. Este repositório público não inclui dados reais de clientes.
+`npm run cf-typegen` atualiza tipos após alterações em Wrangler. Configuração pública em `wrangler.jsonc`; secrets em superfícies protegidas, nunca no chat/Git. [Autenticação](docs/implementacao/auth.md), [memória](docs/implementacao/memoria.md), [plano](docs/implementacao/plano.md) e [revisões](docs/implementacao/revisoes.md).
 
-A instância Z-API ainda não foi contratada. A próxima implementação deve publicar e validar tudo que independe dela, com dados sintéticos, deixando conexão/recebimento/envio real explicitamente pendentes de configuração.
+Publicação usa `wrangler versions upload`, smoke da saúde/binding no preview, promoção explícita e smoke publicado. Previews só permitem saúde: tools/configuração exigem origem canônica e autenticação. Recursos desta instalação pessoal não são compartilhados com outras instalações.
+
+Não há release/tag publicada. `CHANGELOG.md` registra o marco em Unreleased. As issues #1–#4 permanecem abertas enquanto seus aceites materiais de Z-API, clientes, celular e piloto não forem demonstrados. [PRD v1.1](docs/prd/elo-v1.md) é a base de produto; pesquisas antigas não alteram escopo.
+
+Harness Pi preservado em `.pi/`. A autorização deste goal dispensa sua cerimônia e mantém testes, revisão e evidências. `fontes/privadas/`, credenciais, mensagens reais e sessões nunca são versionadas.
