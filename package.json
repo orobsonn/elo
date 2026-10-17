@@ -10,7 +10,7 @@
     "build": "wrangler deploy --dry-run",
     "cf-typegen": "wrangler types",
     "smoke": "node scripts/smoke.mjs",
-    "test:installer": "node --test tests/provision-access.test.mjs",
+    "test:installer": "node --test tests/provision-access.test.mjs tests/restore-database.test.mjs",
     "test:all": "npm test && npm run test:installer",
     "deploy:versions": "wrangler versions upload"
   },

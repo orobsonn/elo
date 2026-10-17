@@ -1,4 +1,5 @@
 import { readConfig } from "./read-config.mjs";
+import { restoreDatabase } from "./restore-database.mjs";
 // Run by the installation assistant after an explicit restore request.
 // Maintenance and a new epoch live in Worker config, outside the D1 backup.
 import { mkdir, writeFile } from "node:fs/promises";
@@ -69,25 +70,7 @@ if (probe.status !== 503)
   throw new Error("Gate de manutenção não confirmado. Restore não executado.");
 // Drain bounded sends (12s status +12s device +12s POST) and 40s inference.
 await new Promise((r) => setTimeout(r, 55000));
-cli([
-  "d1",
-  "time-travel",
-  "restore",
-  config.d1_databases[0].database_name,
-  isBookmark ? "--bookmark" : "--timestamp",
-  target,
-  "--json",
-]);
-const sql =
-  "UPDATE settings SET sends_paused=1,data_generation=data_generation+1; UPDATE actions SET status=CASE WHEN status IN ('prepared','awaiting_approval','authorized') THEN 'cancelled' WHEN status='executing' THEN 'uncertain' ELSE status END; UPDATE sources SET content=NULL,extract_state='done',lease=NULL WHERE expires_at<=unixepoch()*1000; DELETE FROM auth_state WHERE key!='owner_binding';";
-cli([
-  "d1",
-  "execute",
-  config.d1_databases[0].database_name,
-  "--remote",
-  "--command",
-  sql,
-]);
+restoreDatabase(cli, config.d1_databases[0].database_name, target, isBookmark);
 if (!process.argv.includes("--reopen")) {
   console.log(
     JSON.stringify({

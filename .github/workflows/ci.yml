@@ -14,5 +14,5 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npm test
-      - run: node --test tests/provision-access.test.mjs
+      - run: npm run test:installer
       - run: npm run build

@@ -1,7 +1,14 @@
 import { env } from "cloudflare:test";
 import { describe, expect, it } from "vitest";
 import { DAY, id, now, sql } from "../src/core";
-import { importSource, getMemory, getTasks, reviewTask } from "../src/memory";
+import {
+  importSource,
+  getMemory,
+  getTasks,
+  reviewTask,
+  reviewMemory,
+} from "../src/memory";
+import { associateContact } from "../src/identity";
 import { runExtraction } from "../src/extraction";
 import type { AppEnv } from "../src/env";
 
@@ -69,6 +76,75 @@ function runtime() {
 }
 
 describe("meeting import applied once by its Skill", () => {
+  it("preserves a corrected fact when the same meeting is replayed", async () => {
+    const p = await fixture();
+    await importSource(env.DB, p);
+    const first = (await getMemory(env.DB, { contact_id: p.contact_id }))
+      .items[0];
+    const correction = await reviewMemory(env.DB, {
+      id: first.id,
+      decision: "correct",
+      value: "Prefere reuniões à noite",
+    });
+    await importSource(env.DB, p);
+    const facts = (await getMemory(env.DB, { contact_id: p.contact_id })).items;
+    expect(facts).toHaveLength(2);
+    expect(facts.find((f) => f.id === first.id)).toMatchObject({
+      state: "superseded",
+    });
+    expect(facts.find((f) => f.id === correction.id)).toMatchObject({
+      state: "confirmed",
+      value: "Prefere reuniões à noite",
+    });
+  });
+
+  it.each(["association", "data_generation"])(
+    "rejects a %s change between reservation and candidate commit",
+    async (mutation) => {
+      const p = await fixture(),
+        targetFixture = await fixture();
+      await sql(
+        env.DB,
+        "UPDATE contacts SET address=? WHERE id=?",
+        "5511888888888",
+        p.contact_id,
+      ).run();
+      const moving = new Proxy(env.DB, {
+        get(target, key) {
+          if (key === "batch")
+            return async (statements: D1PreparedStatement[]) => {
+              if (mutation === "association")
+                await associateContact(target, {
+                  provisional_id: p.contact_id,
+                  target_id: targetFixture.contact_id,
+                  confirm: "associar_contatos_selecionados",
+                });
+              else
+                await sql(
+                  target,
+                  "UPDATE settings SET data_generation=data_generation+1 WHERE id=1",
+                ).run();
+              return target.batch(statements);
+            };
+          const value = Reflect.get(target, key);
+          return typeof value === "function" ? value.bind(target) : value;
+        },
+      });
+      await expect(importSource(moving, p)).rejects.toThrow();
+      expect(
+        await sql(env.DB, "SELECT COUNT(*) n FROM memory").first(),
+      ).toMatchObject({ n: 0 });
+      expect(
+        await sql(env.DB, "SELECT COUNT(*) n FROM tasks").first(),
+      ).toMatchObject({ n: 0 });
+      expect(
+        await sql(
+          env.DB,
+          "SELECT extraction_owner,skill_applied FROM sources",
+        ).first(),
+      ).toMatchObject({ extraction_owner: "skill", skill_applied: 0 });
+    },
+  );
   it("also rolls back automatic extraction if the source expires after its first insert", async () => {
     const p = await fixture(),
       { extraction: _, ...automatic } = p;
@@ -159,9 +235,20 @@ describe("meeting import applied once by its Skill", () => {
   });
   it("keeps one task across paraphrased concurrent imports, review and later cron runs", async () => {
     const p = await fixture();
+    let arrivals = 0, release!: () => void;
+    const bothPrepared = new Promise<void>(resolve => release = resolve);
+    const concurrent = new Proxy(env.DB, { get(target, key) {
+      if (key === "batch") return async (statements: D1PreparedStatement[]) => {
+        if (++arrivals === 2) release();
+        await bothPrepared;
+        return target.batch(statements);
+      };
+      const value = Reflect.get(target, key);
+      return typeof value === "function" ? value.bind(target) : value;
+    } });
     const [a, b] = await Promise.all([
-      importSource(env.DB, p),
-      importSource(env.DB, {
+      importSource(concurrent, p),
+      importSource(concurrent, {
         ...p,
         extraction: {
           ...p.extraction,
