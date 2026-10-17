@@ -19,6 +19,14 @@
   "reopen_first_attempt": {
     "passed": false,
     "maintenance_reapplied": true,
-    "reason": "Binding OAuth KV ausente no Worker isolado; o gate detectou falha e manteve manutenção."
+    "reason": "Fixture isolado incompleto: KV OAuth e OWNER_EMAIL sintético ausentes nas primeiras tentativas. Gate detectou e reaplicou manutenção; corrigido sem copiar credenciais pessoais."
+  },
+  "reopen_final": {
+    "passed": true,
+    "version": "bcc09b20-65ba-4f59-8ea1-49e4a544b9dd",
+    "health": true,
+    "unauthenticated_mcp_status": 401,
+    "epoch_rotated": true,
+    "sends_paused": true
   }
 }

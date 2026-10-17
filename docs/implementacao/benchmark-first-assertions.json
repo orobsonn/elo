@@ -1,0 +1,17 @@
+{
+  "synthetic": true,
+  "checks": {
+    "three_processed_once": true,
+    "mario_goal": true,
+    "mario_preference": true,
+    "no_bia_three_children_false_fact": true,
+    "outbound_not_contact_fact": true,
+    "expired_raw_removed": true,
+    "pending_memory_survives": true
+  },
+  "limitations": [
+    "Irmão e ausência de filhos usam o mesmo campo context; um deles fica pendente pelo conflito conservador.",
+    "Trecho literal não garante suporte semântico universal.",
+    "Amostra três contatos, sem cliente MCP ou Z-API."
+  ]
+}

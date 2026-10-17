@@ -1,0 +1,25 @@
+{
+  "synthetic": true,
+  "checks": {
+    "six_processed_once": true,
+    "correction_pending": true,
+    "prior_goal_preserved": true,
+    "no_prior_preference_reattributed": true,
+    "no_ambiguous_deadline": true,
+    "new_inbound_goal": true
+  },
+  "cost": {
+    "all_cron_calls": 12,
+    "input_tokens": 9388,
+    "output_tokens": 4082,
+    "usd_upper_without_cache_discount": 0.00952296,
+    "corrected_six_calls": {
+      "input_tokens": 6436,
+      "output_tokens": 1007,
+      "usd_upper_without_cache_discount": 0.00416108
+    },
+    "four_rest_trials_usd": 0.0041118,
+    "total_smoke_usd_upper_without_cache_discount": 0.01363476
+  },
+  "scope": "Comparação manual das duas etapas + referência REST com contexto suficiente; corpus pequeno, não certifica qualidade universal."
+}

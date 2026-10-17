@@ -63,3 +63,5 @@ Ainda falta validar o schema efetivo e qualidade/custo no DeepSeek publicado. Tr
 3. **Contexto incremental/data:** contato pede “vamos conversar em novembro”; depois esclarece o dia. Esperado: nenhuma tarefa atrasada em outubro, data inicialmente ausente/incerta até haver informação suficiente, mesma pessoa e origem corretas; sem reimportação multiplicar tarefas. Registrar omissões, corte de contexto, falhas, tokens e custo sem reclassificar silenciosamente um caso que falhou.
 
 A migration 0002 registra versões mostradas em review_items e reviewed_version. Edições reabrem avaliação mesmo quando recebidas em outro dia; concluir versões mostradas não declara novas versões lidas.
+
+O ensaio real DeepSeek exigiu `chat_template_kwargs.thinking=false` e schema também no system. Cada candidato da extração exige `evidence`, trecho literal da fonte atual de até 350 caracteres; espaços são normalizados, nenhum candidato escreve se uma evidência falhar. O campo não é persistido nem altera as tools de escrita. Citação presente não prova que sustenta semanticamente o valor; essa qualidade é avaliada no corpus e permanece limitada. Ver validacao-publicada.md.

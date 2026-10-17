@@ -42,6 +42,33 @@
       "text": "Tenho dois filhos.",
       "direction": "out",
       "occurred_at": 1792205257884
+    },
+    {
+      "id": "src_eba8f3178f174e359c24a22a8e4359d8",
+      "message_id": "msg_e7c1f7703263402f944bfc5901533cd6",
+      "contact_id": "ct_04ce92a4fd5044f6943b6eeb22261d24",
+      "stage": "second",
+      "text": "Corrigindo: a viagem ao Chile será em dezembro de 2027, não em novembro.",
+      "direction": "in",
+      "occurred_at": 1792205958084
+    },
+    {
+      "id": "src_0eac77a944fc40fb9abc152cc33e8e3a",
+      "message_id": "msg_dc779130523f4a52a279d77a3b50c7a3",
+      "contact_id": "ct_c66ff9e489a34ae685a406f8cd04f6eb",
+      "stage": "second",
+      "text": "Podemos conversar em novembro, mas ainda não sei o dia.",
+      "direction": "in",
+      "occurred_at": 1792205958084
+    },
+    {
+      "id": "src_9f2464065d5a490e998dbfd4308fbe8a",
+      "message_id": "msg_c7421fd9e81240ba833569c46954cb5a",
+      "contact_id": "ct_2c66f8de75ee4566bfb32f0bdaf4237a",
+      "stage": "second",
+      "text": "Minha meta é aprender italiano no próximo ano.",
+      "direction": "in",
+      "occurred_at": 1792205958084
     }
   ]
 }
