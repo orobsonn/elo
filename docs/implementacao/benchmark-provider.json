@@ -1,0 +1,92 @@
+{
+  "synthetic": true,
+  "model": "@cf/deepseek-ai/deepseek-v4-flash-0731",
+  "boundary": "Cloudflare REST real; não é prova do binding publicado",
+  "trials": [
+    {
+      "case": "initial_documented_parameters",
+      "published_worker": false,
+      "success": true,
+      "finish_reason": "length",
+      "content_empty": true,
+      "usage": {
+        "prompt_tokens": 485,
+        "completion_tokens": 1600,
+        "total_tokens": 2085,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 211.39999389648438
+      }
+    },
+    {
+      "case": "thinking_false_inline_schema",
+      "published_worker": false,
+      "success": true,
+      "status": 200,
+      "errors": [],
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "content": "{\n  \"contact_id\": \"ct_reference_synthetic\",\n  \"facts\": [\n    {\n      \"certainty\": \"explicit\",\n      \"field\": \"goals\",\n      \"reason\": \"Contato corrigiu a data da viagem ao Chile para dezembro de 2027.\",\n      \"value\": \"Viagem ao Chile será em dezembro de 2027.\"\n    },\n    {\n      \"certainty\": \"explicit\",\n      \"field\": \"preferences\",\n      \"reason\": \"Contato afirmou preferência por reuniões pela manhã na fonte anterior.\",\n      \"value\": \"Prefere reuniões pela manhã.\"\n    }\n  ],\n  \"source_id\": \"src_reference_synthetic\",\n  \"tasks\": []\n}",
+          "reasoning_chars": 0
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 841,
+        "completion_tokens": 161,
+        "total_tokens": 1002,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "neurons": 43.04581832885742
+      }
+    },
+    {
+      "case": "current_source_instruction_only",
+      "published_worker": false,
+      "success": true,
+      "status": 200,
+      "errors": [],
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "content": "{\n  \"contact_id\": \"ct_reference_synthetic\",\n  \"facts\": [\n    {\n      \"certainty\": \"explicit\",\n      \"field\": \"goals\",\n      \"reason\": \"Contato corrigiu a data da viagem ao Chile para dezembro de 2027.\",\n      \"value\": \"Viagem ao Chile será em dezembro de 2027.\"\n    },\n    {\n      \"certainty\": \"explicit\",\n      \"field\": \"preferences\",\n      \"reason\": \"Contato afirmou preferência por reuniões pela manhã.\",\n      \"value\": \"Prefere reuniões pela manhã.\"\n    }\n  ],\n  \"source_id\": \"src_reference_synthetic\",\n  \"tasks\": []\n}",
+          "reasoning_chars": 0
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 855,
+        "completion_tokens": 158,
+        "total_tokens": 1013,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 53.15999984741211
+      }
+    },
+    {
+      "case": "current_source_literal_evidence",
+      "published_worker": false,
+      "success": true,
+      "status": 200,
+      "errors": [],
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "content": "{\n  \"contact_id\": \"ct_reference_synthetic\",\n  \"facts\": [\n    {\n      \"certainty\": \"explicit\",\n      \"evidence\": \"Corrigindo: a viagem ao Chile será em dezembro de 2027, não em novembro.\",\n      \"field\": \"goals\",\n      \"reason\": \"O contato corrige a data da viagem ao Chile para dezembro de 2027.\",\n      \"value\": \"Viagem ao Chile será em dezembro de 2027.\"\n    }\n  ],\n  \"source_id\": \"src_reference_synthetic\",\n  \"tasks\": []\n}",
+          "reasoning_chars": 0
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1014,
+        "completion_tokens": 131,
+        "total_tokens": 1145,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 56.279998779296875
+      }
+    }
+  ]
+}

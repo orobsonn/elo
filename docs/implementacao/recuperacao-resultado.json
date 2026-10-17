@@ -1,0 +1,24 @@
+{
+  "synthetic": true,
+  "account": "Robson Lins",
+  "worker": "elo-recovery-check",
+  "database": "elo-recovery-check",
+  "database_id": "d4888a47-e750-40d8-946a-866c11210ad0",
+  "bookmark": "00000003-00000004-00005107-98aa3262b0455e17f1eb0d4064b20b8b",
+  "observed": {
+    "raw_removed": true,
+    "concise_memory": "Aprender francês",
+    "prepared_action": "cancelled",
+    "sends_paused": true,
+    "data_generation": 3,
+    "auth_state_keys": [
+      "owner_binding"
+    ]
+  },
+  "caveat": "O primeiro ensaio por timestamp resolveu snapshot anterior ao fixture; repetido por bookmark exato. Não prova token MCP antigo real nem operação por pessoa leiga.",
+  "reopen_first_attempt": {
+    "passed": false,
+    "maintenance_reapplied": true,
+    "reason": "Binding OAuth KV ausente no Worker isolado; o gate detectou falha e manteve manutenção."
+  }
+}

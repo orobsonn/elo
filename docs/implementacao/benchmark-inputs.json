@@ -1,0 +1,47 @@
+{
+  "synthetic": true,
+  "created_at": "2026-10-17T02:47:37.882Z",
+  "contacts": [
+    {
+      "id": "ct_04ce92a4fd5044f6943b6eeb22261d24",
+      "alias": "Mario viagem"
+    },
+    {
+      "id": "ct_c66ff9e489a34ae685a406f8cd04f6eb",
+      "alias": "Bia exemplo"
+    },
+    {
+      "id": "ct_2c66f8de75ee4566bfb32f0bdaf4237a",
+      "alias": "Lia exemplo"
+    }
+  ],
+  "sources": [
+    {
+      "id": "src_500848beae1648f1b34a9155954d59ec",
+      "message_id": "msg_1b8af1816d924b5d9e8931eecfc61062",
+      "contact_id": "ct_04ce92a4fd5044f6943b6eeb22261d24",
+      "stage": "first",
+      "text": "Minha meta é viajar ao Chile em novembro de 2027. Prefiro reuniões pela manhã.",
+      "direction": "in",
+      "occurred_at": 1792205257884
+    },
+    {
+      "id": "src_0ad9ea9c681648e88154e856ec80167e",
+      "message_id": "msg_dfa6a5080431480caa8989f96398dc3c",
+      "contact_id": "ct_c66ff9e489a34ae685a406f8cd04f6eb",
+      "stage": "first",
+      "text": "Meu irmão tem três filhos. Não tenho filhos.",
+      "direction": "in",
+      "occurred_at": 1792205257884
+    },
+    {
+      "id": "src_63d6e3f7ead14f97ac3cc1f9101f7e22",
+      "message_id": "msg_949e4cb10f9946ff889abf54327b3a15",
+      "contact_id": "ct_2c66f8de75ee4566bfb32f0bdaf4237a",
+      "stage": "first",
+      "text": "Tenho dois filhos.",
+      "direction": "out",
+      "occurred_at": 1792205257884
+    }
+  ]
+}
