@@ -91,6 +91,7 @@ async function finish(
     "fetch",
     vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input instanceof Request ? input.url : input);
+      new Request(url, init); // Real workerd constructor catches unsupported redirect modes.
       if (url === endpoints.token && init?.method === "POST") {
         const body = new URLSearchParams(String(init.body));
         expect(body.get("code_verifier")).toHaveLength(43);
@@ -181,6 +182,32 @@ describe("Access owner boundary", () => {
       ).toBeNull();
     },
   );
+  it("rejects upstream redirects without forwarding credentials or binding an owner", async () => {
+    const f = await start();
+    const network = vi.fn(
+      async (input: RequestInfo | URL, init?: RequestInit) => {
+        const wire = new Request(input, init);
+        expect(wire.redirect).toBe("manual");
+        return Response.redirect("https://untrusted.example.test/token", 302);
+      },
+    );
+    vi.stubGlobal("fetch", network);
+    const r = await defaultAuthHandler(
+      new Request(
+        `${callback}?code=synthetic-code&state=${f.url.searchParams.get("state")}`,
+        { headers: { Cookie: f.cookie } },
+      ),
+      appEnv,
+      ctx,
+    );
+    expect(r.status).toBe(401);
+    expect(network).toHaveBeenCalledTimes(1);
+    expect(
+      await appEnv.DB.prepare(
+        "SELECT value FROM auth_state WHERE key='owner_binding'",
+      ).first(),
+    ).toBeNull();
+  });
   it("starts upstream login with browser state, nonce and S256 PKCE", async () => {
     const f = await start();
     expect(f.url.pathname).toContain("/authorization");

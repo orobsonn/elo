@@ -40,7 +40,7 @@ async function api(c: Connection, path: string, init: RequestInit = {}) {
           "Client-Token": c.client_token,
           "Content-Type": "application/json",
         },
-        redirect: "error",
+        redirect: "manual",
         signal: AbortSignal.timeout(12000),
       },
     );

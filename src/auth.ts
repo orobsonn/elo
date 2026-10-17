@@ -404,7 +404,7 @@ async function upstreamTokens(
         client_id: env.ACCESS_CLIENT_ID,
         client_secret: env.ACCESS_CLIENT_SECRET,
       }),
-      redirect: "error",
+      redirect: "manual",
       signal: AbortSignal.timeout(10000),
     });
   } catch (error) {
