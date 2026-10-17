@@ -166,7 +166,7 @@ const report = {
   revoked_access_status: oldAccess.status,
   revoked_refresh_status: oldRefresh.status,
   scope:
-    "Cliente HTTP próprio; não prova Claude/ChatGPT/celular ou cron. Renovação natural Access de15min não exercitada.",
+    "Cliente HTTP próprio; não prova Claude/ChatGPT/celular ou cron. Renovação natural Access tem ensaio separado em live-mcp-renewal.mjs.",
 };
 await writeFile(
   join(dir, "operations-report.json"),

@@ -1,0 +1,18 @@
+{
+  "origin": "https://elo.robsonlins.workers.dev",
+  "passed": [
+    "Access_OIDC_login",
+    "OAuth_PKCE",
+    "MCP_initialize",
+    "tools_list",
+    "contact_create",
+    "source_import",
+    "contacts_page",
+    "safe_diagnostic",
+    "MCP_refresh"
+  ],
+  "tool_count": 23,
+  "contact_id": "ct_2cb31d5d99364088b78de1b64873f4c7",
+  "source_id": "src_fc4c5cae50b64d028887eaea1cefe638",
+  "at": "2026-10-17T08:33:09.377Z"
+}
