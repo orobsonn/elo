@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-17",
+  "reference_timezone": "America/Fortaleza",
+  "client": "ChatGPT Work web / Chrome Robson / GPT-6.1 Sol High",
+  "origin": "https://elo.robsonlins.workers.dev",
+  "synthetic_contact": "ct_57cced4b718741cfb58168f348649f87",
+  "manual_read": {
+    "reported_completed_at": "2026-10-17T19:01:49Z",
+    "ui_evidence": "New response and Used Automations and Elo badge observed; raw per-call payloads not exposed in inspected panel",
+    "reported_memory_pages": 2,
+    "reported_memory_count": 3,
+    "reported_task_pages": 1,
+    "reported_task_count": 1,
+    "reported_cursors_exhausted": true,
+    "independent_connector_read": {
+      "memory_count": 3,
+      "confirmed": 2,
+      "pending": 1,
+      "task_count": 1,
+      "task_state": "open",
+      "responsible": "consultor",
+      "due_date": "2026-10-23",
+      "memory_cursor": null,
+      "tasks_cursor": null
+    },
+    "write_or_send_requested": false
+  },
+  "schedule": {
+    "id": "6ad38dbe36308191baeafe80910cd16b",
+    "ui_paused_observed": true,
+    "client_peek_report": {
+      "is_enabled": false,
+      "next_run_time": null,
+      "last_run_time": "2026-10-17T15:07:17.590127Z",
+      "updated_at": "2026-10-17T16:01:52.443583Z"
+    },
+    "scheduled_result_located": false,
+    "execution_proven": false,
+    "manual_run_now": false,
+    "resumed_or_edited": false
+  },
+  "limits": [
+    "Manual reads do not prove scheduled MCP execution",
+    "No isolated proof of Access renewal or revocation in this client",
+    "No new WhatsApp send or full daily review",
+    "Transient response loading error disappeared after one reload; no second prompt or retry of writes"
+  ],
+  "screenshot": "work-leitura-retomada-1710.jpg"
+}

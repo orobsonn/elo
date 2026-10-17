@@ -1,0 +1,30 @@
+{
+  "coverage": {
+    "unavailable_count": 14,
+    "unavailable_reasons": {
+      "expired": 1,
+      "unsupported_format": 13,
+      "missing_text": 0
+    },
+    "newer_versions_pending": 0,
+    "current_versions_complete": false,
+    "available_complete": false,
+    "unseen_sources_pending": 0,
+    "day": "2026-10-17",
+    "timezone": "America/Fortaleza",
+    "from": 1792206000000,
+    "to": 1792292400000,
+    "basis": "received_at_or_unreviewed_edit",
+    "snapshot_seq": 53,
+    "through_seq": 8,
+    "complete": false,
+    "external_completeness": "unknown",
+    "message": "Cobertura das versões mostradas na base capturada; inclui edições pendentes de outros dias e preserva datas originais. Se unseen_sources_pending>0, há fontes não mostradas, inclusive indisponíveis; uma nova revisão só poderá avaliá-las se estiverem legíveis"
+  },
+  "items_returned": 1,
+  "next_cursor_present": true,
+  "run_id_present": true,
+  "evidence": "Independent Elo connector projection; content, identifiers and tokens omitted; Claude reported same snapshot/counts after one allowed review_page call",
+  "review_completed": false,
+  "source_recovered": false
+}
