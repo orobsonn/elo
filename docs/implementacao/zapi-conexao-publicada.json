@@ -1,0 +1,35 @@
+{
+  "status": {
+    "at": "2026-10-17T12:26:51.040Z",
+    "configured": true,
+    "status_http": 200,
+    "connected": true,
+    "device_http": 200,
+    "sender_identity_matches": true
+  },
+  "webhooks": {
+    "at": "2026-10-17T12:28:00.442Z",
+    "updates": [
+      {
+        "callback": "deliveryCallbackUrl",
+        "accepted": true
+      },
+      {
+        "callback": "messageStatusCallbackUrl",
+        "accepted": true
+      }
+    ],
+    "received_matches": true,
+    "delivery_matches": true,
+    "message_status_matches": true,
+    "receive_own_messages": true
+  },
+  "backend": {
+    "connection_generation": 1,
+    "sends_paused": 1,
+    "last_received": null
+  },
+  "real_inbound_tested": false,
+  "real_outbound_tested": false,
+  "scope": "Consultas de status/aparelho/configuração, sem ler conversas ou enviar mensagens. Os seis registros anteriores são fixtures sintéticas, não prova de recepção Z-API."
+}
