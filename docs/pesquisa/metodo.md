@@ -56,3 +56,9 @@ O [relatório e evidências](../experimentos/memoria-30dias/RELATORIO.md) favore
 ## Fechamento e publicação autorizados
 
 Robson pediu encerrar o PRD, organizar as issues no padrão Pi e fornecer prompt para outro goal implementar sem cerimônia. Autorizou criar `orobsonn/elo` público e publicar o projeto. O PRD v1.0 e as quatro entregas passaram por revisão adversarial curta Sol/medium, sem nova rodada de inferência. As 49 exigências V0 foram mapeadas; R37/R39 ficaram posteriores. As issues foram criadas e seus corpos/links conferidos via GitHub. Não foram aplicados labels de fila nem iniciado goal de implementação. Fontes privadas continuam ignoradas; o índice público omite identidades dos entrevistados e acessos aos materiais originais.
+
+## Correção do padrão de issues e prompt de deploy
+
+Após Robson apontar a ausência de tags, foi aplicada a skill Pi `creating-issues`: títulos `[harness]`, IDs de journeys/aceites, escopo por área, decisões/suposições separadas, sensibilidade, P1/L e formulário canônico. Cada issue passou em `validate-ready.mjs` antes de receber `harness:ready` e `enhancement`. Dependências nativas e `harness-deps` foram preservadas; não aplicar manualmente estados do motor.
+
+Robson também autorizou deploy na conta pessoal Cloudflare ao fim da implementação e informou que ainda não comprou Z-API. O prompt agora exige deploy/validação publicados e progresso sem essa instância, com provedores fake apenas em testes e a limitação live explícita. Não houve compra, novo goal de implementação ou deploy nesta sessão.

@@ -6,9 +6,10 @@ iniciar um goal; não cria um goal nem inicia implementação nesta sessão docu
 ```text
 Trabalhe em /Users/robson/Desktop/dev/elo, repositório https://github.com/orobsonn/elo.
 
-Inicie um goal para implementar as quatro entregas da V0 do Elo, com testes,
-revisão independente e documentação, até concluir todo o trabalho que possa ser
-feito autonomamente e deixar identificados os aceites que exijam minha ação real.
+Inicie um goal para implementar as quatro entregas da V0 do Elo, revisar, testar
+e fazer deploy funcional na minha conta pessoal Cloudflare, validando o que
+puder no ambiente publicado. Conclua todo o trabalho que possa ser feito
+autonomamente e identifique os aceites que realmente exijam minha ação.
 Não atribua orçamento de tokens que eu não defini. Use create_goal se disponível;
 se houver goal ativo, confira o objetivo antes de tentar criar outro.
 
@@ -80,27 +81,72 @@ repetir toda a suíte sem mudança ou incerteza nova. Revise de forma independen
 as decisões técnicas não triviais e o diff crítico; corrija achados materiais.
 
 Pode criar código, dependências, migrations, testes, Skills, configuração e docs;
-commitar e enviar branches deste projeto ao GitHub e abrir PRs para revisão. Não
-publicar release, fazer merge, ativar fila automática ou implantar em produção
-sem autorização específica. Se abrir PR, anexe-o à sessão com a ferramenta do app.
+commitar e enviar branches deste projeto ao GitHub e abrir PRs para revisão.
+Após testes e revisão independente, pode integrar suas entregas à main, desde que
+os checks aplicáveis estejam verdes e não existam achados materiais pendentes.
+Não burlar proteções/revisões exigidas pelo repositório nem sobrescrever trabalho
+alheio; se uma regra externa impedir merge, mantenha o PR pronto e registre isso.
+Se abrir PR, anexe-o à sessão com a ferramenta do app. Não publicar GitHub Release
+ou tags automaticamente, nem configurar scheduler/fila do harness. As labels
+harness:ready das issues foram autorizadas; seus bloqueios continuam valendo.
 Não ler/exibir segredos em prompts, logs ou commits, nem subir fontes/privadas.
 
-Use dados sintéticos. Minha conta paga Cloudflare pode ser usada para ensaios
-delimitados de inferência e recursos NOVOS de teste isolados do Elo, com nomes
-inequívocos e custo/uso registrado; não alterar recursos de outros projetos,
-comprar planos ou criar custos recorrentes novos sem me apresentar a necessidade.
+AUTORIZAÇÃO DE DEPLOY: depois de implementar e revisar, publique o Elo na minha
+conta PESSOAL Cloudflare (Robson Lins), não apenas em localhost ou preview. Não
+solicite novamente autorização de deploy já dada neste prompt. Confira a conta
+por metadados/CLI/conector e fixe o alvo correto; não adivinhe pela primeira conta
+listada. Pode criar os recursos necessários do próprio Elo, bindings, migrations
+e configuração de execução nessa conta paga. Não alterar serviços, bancos, DNS
+ou credenciais de outros projetos, comprar domínios/planos ou serviços externos.
+Use nomes inequívocos do Elo; dados e testes devem ser sintéticos. Registre uso e
+custos, sem tomar US$5 como teto de todos os serviços.
+
+MODO DE DEPLOY para este goal: use publicação versionada com validação antes de
+promover tráfego, quando suportada pelo caminho escolhido: upload, smoke preview,
+promover a versão validada e smoke no endereço publicado. Essa escolha faz parte
+do prompt, sem nova pergunta de modo. No primeiro provisionamento, execute somente
+o bootstrap necessário; uma limitação real do provedor deve ser registrada e ter
+validação equivalente no caminho possível. Não confundir upload com versão ativa.
+Migrations de banco não são revertidas só por rollback do Worker: planeje aplicação
+compatível/recuperação e não destrua dados para tentar corrigir um deploy.
+
+Valide o que conseguir no ambiente PUBLICADO: saúde e bindings reais, autenticação,
+rejeição de acesso indevido, MCP, projeção de identificadores, paginação, escrita/
+consulta de memória sintética, extração DeepSeek, retenção e diagnóstico seguro.
+Teste também concorrência/replay/timeout nas fronteiras controláveis. Confira o
+commit/versão efetivamente ativo e sua saúde depois da promoção; se houver falha,
+diagnostique/corrija e repita a checagem afetada. Reverter Worker quando aplicável,
+sem apresentar rollback de código como rollback automático de dados. Não criar
+bypass ou endpoint público de teste no deploy para facilitar os smokes.
+
+Z-API: ainda NÃO comprei a instância. Não compre, não espere suas credenciais e
+não pare a implementação ou deploy por essa ausência. Conclua adaptador, captura,
+validação de callback, tools, tela/configuração e testes locais/controlados do
+provedor. Sem configuração válida, as operações dependentes devem informar
+WhatsApp não configurado, sem simular sucesso e sem aceitar callback desprotegido.
+Provedor fake é recurso de teste isolado, nunca rota alternativa pública de envio.
+Não alegar recebimento, entrega ou conexão real testados sem a instância.
+
 Não conectar meu WhatsApp, acessar conversa real ou enviar mensagem real sem
-autorização específica para número/controlador. Antes de uma etapa humana
-inevitável, conclua o que puder e deixe o fluxo pronto para eu executar.
+autorização específica para número/controlador. Deixe para mim apenas contratar
+a instância Z-API, inserir credenciais em superfície protegida, parear o número/
+configurar webhook e as aprovações humanas inevitáveis dos clientes. Antes dessa
+etapa, conclua tudo que independe dela; mantenha instrução curta e diagnóstico
+por etapa, sem me pedir para programar ou depurar. Execução real no Claude/ChatGPT,
+celular e crons só pode ser declarada testada se exercitada de fato.
 
 Mantenha issues atualizadas com evidências. Não fechar issue com aceite material
 pendente nem marcar goal como atingido por esgotamento de tempo/contexto. O goal
-de implementação autônoma pode encerrar quando todo o trabalho autorizável sem
-minha intervenção estiver entregue, testado e revisado, e o que depende de mim
-estiver explicitamente listado, sem afirmar que o piloto/produção já passaram.
+de implementação/deploy autônomos pode encerrar quando o código estiver entregue,
+testado, revisado e publicado na minha conta com smokes aprovados, e os aceites
+que dependem de mim/Z-API estiverem explicitamente listados. Não encerrar só com
+PR draft, build local ou upload sem confirmar tráfego/saúde. Issue com aceite live
+pendente continua aberta e anotada; não alegar que o WhatsApp ou o piloto já passaram.
 
-No final, entregue links dos PRs/commits, issues concluídas ou ainda abertas,
-testes/resultados, custos medidos e uma lista numerada curta das ações humanas
-restantes, com instrução concreta. Explique o estado real: local, sandbox ou
-produção. Não pare só no planejamento ou em um esqueleto de projeto.
+No final, entregue URL publicada, conta e nome do Worker, commit/versão ativa,
+resultado dos smokes/testes, rollback quando aplicável, links dos PRs/commits,
+issues concluídas ou ainda abertas, custos medidos e lista numerada curta das
+ações humanas restantes. Separe claramente o que rodou publicado, em sandbox,
+com provedor fake e o que espera Z-API/cliente real. Não pare no planejamento,
+esqueleto, localhost ou PR. Quero encontrar o máximo funcionando ao retomar.
 ```

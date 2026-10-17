@@ -1,24 +1,25 @@
-## Problema e resultado esperado
+## Resumo + por quê
 
 O Elo só tem valor para pessoas leigas quando conecta, funciona nas IAs usadas, tem rotinas instaláveis e pode ser atualizado/recuperado sem depender de programação ou suporte individual.
 
-## Escopo
+## User journeys
 
-Pacote e instruções por plataforma; Skills de revisão/brief/approve e Otimize meu processo; cron Work/Cowork; finalização do botão/roteiro de instalação, operação, atualização, diagnóstico, exportação e exclusão. Concluir integração das entregas anteriores.
+- #uj-1: Uma pessoa leiga conclui a instalação e usa Skills no Claude/ChatGPT sem editar código ou usar terminal diariamente.
+- #uj-2: O consultor descreve um processo ao Otimize meu processo, cria/adapta uma Skill e testa seu resultado com orientação.
 
-Base: [PRD v1.0](https://github.com/orobsonn/elo/blob/main/docs/prd/elo-v1.md). Padrão: `.pi/harness/skills/harness-issues/SKILL.md` e contratos de entrega/governança. Este texto define resultado/aceites, não sela plano técnico nem requer cerimônia do harness. Execução por goal será autorizada em outra sessão; não habilitar fila automática por criar esta issue.
+## Critérios de aceite (testáveis e observáveis)
 
-## Dependências
+- [ ] #ac-6.1: A instalação só termina após teste de autenticação, recebimento de evento, leitura com ID interno, envio aprovado a destino controlado e consulta do resultado. Diagnóstico informa a etapa que falta. (PRD R06)
+- [ ] #ac-9.1: Atualizar preserva dados e configurações; antes de alteração incompatível existe recuperação documentada. Uma instalação de teste deve ser atualizada e recuperada sem assistência individual de engenharia. (PRD R09)
+- [ ] #ac-10.1: A pessoa pode interromper envios pendentes, revogar conexões, exportar e excluir seus dados. O procedimento explica separadamente o que fica no Elo, em backups, na Z-API e no histórico da IA. (PRD R10)
+- [ ] #ac-42.1: Documentar matriz por plataforma/plano: conectar, ler, escrever, revisar, celular e agendar. Arquivos da própria IA, se descritos, não implicam envio de anexos WhatsApp na V0. Marcar suportado documentalmente, testado ou pendente; não presumir paridade Claude/ChatGPT. (PRD R42)
+- [ ] #ac-43.1: Jornadas principais são testadas no celular real. Configuração inicial orientada no computador é a hipótese de planejamento, coerente com a instalação assistida pela IA local; uso diário não pode depender de terminal. Restrição maior exige apresentar impacto antes de mudar o escopo. (PRD R43)
+- [ ] #ac-46.1: Perfil de uso mensurável estima requisições, CPU, linhas lidas/escritas, índices, armazenamento, mídia e plano da IA. Mostrar custos externos e avisos antes de habilitar recursos pagos. (PRD R46)
+- [ ] #ac-48.1: Procedimentos/Skills vêm com exemplo, saída esperada, informação ausente, erro e conferência. Não depender de formato de Skill idêntico em todos os clientes. (PRD R48)
+- [ ] #ac-50.1: GPS e rotinas são Skills instaladas no harness da pessoa; o pacote inclui orientação de cron no Work/Cowork. O backend oferece operações de dados e ação, sem duplicar esses procedimentos como serviços próprios. (PRD R50)
+- [ ] #ac-51.1: Entregar “Otimize meu processo”: entrevistar o consultor sobre a rotina e o resultado desejado; avaliar recursos disponíveis na plataforma/harness (computer use, cron, conectores, MCP, arquivos e demais capacidades pertinentes); desenhar uma rotina melhor; criar/adaptar a Skill e testá-la junto com a pessoa até demonstrar o resultado ou explicitar um bloqueio. Conferir disponibilidade/permissões reais, sem prometer toda capacidade em todo ambiente. GPS é exemplo, sem formato único obrigatório. (PRD R51)
 
-```harness-deps
-#1
-#2
-#3
-```
-
-#1 (https://github.com/orobsonn/elo/issues/1), #2 (https://github.com/orobsonn/elo/issues/2), #3 (https://github.com/orobsonn/elo/issues/3). Ler os contratos/estado implementados, não apenas a descrição das dependências.
-
-## Critérios de aceitação
+### Verificações complementares da entrega
 
 - [ ] Instalação termina com autenticação, recebimento, consulta por ID, envio aprovado a destino controlado e leitura do estado. Ponto de entrada único não promete eliminar login/consentimento/QR/pagamento; botão é preferido, orientação IA local é caminho complementar.
 - [ ] Orientação por IA local não pede segredos no chat e não presume ocultação em screenshot. A única tela do produto continua sendo configuração Z-API/webhook. Recomeçar não recria recursos nem apaga dados.
@@ -30,17 +31,47 @@ Base: [PRD v1.0](https://github.com/orobsonn/elo/blob/main/docs/prd/elo-v1.md). 
 - [ ] Perfil de uso mede CPU, consultas/escritas, armazenamento/memória durável, inferência e serviços externos. Mostrar Paid/créditos exigidos pelo DeepSeek e custos separados de Z-API/IA. US$5 não é teto de todos os serviços.
 - [ ] Piloto assistido com pessoa leiga disponível é aceite humano, sem prazo artificial em minutos. Registrar atritos e limitações; não fechar como comprovado por inspeção documental. Todo trabalho automatizável deve estar entregue antes de pedir essa participação.
 
-## Requisitos rastreados do PRD
+## Escopo
 
-- **R06:** A instalação só termina após teste de autenticação, recebimento de evento, leitura com ID interno, envio aprovado a destino controlado e consulta do resultado. Diagnóstico informa a etapa que falta.
-- **R09:** Atualizar preserva dados e configurações; antes de alteração incompatível existe recuperação documentada. Uma instalação de teste deve ser atualizada e recuperada sem assistência individual de engenharia.
-- **R10:** A pessoa pode interromper envios pendentes, revogar conexões, exportar e excluir seus dados. O procedimento explica separadamente o que fica no Elo, em backups, na Z-API e no histórico da IA.
-- **R42:** Documentar matriz por plataforma/plano: conectar, ler, escrever, revisar, celular e agendar. Arquivos da própria IA, se descritos, não implicam envio de anexos WhatsApp na V0. Marcar suportado documentalmente, testado ou pendente; não presumir paridade Claude/ChatGPT.
-- **R43:** Jornadas principais são testadas no celular real. Configuração inicial orientada no computador é a hipótese de planejamento, coerente com a instalação assistida pela IA local; uso diário não pode depender de terminal. Restrição maior exige apresentar impacto antes de mudar o escopo.
-- **R46:** Perfil de uso mensurável estima requisições, CPU, linhas lidas/escritas, índices, armazenamento, mídia e plano da IA. Mostrar custos externos e avisos antes de habilitar recursos pagos.
-- **R48:** Procedimentos/Skills vêm com exemplo, saída esperada, informação ausente, erro e conferência. Não depender de formato de Skill idêntico em todos os clientes.
-- **R50:** GPS e rotinas são Skills instaladas no harness da pessoa; o pacote inclui orientação de cron no Work/Cowork. O backend oferece operações de dados e ação, sem duplicar esses procedimentos como serviços próprios.
-- **R51:** Entregar “Otimize meu processo”: entrevistar o consultor sobre a rotina e o resultado desejado; avaliar recursos disponíveis na plataforma/harness (computer use, cron, conectores, MCP, arquivos e demais capacidades pertinentes); desenhar uma rotina melhor; criar/adaptar a Skill e testá-la junto com a pessoa até demonstrar o resultado ou explicitar um bloqueio. Conferir disponibilidade/permissões reais, sem prometer toda capacidade em todo ambiente. GPS é exemplo, sem formato único obrigatório.
+Pacote e instruções por plataforma; Skills de revisão/brief/approve e Otimize meu processo; cron Work/Cowork; finalização do botão/roteiro de instalação, operação, atualização, diagnóstico, exportação e exclusão. Concluir integração das entregas anteriores.
+
+Base: [PRD v1.0](https://github.com/orobsonn/elo/blob/main/docs/prd/elo-v1.md). Padrão: `.pi/harness/skills/creating-issues/SKILL.md`, formulário `harness-task.yml` e contratos de entrega/governança. Este texto define resultado/aceites, não sela plano técnico nem requer cerimônia do harness. Execução por goal será autorizada em outra sessão; a label `harness:ready` indica metadados validados conforme o harness; não autoriza configurar um scheduler ou iniciar a implementação nesta sessão.
+
+**Paths permitidos e exclusões:** Pode: skills/, scripts/ e configuração de distribuição/instalação; tela já prevista de configuração; docs/; testes/smokes de integração, migração/recuperação e saída; configuração de CI/Workers necessária ao fechamento. Ajustes de integração em src/ exigem regressão da área. Não tocar: .pi/, fontes/privadas/, outros projetos, contas/rotinas reais sem autorização; não criar CRM/dashboard, anexos ou novos fluxos de produto.
+
+## Decisões já resolvidas (opcional)
+
+Infraestrutura individual Cloudflare; Claude e ChatGPT; grupos/anexos fora da V0; approve por Skill no chat sem tela adicional; identificadores de entrega restritos ao backend; histórico bruto ativo até 30 dias; fatos claros automáticos e conflitos pendentes; Skills/cron no harness e Work/Cowork; única tela própria de configuração Z-API/webhook.
+
+O escopo detalhado e as exclusões adicionais estão no PRD v1.0. Robson autorizou organizar estas quatro entregas e implementar em outra sessão por goal, sem a cerimônia do harness; testes, revisão e verificação continuam exigidos.
+
+### Suposições do modelo (atacáveis)
+
+Configuração inicial no computador e distribuição por botão/roteiro são hipóteses de implementação; a experiência deve ser testada. Compatibilidade, celular e cron nas duas plataformas não são inferidos da existência do protocolo MCP.
+
+## Dependências
+
+```harness-deps
+#1
+#2
+#3
+```
+
+#1 (https://github.com/orobsonn/elo/issues/1), #2 (https://github.com/orobsonn/elo/issues/2), #3 (https://github.com/orobsonn/elo/issues/3). Ler os contratos/estado implementados, não apenas a descrição das dependências.
+
+## Domínio sensível?
+
+segredos
+
+## Prioridade
+
+P1
+
+## Tamanho estimado
+
+L
+
+Estas quatro issues são marcos de entrega da V0 já definidos com o operador, não mudanças pequenas. O tamanho L é explícito; na execução por goal, organizar tarefas e PRs revisáveis sem alegar que o marco inteiro cabe em 400 linhas ou retomar a cerimônia dispensada. A issue só fecha quando seus aceites materiais estiverem comprovados.
 
 ## Fora de escopo
 

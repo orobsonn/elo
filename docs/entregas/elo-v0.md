@@ -1,6 +1,6 @@
 # Elo V0 — entregas e rastreabilidade
 
-PRD de referência: [v1.0](../prd/elo-v1.md). Produto fechado para planejamento; implementação ainda não iniciada. As issues seguem o padrão `harness-issues` do Pi, com escopo, critérios observáveis, não-objetivos, caminhos sensíveis e evidência de verificação.
+PRD de referência: [v1.0](../prd/elo-v1.md). Produto fechado para planejamento; implementação ainda não iniciada. As issues seguem `creating-issues` e o formulário `harness-task.yml` do Pi: título `[harness]`, journeys `#uj-N`, aceites `#ac-N.M`, escopo/paths, decisões e suposições separadas, domínio sensível, prioridade e tamanho, além de riscos/verificação.
 
 ## Issues publicadas
 
@@ -13,7 +13,7 @@ PRD de referência: [v1.0](../prd/elo-v1.md). Produto fechado para planejamento;
 
 **49 requisitos da V0 cobertos.** R37 (anexos) e R39 (approve em conjunto) ficam posteriores, sem issues de implementação nesta versão.
 
-Dependências são declaradas em blocos `harness-deps` e nas relações nativas de bloqueio do GitHub, conforme o parser vendorizado do Pi. Issues sem dependência declaram `Nenhuma.`. A criação não habilita fila automática.
+Dependências são declaradas em blocos `harness-deps` e nas relações nativas de bloqueio do GitHub, conforme o parser vendorizado do Pi. Issues sem dependência declaram `Nenhuma.`. As quatro issues têm `enhancement` e `harness:ready`, aplicadas após `validate-ready.mjs` retornar `ok:true`. Prioridade P1 e tamanho L estão no corpo. Os estados `queued`/`blocked` pertencem ao motor; nenhum scheduler foi configurado.
 
 ## Ordem e limites
 
@@ -32,3 +32,9 @@ As [cópias locais dos corpos das issues](issues/) preservam o handoff inicial; 
 ## Revisão de fechamento
 
 Revisão adversarial independente Sol/medium não encontrou decisão de produto bloqueante, omissão de requisito V0 ou ciclo. Foram incorporados limites de approve no chat, remoção ativa do histórico de 30 dias, extração backend sem duplicar Skills, DeepSeek com exigência Paid/créditos e configuração inicial orientada no computador. Qualidade do DeepSeek, autenticação, concorrência, carga e integrações reais permanecem aceites de implementação; não são garantias dadas pelo PRD.
+
+## Autorização operacional mais recente
+
+Robson autorizou que o goal da próxima sessão integre as entregas revisadas, publique o Elo na sua conta pessoal Cloudflare e valide o ambiente publicado com dados sintéticos. O prompt especifica publicação versionada com smokes antes/depois, versão ativa e saúde verificadas. Essa autorização não iniciou implementação/deploy nesta sessão.
+
+A instância Z-API ainda não foi contratada. Isso não bloqueia código, deploy, memória/MCP e testes independentes: adaptador/fluxos devem ser testados com provedor controlado, sem alegar integração real. Não comprar a instância. Quando não configurado, o ambiente deve indicar a pendência e rejeitar operações/callbacks sem autorização, sem bypass público. Aceites live correspondentes permanecem abertos.

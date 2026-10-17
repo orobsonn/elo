@@ -6,7 +6,7 @@
     {
       "id": "E1",
       "file": "01-base-captura.md",
-      "title": "Instalar a base individual e consultar conversas WhatsApp por IDs internos",
+      "title": "[harness] base-captura-whatsapp",
       "deps": [],
       "req": [
         1,
@@ -31,12 +31,19 @@
         47
       ],
       "number": 1,
-      "url": "https://github.com/orobsonn/elo/issues/1"
+      "url": "https://github.com/orobsonn/elo/issues/1",
+      "labels": [
+        "enhancement",
+        "harness:ready"
+      ],
+      "priority": "P1",
+      "size": "L",
+      "sensitive": "auth/sessão"
     },
     {
       "id": "E2",
       "file": "02-envio-aprovado.md",
-      "title": "Preparar e enviar texto WhatsApp após approve pela Skill no chat",
+      "title": "[harness] envio-texto-aprovado",
       "deps": [
         "E1"
       ],
@@ -51,12 +58,19 @@
         40
       ],
       "number": 2,
-      "url": "https://github.com/orobsonn/elo/issues/2"
+      "url": "https://github.com/orobsonn/elo/issues/2",
+      "labels": [
+        "enhancement",
+        "harness:ready"
+      ],
+      "priority": "P1",
+      "size": "L",
+      "sensitive": "dados/PII"
     },
     {
       "id": "E3",
       "file": "03-memoria-retencao.md",
-      "title": "Consolidar memória e pendências a partir do histórico de até 30 dias",
+      "title": "[harness] memoria-retencao-30-dias",
       "deps": [
         "E1"
       ],
@@ -75,12 +89,19 @@
         49
       ],
       "number": 3,
-      "url": "https://github.com/orobsonn/elo/issues/3"
+      "url": "https://github.com/orobsonn/elo/issues/3",
+      "labels": [
+        "enhancement",
+        "harness:ready"
+      ],
+      "priority": "P1",
+      "size": "L",
+      "sensitive": "dados/PII"
     },
     {
       "id": "E4",
       "file": "04-skills-instalacao.md",
-      "title": "Entregar Skills e concluir instalação guiada em Claude e ChatGPT",
+      "title": "[harness] skills-instalacao-guiada",
       "deps": [
         "E1",
         "E2",
@@ -98,7 +119,14 @@
         51
       ],
       "number": 4,
-      "url": "https://github.com/orobsonn/elo/issues/4"
+      "url": "https://github.com/orobsonn/elo/issues/4",
+      "labels": [
+        "enhancement",
+        "harness:ready"
+      ],
+      "priority": "P1",
+      "size": "L",
+      "sensitive": "segredos"
     }
   ],
   "deferred_requirements": [

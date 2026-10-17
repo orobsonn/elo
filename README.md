@@ -8,8 +8,8 @@ Memória de relacionamento e WhatsApp na IA que o consultor já usa, por MCP e S
 
 - [PRD v1.0](docs/prd/elo-v1.md): requisitos, decisões, limites e aceites da V0.
 - [Quatro entregas e dependências](docs/entregas/elo-v0.md): rastreabilidade dos 49 requisitos da V0.
-- [Prompt para iniciar o goal de implementação](docs/prompts/implementar-elo-v0.md): nova sessão, qualidade do Pi Harness sem sua cerimônia.
-- [Issues no GitHub](https://github.com/orobsonn/elo/issues): escopo, aceites, riscos e verificação por entrega.
+- [Prompt para iniciar o goal de implementação](docs/prompts/implementar-elo-v0.md): nova sessão, qualidade do Pi Harness sem sua cerimônia, deploy na conta pessoal Cloudflare e validação publicada.
+- [Issues no GitHub](https://github.com/orobsonn/elo/issues): padrão Pi completo, `enhancement`/`harness:ready`, prioridade P1, tamanho L e dependências validadas.
 
 ## Recorte da V0
 
@@ -31,3 +31,5 @@ O experimento sintético usou Llama 3.3/Qwen e Clef; não testou DeepSeek ou Sco
 Harness Pi vendorizado em `.pi/`, solicitado para este projeto. Leia [AGENTS.md](AGENTS.md). Ainda não há comandos de build/teste da aplicação; serão adicionados durante a implementação.
 
 Transcrições, apresentações, credenciais e estado local não são publicados. O corpus de experimento é sintético. `fontes/privadas/` permanece local e ignorado pelo Git. Este repositório público não inclui dados reais de clientes.
+
+A instância Z-API ainda não foi contratada. A próxima implementação deve publicar e validar tudo que independe dela, com dados sintéticos, deixando conexão/recebimento/envio real explicitamente pendentes de configuração.

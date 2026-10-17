@@ -31,6 +31,16 @@ Isso não desativa autenticação, proteção de segredos ou limites operacionai
 Leia cada issue viva, confira dependências e inspecione o estado real do código.
 Reutilize utilitários somente após conferir licença/permissão e comportamento.
 Não declarar compatibilidade, cron ou envio real testados com base apenas em mocks.
-Não iniciar produção ou mandar WhatsApp a terceiros sem autorização específica.
+Robson autorizou deploy do Elo na sua conta pessoal Cloudflare e validação com
+  dados sintéticos, conforme o prompt de implementação. Não comprar instância Z-API
+  ou alterar outros projetos. WhatsApp real continua sujeito a autorização específica.
 Release é por marco significativo, não por micro-PR. Não publicar baseline de release
 ou tag só para inicializar a documentação.
+
+## Issues
+
+Use `.pi/harness/skills/creating-issues/SKILL.md` e o formulário
+`.github/ISSUE_TEMPLATE/harness-task.yml`: título `[harness] <slug>`, journeys
+`#uj-N`, aceites `#ac-N.M`, escopo/paths, decisões e suposições separadas,
+domínio sensível, prioridade e tamanho. Valide com `validate-ready.mjs` antes
+de aplicar `harness:ready`. Não aplicar `queued`/`blocked` manualmente.
