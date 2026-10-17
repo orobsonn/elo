@@ -1,0 +1,154 @@
+{
+  "at": "2026-10-17T14:02:57.594Z",
+  "origin": "https://elo.robsonlins.workers.dev",
+  "worker_version": "16fe1435-291e-428b-aab3-8feb98d3023b",
+  "worker_commit": "5f5103d",
+  "client": {
+    "surface": "ChatGPT web no Chrome; conector instalado também chamado no Codex",
+    "model": "GPT-5.6 Sol Medium",
+    "commercial_plan": "not_identified",
+    "skills_model": "GPT-6.1 Sol High (Work)"
+  },
+  "plugin": {
+    "id": "plugin_asdk_app_6ad36d6a59f881919b3de4f512858abf",
+    "version": "1.0.3",
+    "release": "pluginrel_6ad37fcb97008191a5151e8ae7dcae13",
+    "scope": "USER",
+    "visibility": "PRIVATE",
+    "app_binding_preserved": true,
+    "skills_declared": true,
+    "skills": [
+      {
+        "path": "skills/approve/SKILL.md",
+        "bytes": 4084,
+        "sha256": "d4e2af093cac7aaecd1fd54dfd70e1a099e260e8f1438c46f3d5dacb26eaa63d",
+        "identical": true
+      },
+      {
+        "path": "skills/elo-preparar-pauta/SKILL.md",
+        "bytes": 4607,
+        "sha256": "7fff715f5a85080f15d9865e641a7b8f9c1dc19a4cae81fd0075ebe16e08396d",
+        "identical": true
+      },
+      {
+        "path": "skills/otimize-meu-processo/SKILL.md",
+        "bytes": 3831,
+        "sha256": "2b0344d7cc09344ba3e19298340a042d9492b8ea94bc16bcf122db6d13042e6d",
+        "identical": true
+      },
+      {
+        "path": "skills/pos-reuniao/SKILL.md",
+        "bytes": 4400,
+        "sha256": "bb58f5ab28beb8cb1fa1e4482b79d0b7dd73256683bae7f99cb0818608e99ffd",
+        "identical": true
+      },
+      {
+        "path": "skills/revisao-diaria/SKILL.md",
+        "bytes": 4470,
+        "sha256": "18d23764a0dd0eaa7a656d1818eb8db31ac19cc29d839ae4cff750453cef4b6c",
+        "identical": true
+      }
+    ]
+  },
+  "synthetic": {
+    "prefix": "SIM-ELO-1710",
+    "four_distinct_contacts_created": true,
+    "contact_pagination": true,
+    "source_reimport_same_id": true,
+    "memory_pagination": true,
+    "newGoalConfirmed": true,
+    "oldGoalPreserved": true,
+    "discardPreserved": true,
+    "correctionHistory": true,
+    "leapDay": true,
+    "separateInteractions": true,
+    "allSourceBound": true,
+    "paginationComplete": true,
+    "task_repeat_same_id": true,
+    "task_done_then_reopen": true,
+    "task_rescheduled": "2026-10-22",
+    "future_tasks_not_overdue": true,
+    "cross_contact_source_denied": true,
+    "restricted_alias_denied": true,
+    "recipient_without_whatsapp_denied": true,
+    "review_invalid_cursor_denied": true,
+    "review_invalid_completion_denied": true,
+    "association_without_sender_denied": true,
+    "test_contact_deleted": true,
+    "deleted_contact_unavailable": true,
+    "expired_import_has_no_active_source": true,
+    "expired_source_memory_write_denied": true,
+    "cancelled_draft_never_executed": true
+  },
+  "production_smokes": {
+    "passed": 6,
+    "checks": [
+      "home",
+      "health_D1",
+      "unauthenticated_MCP",
+      "invalid_bearer",
+      "protected_webhook",
+      "OAuth_discovery_PKCE"
+    ]
+  },
+  "observations": [
+    "GPT-6 responses failed to load even without tools; GPT-5.6 Sol responded.",
+    "Transient internal errors on concurrent connector reads; sequential read retries succeeded. Cause not determined.",
+    "Equivalent wording can create conservative pending conflicts and separate task candidates; identical writes were idempotent.",
+    "Initial plugin release lacked skills declaration; 1.0.2 declares ./skills/ and preserves exact repo bytes."
+  ],
+  "not_claimed": [
+    "Claude validation",
+    "physical mobile validation",
+    "scheduled client routine execution",
+    "full daily review over real conversations",
+    "positive contact association in production",
+    "new real send through installed plugin before exact human approval"
+  ],
+  "correction": {
+    "tests_workerd_D1": 134,
+    "tests_node": 22,
+    "checks": "TypeScript/build passed",
+    "migration": "0005_source_application.sql",
+    "preview_private_routes_denied": true,
+    "production_smokes": 6,
+    "independent_review": "Sol and fresh Astra; material findings corrected",
+    "legacy_imports_not_repaired": true,
+    "reimport_after_contact_association_not_guaranteed": true
+  },
+  "initial_worker_version": "0d7c4ac6-c494-4fa0-9e46-15ebc5c8fc2a",
+  "usage_snapshot": {
+    "at": "2026-10-17T14:02:57.594Z",
+    "calls": 22,
+    "input_tokens": 20155,
+    "output_tokens": 5757,
+    "failures": 0,
+    "not_invoice": true
+  },
+  "work_skills_initial": {
+    "pos_reuniao_loaded": true,
+    "revisao_diaria_loaded": true,
+    "otimize_meu_processo_loaded": true,
+    "daily_review_complete": false,
+    "global_review_not_called": true,
+    "later_duplicate_tasks_found": 2,
+    "generated_skill_file": "docs/exemplos/elo-preparar-pauta/SKILL.md"
+  },
+  "work_skills_corrected": {
+    "at": "2026-10-17T14:06:30.662Z",
+    "source_id": "src_98b0ad73ebbe40b6adbbe21e03247f53",
+    "contact_id": "ct_57cced4b718741cfb58168f348649f87",
+    "extraction_owner": "skill",
+    "application_state": "applied",
+    "backend_attempts": 0,
+    "memory_count": 3,
+    "task_count": 1,
+    "uncertain_pending": 1,
+    "replay_with_paraphrases_preserved_ids_values_timestamps": true,
+    "independent_connector_and_D1_check": true,
+    "pos_reuniao_1_0_3_loaded": true,
+    "generated_skill_1_0_3_loaded_and_executed": true,
+    "human_pauta_validation": "pending",
+    "cron_after_new_import_not_separately_observed": true
+  }
+}

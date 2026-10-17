@@ -20,8 +20,12 @@ Node 22+; `npm ci`, `npm run test:all`, `npm run check`, `npm run build`. Os tes
 
 `npm run cf-typegen` atualiza tipos após alterações em Wrangler. Configuração pública em `wrangler.jsonc`; secrets em superfícies protegidas, nunca no chat/Git. [Autenticação](docs/implementacao/auth.md), [memória](docs/implementacao/memoria.md), [plano](docs/implementacao/plano.md) e [revisões](docs/implementacao/revisoes.md).
 
+[Como recebemos mensagens e construímos memória](docs/implementacao/recebimento-e-memoria.md): fluxo do webhook à consulta, duplicatas, edições, extração, retenção e limites.
+
 Publicação usa `wrangler versions upload`, smoke da saúde/binding no preview, promoção explícita e smoke publicado. Previews só permitem saúde: tools/configuração exigem origem canônica e autenticação. Recursos desta instalação pessoal não são compartilhados com outras instalações.
 
 Não há release/tag publicada. `CHANGELOG.md` registra o marco em Unreleased. As issues #1–#4 permanecem abertas enquanto seus aceites materiais de Z-API, clientes, celular e piloto não forem demonstrados. [PRD v1.1](docs/prd/elo-v1.md) é a base de produto; pesquisas antigas não alteram escopo.
 
 Harness Pi preservado em `.pi/`. A autorização deste goal dispensa sua cerimônia e mantém testes, revisão e evidências. `fontes/privadas/`, credenciais, mensagens reais e sessões nunca são versionadas.
+
+[Homologação no ChatGPT: testes, evidências e limites](docs/implementacao/homologacao-chatgpt.md).

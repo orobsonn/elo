@@ -4,6 +4,7 @@ import migrations from "../migrations/0001_initial.sql?raw";
 import reviewVersions from "../migrations/0002_review_versions.sql?raw";
 import identityLinks from "../migrations/0003_identity.sql?raw";
 import identitySources from "../migrations/0004_source_identity.sql?raw";
+import sourceApplication from "../migrations/0005_source_application.sql?raw";
 beforeAll(async () => {
   await applyD1Migrations(env.DB, [
     {
@@ -30,6 +31,13 @@ beforeAll(async () => {
     {
       name: "0004",
       queries: identitySources
+        .split(/;\s*(?:\n|$)/)
+        .map((s) => s.trim())
+        .filter(Boolean),
+    },
+    {
+      name: "0005",
+      queries: sourceApplication
         .split(/;\s*(?:\n|$)/)
         .map((s) => s.trim())
         .filter(Boolean),
