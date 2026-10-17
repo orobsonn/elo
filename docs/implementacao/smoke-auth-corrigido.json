@@ -1,0 +1,18 @@
+{
+  "origin": "https://elo.robsonlins.workers.dev",
+  "health": {
+    "ok": true,
+    "version": "0d7c4ac6-c494-4fa0-9e46-15ebc5c8fc2a",
+    "commit": "a5d9a0d",
+    "database": true
+  },
+  "checks": [
+    "home",
+    "health_D1",
+    "unauthenticated_MCP",
+    "invalid_bearer",
+    "protected_webhook",
+    "OAuth_discovery_PKCE"
+  ],
+  "passed": 6
+}

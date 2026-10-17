@@ -43,7 +43,16 @@ interface UpstreamTokens {
   expires_in?: number;
   refresh_expires_in?: number;
 }
-class AuthUnavailable extends Error {}
+class AuthDenied extends Error {
+  constructor(readonly safeCode = "auth_negado") {
+    super(safeCode);
+  }
+}
+class AuthUnavailable extends Error {
+  constructor(readonly safeCode = "auth_indisponivel") {
+    super(safeCode);
+  }
+}
 const FLOW_COOKIE = "__Host-elo-flow";
 const SESSION_COOKIE = "__Host-elo-session";
 const MAX_AUTH_SECONDS = 7 * 24 * 60 * 60;
@@ -63,14 +72,13 @@ const unb64 = (s: string) =>
 const random = () => b64(crypto.getRandomValues(new Uint8Array(32)));
 const digest = async (s: string) =>
   b64(new Uint8Array(await crypto.subtle.digest("SHA-256", enc.encode(s))));
-const denied = () =>
-  new Error("Sessão inválida. Conecte novamente pelo Cloudflare Access.");
+const denied = () => new AuthDenied();
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 const secureHeaders = () =>
   new Headers({
     "Cache-Control": "no-store",
-    "Referrer-Policy": "no-referrer",
+    "Referrer-Policy": "strict-origin",
     "X-Content-Type-Options": "nosniff",
     "Content-Security-Policy":
       "default-src 'none'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'",
@@ -354,10 +362,28 @@ async function verifyIdToken(
       "exp",
       "iat",
       "email",
-      "email_verified",
       ...(refresh ? [] : ["nonce"]),
     ],
     maxTokenAge: refresh ? "5m" : "24h",
+  }).catch((error: unknown) => {
+    const e = error as { code?: unknown; claim?: unknown };
+    const claims = [
+      "email_verified",
+      "nonce",
+      "aud",
+      "iss",
+      "exp",
+      "iat",
+      "sub",
+      "email",
+    ];
+    if (
+      e?.code === "ERR_JWT_CLAIM_VALIDATION_FAILED" &&
+      typeof e.claim === "string" &&
+      claims.includes(e.claim)
+    )
+      throw new AuthDenied(`auth_identity_claim_${e.claim}`);
+    throw new AuthDenied("auth_identity_token_invalid");
   });
   if (
     (payload.azp !== undefined && payload.azp !== env.ACCESS_CLIENT_ID) ||
@@ -368,7 +394,9 @@ async function verifyIdToken(
     throw denied();
   if (
     ((!refresh || payload.nonce !== undefined) && payload.nonce !== nonce) ||
-    payload.email_verified !== true ||
+    // Access OTP authenticates the authorized mailbox but omits this optional OIDC claim.
+    // The provisioner pins the app to OTP; a present claim must still be boolean true.
+    (payload.email_verified !== undefined && payload.email_verified !== true) ||
     typeof payload.email !== "string" ||
     payload.email.toLowerCase() !== env.OWNER_EMAIL.toLowerCase() ||
     !payload.sub ||
@@ -400,19 +428,23 @@ async function upstreamTokens(
         client_id: env.ACCESS_CLIENT_ID,
         client_secret: env.ACCESS_CLIENT_SECRET,
       }),
-      redirect: "error",
+      redirect: "manual",
       signal: AbortSignal.timeout(10000),
     });
-  } catch {
-    throw new AuthUnavailable();
+  } catch (error) {
+    const timeout =
+      error instanceof Error &&
+      ["AbortError", "TimeoutError"].includes(error.name);
+    throw new AuthUnavailable(
+      timeout ? "auth_upstream_timeout" : "auth_upstream_transport",
+    );
   }
   if (response.status >= 500 || response.status === 429)
-    throw new AuthUnavailable();
-  if (
-    !response.ok ||
-    Number(response.headers.get("Content-Length") ?? 0) > 32768
-  )
-    throw denied();
+    throw new AuthUnavailable(`auth_upstream_http_${response.status}`);
+  if (!response.ok)
+    throw new AuthDenied(`auth_upstream_http_${response.status}`);
+  if (Number(response.headers.get("Content-Length") ?? 0) > 32768)
+    throw new AuthDenied("auth_upstream_invalid_response");
   const text = await response.text();
   if (text.length > 32768) throw denied();
   const tokens = JSON.parse(text) as UpstreamTokens;
@@ -555,6 +587,14 @@ async function consent(
 ) {
   const client = await env.OAUTH_PROVIDER.lookupClient(auth.clientId);
   if (!client) throw denied();
+  const redirect = new URL(auth.redirectUri);
+  // URL serialization alone accepts CSP wildcards/delimiters in hostnames.
+  // The OAuth provider separately enforces registered URI equality and HTTP loopback.
+  if (
+    !["https:", "http:"].includes(redirect.protocol) ||
+    !/^(?:[a-z0-9.-]+|\[[a-f0-9:]+\])$/i.test(redirect.hostname)
+  )
+    throw denied();
   const handle = random();
   await store(
     `consent:${handle}`,
@@ -564,9 +604,14 @@ async function consent(
   );
   const headers = secureHeaders();
   headers.set("Content-Type", "text/html; charset=utf-8");
+  // Browsers apply form-action to redirect chains too: allow this client only.
+  headers.set(
+    "Content-Security-Policy",
+    `default-src 'none'; form-action 'self' ${redirect.origin}; frame-ancestors 'none'; base-uri 'none'`,
+  );
   if (cookieHeader) headers.set("Set-Cookie", cookieHeader);
   const clientName = client.clientName || "Cliente MCP";
-  const redirectHost = new URL(auth.redirectUri).hostname;
+  const redirectHost = redirect.hostname;
   const localWarning = /^(localhost|127\.|\[::1\])/.test(redirectHost)
     ? "<p>Acesso para um aplicativo neste computador. Autorize somente se acabou de iniciar esta conexão nele.</p>"
     : "";
@@ -593,7 +638,7 @@ export async function defaultAuthHandler(
       url.pathname === "/login" &&
       url.searchParams.get("purpose") === "setup"
     )
-      return beginLogin(request, env);
+      return await beginLogin(request, env);
     if (request.method === "GET" && url.pathname === "/authorize") {
       const auth = await checkedAuthRequest(request, env);
       let owner: OwnerAuth;
@@ -601,9 +646,9 @@ export async function defaultAuthHandler(
         owner = await requireOwner(request, env);
       } catch (error) {
         if (error instanceof AuthUnavailable) throw error;
-        return beginLogin(request, env, auth);
+        return await beginLogin(request, env, auth);
       }
-      return consent(auth, owner, env);
+      return await consent(auth, owner, env);
     }
     if (request.method === "GET" && url.pathname === "/callback") {
       const state = url.searchParams.get("state"),
@@ -678,7 +723,7 @@ export async function defaultAuthHandler(
         owner.authUntil - now(),
       );
       if (flow.authRequest)
-        return consent(flow.authRequest, owner, env, sessionCookie);
+        return await consent(flow.authRequest, owner, env, sessionCookie);
       const headers = secureHeaders();
       headers.set("Location", `${env.PUBLIC_ORIGIN}/setup`);
       headers.set("Set-Cookie", sessionCookie);
@@ -739,6 +784,15 @@ export async function defaultAuthHandler(
       headers: secureHeaders(),
     });
   } catch (error) {
+    if (
+      error instanceof AuthUnavailable ||
+      (error instanceof AuthDenied && error.safeCode !== "auth_negado")
+    ) {
+      await env.DB.prepare("UPDATE settings SET last_error=? WHERE id=1")
+        .bind(error.safeCode)
+        .run()
+        .catch(() => {});
+    }
     return responseError(
       error instanceof AuthUnavailable
         ? 503
@@ -759,8 +813,7 @@ type ApiHandler = {
 export function makeOAuth(apiHandler: ApiHandler) {
   // Instance per origin: immutable metadata; no redirect or resource derived from Host.
   let configured:
-    | { origin: string; provider: OAuthProvider<AppEnv> }
-    | undefined;
+    { origin: string; provider: OAuthProvider<AppEnv> } | undefined;
   return {
     async fetch(request: Request, env: AppEnv, ctx: ExecutionContext) {
       try {

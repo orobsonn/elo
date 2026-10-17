@@ -12,7 +12,7 @@ function page(content: string, status = 200) {
       headers: {
         "Content-Type": "text/html; charset=utf-8",
         "Cache-Control": "no-store",
-        "Referrer-Policy": "no-referrer",
+        "Referrer-Policy": "strict-origin",
         "Content-Security-Policy":
           "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'",
         "X-Content-Type-Options": "nosniff",

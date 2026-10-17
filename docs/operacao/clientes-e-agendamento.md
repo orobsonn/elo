@@ -15,6 +15,8 @@ Consulta documental: **16/10/2026**. Fontes oficiais foram abertas nesta impleme
 | Recorrência | D: tarefas Cowork com conectores/Skills em planos pagos e rollout [4]; custom MCP Elo + renovação P | D: tarefas web podem usar tools/Skills/plugins acessíveis ao chat [3]; plano/workspace e Elo P | Execução no horário real chama MCP autenticado e gera brief; erro de login e revogação visíveis |
 | Instalar Skills | P: adaptar ao mecanismo habilitado no Claude da pessoa | D: diretório com SKILL.md e name/description; distribuição reutilizável por plugins [6]; pacote Elo P | Skill selecionável e fluxo exercitado; não assumir caminhos/formato idênticos |
 
+Em 17/10/2026, o cliente HTTP próprio passou por Access OTP, consentimento/OAuth, initialize e 23 tools, criação/consulta sintética e renovação MCP em produção. Após mais de três horas renovou também a credencial Access e usou o MCP; o grant sintético foi revogado com recusa dos tokens antigos. Evidência em [validação publicada](../implementacao/validacao-publicada.md). Isso não marca nenhuma coluna Claude/ChatGPT como T; navegador local de autorização não prova uso no smartphone.
+
 O plano do cliente e as permissões de organização precisam ser conferidos na conta-alvo. Campos/documentos de um fornecedor não configuram o outro. Arquivos criados na IA podem permanecer nela; a V0 Elo envia somente texto individual, sem anexos.
 
 ## Instalar este pacote

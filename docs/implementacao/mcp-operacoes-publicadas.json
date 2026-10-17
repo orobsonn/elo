@@ -1,0 +1,23 @@
+{
+  "synthetic": true,
+  "at": "2026-10-17T12:06:54.544Z",
+  "origin": "https://elo.robsonlins.workers.dev",
+  "version": "0d7c4ac6-c494-4fa0-9e46-15ebc5c8fc2a",
+  "commit": "a5d9a0d",
+  "checks": [
+    "memory_write",
+    "memory_read",
+    "memory_pagination",
+    "contact_pagination",
+    "structured_projection",
+    "safe_diagnostic",
+    "test_grant_revocation",
+    "revoked_access_denied",
+    "revoked_refresh_denied"
+  ],
+  "contact_id": "ct_74afdc9dd49640a0ae27c0b039a5736a",
+  "source_id": "src_6a98033f4cf040ffa35912306c1620bf",
+  "revoked_access_status": 401,
+  "revoked_refresh_status": 400,
+  "scope": "Cliente HTTP próprio; não prova Claude/ChatGPT/celular ou cron. Renovação natural Access foi exercitada separadamente; veja access-renovacao-publicada.json."
+}

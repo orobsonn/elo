@@ -91,6 +91,7 @@ async function finish(
     "fetch",
     vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input instanceof Request ? input.url : input);
+      new Request(url, init); // Real workerd constructor catches unsupported redirect modes.
       if (url === endpoints.token && init?.method === "POST") {
         const body = new URLSearchParams(String(init.body));
         expect(body.get("code_verifier")).toHaveLength(43);
@@ -142,6 +143,118 @@ describe("Access owner boundary", () => {
       ).status,
     ).toBe(503);
   });
+  it.each(["transport", "server"])(
+    "records only safe upstream diagnosis for %s failure",
+    async (failure) => {
+      const f = await start();
+      const privateMarker = "never-log-synthetic-credential";
+      vi.stubGlobal(
+        "fetch",
+        vi.fn(async () => {
+          if (failure === "transport") throw new Error(privateMarker);
+          return new Response(privateMarker, { status: 503 });
+        }),
+      );
+      const r = await defaultAuthHandler(
+        new Request(
+          `${callback}?code=synthetic-code&state=${f.url.searchParams.get("state")}`,
+          { headers: { Cookie: f.cookie } },
+        ),
+        appEnv,
+        ctx,
+      );
+      expect(r.status).toBe(503);
+      expect(await r.text()).not.toContain(privateMarker);
+      const diagnostic = await appEnv.DB.prepare(
+        "SELECT last_error FROM settings WHERE id=1",
+      ).first();
+      expect(diagnostic).toMatchObject({
+        last_error:
+          failure === "transport"
+            ? "auth_upstream_transport"
+            : "auth_upstream_http_503",
+      });
+      expect(JSON.stringify(diagnostic)).not.toContain(privateMarker);
+      expect(
+        await appEnv.DB.prepare(
+          "SELECT value FROM auth_state WHERE key='owner_binding'",
+        ).first(),
+      ).toBeNull();
+    },
+  );
+  it("rejects upstream redirects without forwarding credentials or binding an owner", async () => {
+    const f = await start();
+    const network = vi.fn(
+      async (input: RequestInfo | URL, init?: RequestInit) => {
+        const wire = new Request(input, init);
+        expect(wire.redirect).toBe("manual");
+        return Response.redirect("https://untrusted.example.test/token", 302);
+      },
+    );
+    vi.stubGlobal("fetch", network);
+    const r = await defaultAuthHandler(
+      new Request(
+        `${callback}?code=synthetic-code&state=${f.url.searchParams.get("state")}`,
+        { headers: { Cookie: f.cookie } },
+      ),
+      appEnv,
+      ctx,
+    );
+    expect(r.status).toBe(401);
+    expect(network).toHaveBeenCalledTimes(1);
+    expect(
+      await appEnv.DB.prepare(
+        "SELECT value FROM auth_state WHERE key='owner_binding'",
+      ).first(),
+    ).toBeNull();
+  });
+  it.each([undefined, true])(
+    "accepts the OTP owner with optional email_verified %s",
+    async (verified) => {
+      const r = await finish(await start(), { email_verified: verified });
+      expect(r.status).toBe(302);
+      expect(
+        await appEnv.DB.prepare(
+          "SELECT value FROM auth_state WHERE key='owner_binding'",
+        ).first(),
+      ).not.toBeNull();
+    },
+  );
+  it.each([false, null, "true", 1, [], {}])(
+    "rejects a present invalid email_verified %#",
+    async (verified) => {
+      expect(
+        (await finish(await start(), { email_verified: verified })).status,
+      ).toBe(401);
+      expect(
+        await appEnv.DB.prepare(
+          "SELECT value FROM auth_state WHERE key='owner_binding'",
+        ).first(),
+      ).toBeNull();
+    },
+  );
+  it("diagnoses an upstream rejection using only its status", async () => {
+    const f = await start();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => new Response("private-upstream-body", { status: 400 })),
+    );
+    const r = await defaultAuthHandler(
+      new Request(
+        `${callback}?code=synthetic-code&state=${f.url.searchParams.get("state")}`,
+        { headers: { Cookie: f.cookie } },
+      ),
+      appEnv,
+      ctx,
+    );
+    expect(r.status).toBe(401);
+    expect(await r.text()).not.toContain("private-upstream-body");
+    expect(
+      await appEnv.DB.prepare(
+        "SELECT last_error FROM settings WHERE id=1",
+      ).first(),
+    ).toMatchObject({ last_error: "auth_upstream_http_400" });
+  });
   it("starts upstream login with browser state, nonce and S256 PKCE", async () => {
     const f = await start();
     expect(f.url.pathname).toContain("/authorization");
@@ -169,9 +282,9 @@ describe("Access owner boundary", () => {
     ).toBeNull();
   });
   it.each([
-    { email: "intruder@example.test" },
+    { email: "intruder@example.test", email_verified: undefined },
     { email_verified: false },
-    { nonce: "wrong-nonce" },
+    { nonce: "wrong-nonce", email_verified: undefined },
   ])("refuses unauthorized identity %#", async (claims) => {
     expect((await finish(await start(), claims)).status).toBe(401);
     expect(
@@ -186,7 +299,6 @@ describe("Access owner boundary", () => {
       const f = await start();
       let signer = new SignJWT({
         email: "owner@example.test",
-        email_verified: true,
         nonce: f.url.searchParams.get("nonce"),
       })
         .setProtectedHeader({ alg: "RS256", kid: "synthetic-key" })
@@ -265,7 +377,6 @@ describe("Access owner boundary", () => {
     const next = await start();
     const replaced = await new SignJWT({
       email: "owner@example.test",
-      email_verified: true,
       nonce: next.url.searchParams.get("nonce"),
     })
       .setProtectedHeader({ alg: "RS256", kid: "synthetic-key" })
@@ -315,205 +426,298 @@ describe("Access owner boundary", () => {
 });
 
 describe("MCP OAuth flow", () => {
-  it("requires PKCE and fresh browser consent; issues only owner-bound tokens and expires refresh", async () => {
-    const { makeOAuth } = await import("../src/auth");
-    const worker = makeOAuth({
-      async fetch(_req, _e, c) {
-        return Response.json({ ok: true, ownerId: c.props.ownerId });
-      },
-    });
-    const verifier = "A".repeat(43);
-    const challenge = btoa(
-      String.fromCharCode(
-        ...new Uint8Array(
-          await crypto.subtle.digest(
-            "SHA-256",
-            new TextEncoder().encode(verifier),
+  it.each([
+    "https://*/callback",
+    "https://*.example.test/callback",
+    "https://a;script-src.example/callback",
+  ])(
+    "refuses CSP-hostile registered callback %s before creating consent",
+    async (redirectUri) => {
+      const logged = await finish(await start());
+      const cookie = logged.headers.get("Set-Cookie")!.split(";")[0];
+      const { makeOAuth } = await import("../src/auth");
+      const worker = makeOAuth({
+        async fetch() {
+          return Response.json({ ok: true });
+        },
+      });
+      const registered = await worker.fetch(
+        new Request(`${base}/oauth/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            client_name: "Synthetic bad callback",
+            redirect_uris: [redirectUri],
+            token_endpoint_auth_method: "none",
+            grant_types: ["authorization_code"],
+            response_types: ["code"],
+          }),
+        }),
+        appEnv,
+        ctx,
+      );
+      expect(registered.status).toBe(201);
+      const client = (await registered.json()) as { client_id: string };
+      const query = new URLSearchParams({
+        client_id: client.client_id,
+        redirect_uri: redirectUri,
+        response_type: "code",
+        scope: "elo",
+        state: "synthetic",
+        resource: `${base}/mcp`,
+        code_challenge: "A".repeat(43),
+        code_challenge_method: "S256",
+      });
+      const before = await appEnv.DB.prepare(
+        "SELECT count(*) AS n FROM auth_state WHERE key LIKE 'consent:%'",
+      ).first();
+      const response = await worker.fetch(
+        new Request(`${base}/authorize?${query}`, {
+          headers: { Cookie: cookie },
+        }),
+        appEnv,
+        ctx,
+      );
+      expect(response.status).toBe(401);
+      expect(
+        await appEnv.DB.prepare(
+          "SELECT count(*) AS n FROM auth_state WHERE key LIKE 'consent:%'",
+        ).first(),
+      ).toEqual(before);
+    },
+  );
+  it.each([
+    "https://client.example.test/callback",
+    "http://127.0.0.1:9999/callback?fixed=1",
+  ])(
+    "requires PKCE and fresh browser consent for %s; issues only owner-bound tokens and expires refresh",
+    async (redirectUri) => {
+      const { makeOAuth } = await import("../src/auth");
+      const worker = makeOAuth({
+        async fetch(_req, _e, c) {
+          return Response.json({ ok: true, ownerId: c.props.ownerId });
+        },
+      });
+      const verifier = "A".repeat(43);
+      const challenge = btoa(
+        String.fromCharCode(
+          ...new Uint8Array(
+            await crypto.subtle.digest(
+              "SHA-256",
+              new TextEncoder().encode(verifier),
+            ),
           ),
         ),
-      ),
-    )
-      .replace(/=/g, "")
-      .replace(/\+/g, "-")
-      .replace(/\//g, "_");
-    const register = await worker.fetch(
-      new Request(`${base}/oauth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          client_name: "Synthetic <client>",
-          redirect_uris: ["https://client.example.test/callback"],
-          token_endpoint_auth_method: "none",
-          grant_types: ["authorization_code", "refresh_token"],
-          response_types: ["code"],
+      )
+        .replace(/=/g, "")
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_");
+      const register = await worker.fetch(
+        new Request(`${base}/oauth/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            client_name: "Synthetic <client>",
+            redirect_uris: [redirectUri],
+            token_endpoint_auth_method: "none",
+            grant_types: ["authorization_code", "refresh_token"],
+            response_types: ["code"],
+          }),
         }),
-      }),
-      appEnv,
-      ctx,
-    );
-    expect(register.status).toBe(201);
-    const client = (await register.json()) as { client_id: string };
-    const authorization = new URL(`${base}/authorize`);
-    for (const [k, v] of Object.entries({
-      client_id: client.client_id,
-      redirect_uri: "https://client.example.test/callback",
-      response_type: "code",
-      scope: "elo offline_access",
-      state: "mcp-state",
-      resource: `${base}/mcp`,
-      code_challenge: challenge,
-      code_challenge_method: "S256",
-    }))
-      authorization.searchParams.set(k, v);
-    const noPkce = new URL(authorization);
-    noPkce.searchParams.delete("code_challenge");
-    expect((await worker.fetch(new Request(noPkce), appEnv, ctx)).status).toBe(
-      401,
-    );
-    const begin = await worker.fetch(new Request(authorization), appEnv, ctx);
-    expect(begin.status).toBe(302);
-    const flow = {
-      response: begin,
-      url: new URL(begin.headers.get("Location")!),
-      cookie: begin.headers.get("Set-Cookie")!.split(";")[0],
-    };
-    const consent = await finish(flow);
-    expect(consent.status).toBe(200);
-    const html = await consent.text();
-    expect(html).toContain("Synthetic &#60;client&#62;");
-    expect(html).not.toContain("synthetic-upstream-token");
-    const cookie = consent.headers.get("Set-Cookie")!.split(";")[0];
-    const handle = html.match(/name="handle" value="([^"]+)"/)![1];
-    const csrf = html.match(/name="csrf" value="([^"]+)"/)![1];
-    const approve = () =>
-      new Request(`${base}/authorize`, {
-        method: "POST",
-        headers: {
-          Cookie: cookie,
-          Origin: base,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({ handle, csrf, decision: "approve" }),
-      });
-    const forged = approve();
-    forged.headers.set("Origin", "https://attacker.test");
-    expect((await worker.fetch(forged, appEnv, ctx)).status).toBe(401);
-    const approved = await worker.fetch(approve(), appEnv, ctx);
-    expect(approved.status).toBe(302);
-    const redirect = new URL(approved.headers.get("Location")!);
-    expect(redirect.searchParams.get("state")).toBe("mcp-state");
-    expect((await worker.fetch(approve(), appEnv, ctx)).status).toBe(401);
-    const exchange = async (codeVerifier: string) =>
-      worker.fetch(
+        appEnv,
+        ctx,
+      );
+      expect(register.status).toBe(201);
+      const client = (await register.json()) as { client_id: string };
+      const authorization = new URL(`${base}/authorize`);
+      for (const [k, v] of Object.entries({
+        client_id: client.client_id,
+        redirect_uri: redirectUri,
+        response_type: "code",
+        scope: "elo offline_access",
+        state: "mcp-state",
+        resource: `${base}/mcp`,
+        code_challenge: challenge,
+        code_challenge_method: "S256",
+      }))
+        authorization.searchParams.set(k, v);
+      const noPkce = new URL(authorization);
+      noPkce.searchParams.delete("code_challenge");
+      expect(
+        (await worker.fetch(new Request(noPkce), appEnv, ctx)).status,
+      ).toBe(401);
+      const begin = await worker.fetch(new Request(authorization), appEnv, ctx);
+      expect(begin.status).toBe(302);
+      const flow = {
+        response: begin,
+        url: new URL(begin.headers.get("Location")!),
+        cookie: begin.headers.get("Set-Cookie")!.split(";")[0],
+      };
+      const consent = await finish(flow);
+      expect(consent.status).toBe(200);
+      expect(consent.headers.get("Referrer-Policy")).toBe("strict-origin");
+      expect(consent.headers.get("Content-Security-Policy")).toBe(
+        `default-src 'none'; form-action 'self' ${new URL(redirectUri).origin}; frame-ancestors 'none'; base-uri 'none'`,
+      );
+      const html = await consent.text();
+      expect(html).toContain("Synthetic &#60;client&#62;");
+      expect(html).not.toContain("synthetic-upstream-token");
+      const cookie = consent.headers.get("Set-Cookie")!.split(";")[0];
+      const handle = html.match(/name="handle" value="([^"]+)"/)![1];
+      const csrf = html.match(/name="csrf" value="([^"]+)"/)![1];
+      const approve = () =>
+        new Request(`${base}/authorize`, {
+          method: "POST",
+          headers: {
+            Cookie: cookie,
+            Origin: base,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({ handle, csrf, decision: "approve" }),
+        });
+      for (const origin of ["https://attacker.test", "null", ""]) {
+        const forged = approve();
+        if (origin) forged.headers.set("Origin", origin);
+        else forged.headers.delete("Origin");
+        expect((await worker.fetch(forged, appEnv, ctx)).status).toBe(401);
+      }
+      const { setup } = await import("../src/setup");
+      const settings = await setup(
+        new Request(`${base}/setup`, { headers: { Cookie: cookie } }),
+        appEnv,
+      );
+      expect(settings.status).toBe(200);
+      expect(settings.headers.get("Referrer-Policy")).toBe("strict-origin");
+      expect(settings.headers.get("Content-Security-Policy")).toContain(
+        "form-action 'self';",
+      );
+      expect(settings.headers.get("Content-Security-Policy")).not.toContain(
+        "client.example.test",
+      );
+      const approved = await worker.fetch(approve(), appEnv, ctx);
+      expect(approved.status).toBe(302);
+      const redirect = new URL(approved.headers.get("Location")!);
+      expect(redirect.searchParams.get("state")).toBe("mcp-state");
+      expect((await worker.fetch(approve(), appEnv, ctx)).status).toBe(401);
+      const exchange = async (codeVerifier: string) =>
+        worker.fetch(
+          new Request(`${base}/oauth/token`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+              grant_type: "authorization_code",
+              code: redirect.searchParams.get("code")!,
+              client_id: client.client_id,
+              redirect_uri: redirectUri,
+              code_verifier: codeVerifier,
+              resource: `${base}/mcp`,
+            }),
+          }),
+          appEnv,
+          ctx,
+        );
+      // A failed verifier may consume a code: use the actual one in this successful flow.
+      const exchanged = await exchange(verifier);
+      expect(exchanged.status).toBe(200);
+      let tokens = (await exchanged.json()) as {
+        access_token: string;
+        refresh_token: string;
+        expires_in: number;
+      };
+      expect(tokens.expires_in).toBeLessThanOrEqual(300);
+      expect(tokens.refresh_token).toBeTruthy();
+      const resource = await worker.fetch(
+        new Request(`${base}/mcp`, {
+          headers: { Authorization: `Bearer ${tokens.access_token}` },
+        }),
+        appEnv,
+        ctx,
+      );
+      expect(resource.status).toBe(200);
+      expect(await resource.text()).not.toContain("owner@example.test");
+      const refresh = () =>
+        new Request(`${base}/oauth/token`, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams({
+            grant_type: "refresh_token",
+            refresh_token: tokens.refresh_token,
+            client_id: client.client_id,
+            resource: `${base}/mcp`,
+          }),
+        });
+      const refreshed = await worker.fetch(refresh(), appEnv, ctx);
+      expect(refreshed.status).toBe(200);
+      tokens = (await refreshed.json()) as typeof tokens;
+      expect(
+        (
+          await worker.fetch(
+            refresh(),
+            { ...appEnv, AUTH_EPOCH: "rotated" },
+            ctx,
+          )
+        ).status,
+      ).toBe(400);
+      expect(
+        (
+          await worker.fetch(
+            new Request(`${base}/mcp`, {
+              headers: { Authorization: `Bearer ${tokens.access_token}` },
+            }),
+            { ...appEnv, AUTH_EPOCH: "rotated" },
+            ctx,
+          )
+        ).status,
+      ).toBe(401);
+      const secondConsent = await worker.fetch(
+        new Request(authorization, { headers: { Cookie: cookie } }),
+        appEnv,
+        ctx,
+      );
+      expect(secondConsent.status).toBe(200);
+      const secondHtml = await secondConsent.text();
+      const secondHandle = secondHtml.match(
+        /name="handle" value="([^"]+)"/,
+      )![1];
+      const secondApproved = await worker.fetch(
+        new Request(`${base}/authorize`, {
+          method: "POST",
+          headers: {
+            Cookie: cookie,
+            Origin: base,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({
+            handle: secondHandle,
+            csrf,
+            decision: "approve",
+          }),
+        }),
+        appEnv,
+        ctx,
+      );
+      const secondCode = new URL(
+        secondApproved.headers.get("Location")!,
+      ).searchParams.get("code")!;
+      const badVerifier = await worker.fetch(
         new Request(`${base}/oauth/token`, {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: new URLSearchParams({
             grant_type: "authorization_code",
-            code: redirect.searchParams.get("code")!,
+            code: secondCode,
             client_id: client.client_id,
-            redirect_uri: "https://client.example.test/callback",
-            code_verifier: codeVerifier,
+            redirect_uri: redirectUri,
+            code_verifier: "B".repeat(43),
             resource: `${base}/mcp`,
           }),
         }),
         appEnv,
         ctx,
       );
-    // A failed verifier may consume a code: use the actual one in this successful flow.
-    const exchanged = await exchange(verifier);
-    expect(exchanged.status).toBe(200);
-    let tokens = (await exchanged.json()) as {
-      access_token: string;
-      refresh_token: string;
-      expires_in: number;
-    };
-    expect(tokens.expires_in).toBeLessThanOrEqual(300);
-    expect(tokens.refresh_token).toBeTruthy();
-    const resource = await worker.fetch(
-      new Request(`${base}/mcp`, {
-        headers: { Authorization: `Bearer ${tokens.access_token}` },
-      }),
-      appEnv,
-      ctx,
-    );
-    expect(resource.status).toBe(200);
-    expect(await resource.text()).not.toContain("owner@example.test");
-    const refresh = () =>
-      new Request(`${base}/oauth/token`, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          grant_type: "refresh_token",
-          refresh_token: tokens.refresh_token,
-          client_id: client.client_id,
-          resource: `${base}/mcp`,
-        }),
-      });
-    const refreshed = await worker.fetch(refresh(), appEnv, ctx);
-    expect(refreshed.status).toBe(200);
-    tokens = (await refreshed.json()) as typeof tokens;
-    expect(
-      (await worker.fetch(refresh(), { ...appEnv, AUTH_EPOCH: "rotated" }, ctx))
-        .status,
-    ).toBe(400);
-    expect(
-      (
-        await worker.fetch(
-          new Request(`${base}/mcp`, {
-            headers: { Authorization: `Bearer ${tokens.access_token}` },
-          }),
-          { ...appEnv, AUTH_EPOCH: "rotated" },
-          ctx,
-        )
-      ).status,
-    ).toBe(401);
-    const secondConsent = await worker.fetch(
-      new Request(authorization, { headers: { Cookie: cookie } }),
-      appEnv,
-      ctx,
-    );
-    expect(secondConsent.status).toBe(200);
-    const secondHtml = await secondConsent.text();
-    const secondHandle = secondHtml.match(/name="handle" value="([^"]+)"/)![1];
-    const secondApproved = await worker.fetch(
-      new Request(`${base}/authorize`, {
-        method: "POST",
-        headers: {
-          Cookie: cookie,
-          Origin: base,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          handle: secondHandle,
-          csrf,
-          decision: "approve",
-        }),
-      }),
-      appEnv,
-      ctx,
-    );
-    const secondCode = new URL(
-      secondApproved.headers.get("Location")!,
-    ).searchParams.get("code")!;
-    const badVerifier = await worker.fetch(
-      new Request(`${base}/oauth/token`, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          grant_type: "authorization_code",
-          code: secondCode,
-          client_id: client.client_id,
-          redirect_uri: "https://client.example.test/callback",
-          code_verifier: "B".repeat(43),
-          resource: `${base}/mcp`,
-        }),
-      }),
-      appEnv,
-      ctx,
-    );
-    expect(badVerifier.status).toBe(400);
-  });
+      expect(badVerifier.status).toBe(400);
+    },
+  );
 });
 
 describe("bounded upstream renewal", () => {
@@ -527,47 +731,56 @@ describe("bounded upstream renewal", () => {
       appEnv,
     );
   }
-  it("renews only after upstream policy response, rotates secret, and never moves absolute authUntil", async () => {
-    const owner = await session();
-    const absolute = owner.authUntil;
-    expect(absolute).toBeGreaterThan(now() + 86400);
-    vi.useFakeTimers({ toFake: ["Date"] });
-    vi.setSystemTime(Date.now() + 901000);
-    let refreshCount = 0;
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
-        if (String(input) === accessEndpoints(appEnv).jwks)
-          return Response.json({ keys: [jwk] });
-        expect(String(input)).toBe(accessEndpoints(appEnv).token);
-        const body = new URLSearchParams(String(init?.body));
-        expect(body.get("grant_type")).toBe("refresh_token");
-        expect(body.get("refresh_token")).toBe(
-          refreshCount++ === 0 ? "synthetic-refresh-1" : "synthetic-refresh-2",
-        );
-        return Response.json({
-          id_token: await token(undefined as unknown as string),
-          access_token: "new-upstream-access",
-          refresh_token: "synthetic-refresh-2",
-          expires_in: 900,
-        });
-      }),
-    );
-    const renewed = await requireMcpOwner(owner, appEnv);
-    expect(renewed.authUntil).toBe(absolute);
-    expect(refreshCount).toBe(1);
-    vi.setSystemTime(Date.now() + 901000);
-    await requireMcpOwner(owner, appEnv);
-    expect(refreshCount).toBe(2);
-    vi.setSystemTime((absolute + 1) * 1000);
-    await expect(requireMcpOwner(owner, appEnv)).rejects.toThrow();
-    expect(refreshCount).toBe(2);
-  });
+  it.each([undefined, true])(
+    "renews the OTP identity with optional email_verified %s without moving absolute authUntil",
+    async (verified) => {
+      const owner = await session();
+      const absolute = owner.authUntil;
+      expect(absolute).toBeGreaterThan(now() + 86400);
+      vi.useFakeTimers({ toFake: ["Date"] });
+      vi.setSystemTime(Date.now() + 901000);
+      let refreshCount = 0;
+      vi.stubGlobal(
+        "fetch",
+        vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+          if (String(input) === accessEndpoints(appEnv).jwks)
+            return Response.json({ keys: [jwk] });
+          expect(String(input)).toBe(accessEndpoints(appEnv).token);
+          const body = new URLSearchParams(String(init?.body));
+          expect(body.get("grant_type")).toBe("refresh_token");
+          expect(body.get("refresh_token")).toBe(
+            refreshCount++ === 0
+              ? "synthetic-refresh-1"
+              : "synthetic-refresh-2",
+          );
+          return Response.json({
+            id_token: await token(undefined as unknown as string, {
+              email_verified: verified,
+            }),
+            access_token: "new-upstream-access",
+            refresh_token: "synthetic-refresh-2",
+            expires_in: 900,
+          });
+        }),
+      );
+      const renewed = await requireMcpOwner(owner, appEnv);
+      expect(renewed.authUntil).toBe(absolute);
+      expect(refreshCount).toBe(1);
+      vi.setSystemTime(Date.now() + 901000);
+      await requireMcpOwner(owner, appEnv);
+      expect(refreshCount).toBe(2);
+      vi.setSystemTime((absolute + 1) * 1000);
+      await expect(requireMcpOwner(owner, appEnv)).rejects.toThrow();
+      expect(refreshCount).toBe(2);
+    },
+  );
   it.each([
-    { sub: "changed-owner" },
-    { nonce: "changed-nonce" },
-    { email: "intruder@example.test" },
-    { email_verified: false },
+    { sub: "changed-owner", email_verified: undefined },
+    { nonce: "changed-nonce", email_verified: undefined },
+    { email: "intruder@example.test", email_verified: undefined },
+    ...[false, null, "true", 1, [], {}].map((value) => ({
+      email_verified: value,
+    })),
   ])("fails closed on changed refresh identity %#", async (claims) => {
     const owner = await session();
     vi.useFakeTimers({ toFake: ["Date"] });

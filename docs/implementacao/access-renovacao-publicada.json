@@ -1,0 +1,10 @@
+{
+  "at": "2026-10-17T12:06:39.808Z",
+  "origin": "https://elo.robsonlins.workers.dev",
+  "refresh_status": 200,
+  "scope": "Cliente HTTP proprio apos expirar janela Access de15min; sem alterar relogio ou banco.",
+  "mcp_status": 200,
+  "tool_ok": true,
+  "initial_mcp_at": "2026-10-17T08:33:09.377Z",
+  "elapsed_since_initial_mcp_seconds": 12810
+}
