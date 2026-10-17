@@ -69,9 +69,9 @@ Amostra GraphQL do Worker, 02:30–03:01 UTC: 51 requisições, zero exceções 
 
 Issues [#1](https://github.com/orobsonn/elo/issues/1), [#2](https://github.com/orobsonn/elo/issues/2), [#3](https://github.com/orobsonn/elo/issues/3) e [#4](https://github.com/orobsonn/elo/issues/4) ficam abertas. Implementação entregue não encerra seus aceites materiais ainda não exercitados.
 
-1. Conectar e exercitar Claude. ChatGPT já conectado, com quatro Skills instaladas e ensaio de memória/tarefas; conferir os recortes e limites na [homologação](homologacao-chatgpt.md). Renovação natural Access e revogação pela remoção do plugin ainda exigem prova específica em cada cliente.
+1. Claude e ChatGPT estão conectados, com Skills instaladas e ensaios sintéticos: [ChatGPT](homologacao-chatgpt.md), [Claude](homologacao-skills-claude.md). Renovação natural Access isolada e revogação específica de cada cliente continuam pendentes; a prova do cliente HTTP diagnóstico não substitui essas jornadas.
 2. Recepção e primeiro envio real autorizado já comprovados, incluindo entrega. O envio aprovado à Lainny pelo conector nativo no Codex também foi entregue; approve/envio pela interface ChatGPT web continua pendente. Revisão diária integral e associação positiva de remetente em produção ainda não foram exercitadas nesta bateria.
-3. Validar no celular, executar rotina Work/Cowork no horário solicitado e fazer piloto com pessoa leiga, incluindo recuperação e “Otimize meu processo”. Nenhuma recorrência criada sem pedido de horário/rotina.
+3. A consulta sintética no ChatGPT/iPhone foi [confirmada manualmente pelo dono](mobile-chatgpt-1710.md); revisão e approve no aparelho continuam pendentes. Executar rotina Work/Cowork com resultado comprovado e piloto com pessoa leiga, incluindo recuperação e “Otimize meu processo”. O teste único Work segue pausado, sem resultado agendado localizado: [retomada](work-retomada-1710.md).
 
 ## Complemento de homologação
 
@@ -80,3 +80,7 @@ Em 17/10, [nova rodada sanitizada](homologacao-complementar.md) confirmou envio 
 ## Atualização de 17/10 — diagnóstico das fontes
 
 Versão ativa `fa8c0a95-b3e7-4529-8e6e-521946abe863`, código `4a3945b`, tráfego 100%, PR #13 integrado. Preview e 6 smokes publicados aprovados; 149 testes Worker/D1 e 22 Node. Corrige preenchimento tardio de texto e conclusão concorrente de revisão. Time Travel real foi exercitado somente numa D1 temporária sintética, removida ao final; a base pessoal não foi restaurada. [Causas, evidências e limites](fontes-indisponiveis-1710.md).
+
+## Atualização posterior — recuperação e clientes
+
+O [restore completo isolado](restore-worker-isolado-1710.md) executou o roteiro inteiro em Worker/D1/KV temporários, com limpeza ao final; a instalação pessoal não foi restaurada. [Perfil de uso medido](../operacao/perfil-de-uso.md). A [retomada no Work](work-retomada-1710.md) confirmou leitura manual atual dos dados fictícios, mantendo agendamento e mecanismos específicos de renovação/revogação como pendências.

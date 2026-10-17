@@ -60,3 +60,7 @@ Retomada posterior: o dono autorizou liberar a vaga removendo os quatro cadastro
 As quatro Skills foram instaladas e exercitadas no Claude web Free/Sonnet 5.5 Médio. Pós-reunião gravou um lote sintético e repetiu sem duplicação; approve aguardou outro turno e cancelou sem execução; revisão diária percorreu 18 fontes disponíveis, com 11 indisponíveis; Otimize criou uma rotina instalada e executada em dois contatos fictícios. O benefício humano ainda não foi medido. [Relatório e limites](../implementacao/homologacao-skills-claude.md).
 
 No Free, Cowork apresentou Fazer Upgrade; nenhum plano foi contratado nem job Claude criado. O mesmo teste único Work recebeu uma tentativa limitada de reconfiguração e permaneceu pausado, sem próxima execução. Posteriormente apareceu `last_run_time=2026-10-17T15:07:17.590127Z`, mas não foi localizado resultado agendado com chamadas MCP; esse timestamp não comprova o aceite. Não houve Run now nem scheduler substituto.
+
+## Retomada às 16h de 17/10
+
+A sessão existente no Chrome permitiu nova leitura manual no Work/GPT-6.1 Sol High: memória e tarefa fictícias preservadas, com uso de Elo indicado pela interface e conferência independente dos dados. A tarefa única continua pausada; não foi localizado resultado agendado nem exposto histórico detalhado pelo cliente. [Evidência e limites](../implementacao/work-retomada-1710.md).
