@@ -208,20 +208,31 @@ describe("Access owner boundary", () => {
       ).first(),
     ).toBeNull();
   });
-  it("diagnoses a missing verified-email claim without exposing token content", async () => {
-    const r = await finish(await start(), { email_verified: undefined });
-    expect(r.status).toBe(401);
-    expect(
-      await appEnv.DB.prepare(
-        "SELECT last_error FROM settings WHERE id=1",
-      ).first(),
-    ).toMatchObject({ last_error: "auth_identity_claim_email_verified" });
-    expect(
-      await appEnv.DB.prepare(
-        "SELECT value FROM auth_state WHERE key='owner_binding'",
-      ).first(),
-    ).toBeNull();
-  });
+  it.each([undefined, true])(
+    "accepts the OTP owner with optional email_verified %s",
+    async (verified) => {
+      const r = await finish(await start(), { email_verified: verified });
+      expect(r.status).toBe(302);
+      expect(
+        await appEnv.DB.prepare(
+          "SELECT value FROM auth_state WHERE key='owner_binding'",
+        ).first(),
+      ).not.toBeNull();
+    },
+  );
+  it.each([false, null, "true", 1, [], {}])(
+    "rejects a present invalid email_verified %#",
+    async (verified) => {
+      expect(
+        (await finish(await start(), { email_verified: verified })).status,
+      ).toBe(401);
+      expect(
+        await appEnv.DB.prepare(
+          "SELECT value FROM auth_state WHERE key='owner_binding'",
+        ).first(),
+      ).toBeNull();
+    },
+  );
   it("diagnoses an upstream rejection using only its status", async () => {
     const f = await start();
     vi.stubGlobal(
@@ -271,9 +282,9 @@ describe("Access owner boundary", () => {
     ).toBeNull();
   });
   it.each([
-    { email: "intruder@example.test" },
+    { email: "intruder@example.test", email_verified: undefined },
     { email_verified: false },
-    { nonce: "wrong-nonce" },
+    { nonce: "wrong-nonce", email_verified: undefined },
   ])("refuses unauthorized identity %#", async (claims) => {
     expect((await finish(await start(), claims)).status).toBe(401);
     expect(
@@ -288,7 +299,6 @@ describe("Access owner boundary", () => {
       const f = await start();
       let signer = new SignJWT({
         email: "owner@example.test",
-        email_verified: true,
         nonce: f.url.searchParams.get("nonce"),
       })
         .setProtectedHeader({ alg: "RS256", kid: "synthetic-key" })
@@ -367,7 +377,6 @@ describe("Access owner boundary", () => {
     const next = await start();
     const replaced = await new SignJWT({
       email: "owner@example.test",
-      email_verified: true,
       nonce: next.url.searchParams.get("nonce"),
     })
       .setProtectedHeader({ alg: "RS256", kid: "synthetic-key" })
@@ -629,47 +638,56 @@ describe("bounded upstream renewal", () => {
       appEnv,
     );
   }
-  it("renews only after upstream policy response, rotates secret, and never moves absolute authUntil", async () => {
-    const owner = await session();
-    const absolute = owner.authUntil;
-    expect(absolute).toBeGreaterThan(now() + 86400);
-    vi.useFakeTimers({ toFake: ["Date"] });
-    vi.setSystemTime(Date.now() + 901000);
-    let refreshCount = 0;
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
-        if (String(input) === accessEndpoints(appEnv).jwks)
-          return Response.json({ keys: [jwk] });
-        expect(String(input)).toBe(accessEndpoints(appEnv).token);
-        const body = new URLSearchParams(String(init?.body));
-        expect(body.get("grant_type")).toBe("refresh_token");
-        expect(body.get("refresh_token")).toBe(
-          refreshCount++ === 0 ? "synthetic-refresh-1" : "synthetic-refresh-2",
-        );
-        return Response.json({
-          id_token: await token(undefined as unknown as string),
-          access_token: "new-upstream-access",
-          refresh_token: "synthetic-refresh-2",
-          expires_in: 900,
-        });
-      }),
-    );
-    const renewed = await requireMcpOwner(owner, appEnv);
-    expect(renewed.authUntil).toBe(absolute);
-    expect(refreshCount).toBe(1);
-    vi.setSystemTime(Date.now() + 901000);
-    await requireMcpOwner(owner, appEnv);
-    expect(refreshCount).toBe(2);
-    vi.setSystemTime((absolute + 1) * 1000);
-    await expect(requireMcpOwner(owner, appEnv)).rejects.toThrow();
-    expect(refreshCount).toBe(2);
-  });
+  it.each([undefined, true])(
+    "renews the OTP identity with optional email_verified %s without moving absolute authUntil",
+    async (verified) => {
+      const owner = await session();
+      const absolute = owner.authUntil;
+      expect(absolute).toBeGreaterThan(now() + 86400);
+      vi.useFakeTimers({ toFake: ["Date"] });
+      vi.setSystemTime(Date.now() + 901000);
+      let refreshCount = 0;
+      vi.stubGlobal(
+        "fetch",
+        vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+          if (String(input) === accessEndpoints(appEnv).jwks)
+            return Response.json({ keys: [jwk] });
+          expect(String(input)).toBe(accessEndpoints(appEnv).token);
+          const body = new URLSearchParams(String(init?.body));
+          expect(body.get("grant_type")).toBe("refresh_token");
+          expect(body.get("refresh_token")).toBe(
+            refreshCount++ === 0
+              ? "synthetic-refresh-1"
+              : "synthetic-refresh-2",
+          );
+          return Response.json({
+            id_token: await token(undefined as unknown as string, {
+              email_verified: verified,
+            }),
+            access_token: "new-upstream-access",
+            refresh_token: "synthetic-refresh-2",
+            expires_in: 900,
+          });
+        }),
+      );
+      const renewed = await requireMcpOwner(owner, appEnv);
+      expect(renewed.authUntil).toBe(absolute);
+      expect(refreshCount).toBe(1);
+      vi.setSystemTime(Date.now() + 901000);
+      await requireMcpOwner(owner, appEnv);
+      expect(refreshCount).toBe(2);
+      vi.setSystemTime((absolute + 1) * 1000);
+      await expect(requireMcpOwner(owner, appEnv)).rejects.toThrow();
+      expect(refreshCount).toBe(2);
+    },
+  );
   it.each([
-    { sub: "changed-owner" },
-    { nonce: "changed-nonce" },
-    { email: "intruder@example.test" },
-    { email_verified: false },
+    { sub: "changed-owner", email_verified: undefined },
+    { nonce: "changed-nonce", email_verified: undefined },
+    { email: "intruder@example.test", email_verified: undefined },
+    ...[false, null, "true", 1, [], {}].map((value) => ({
+      email_verified: value,
+    })),
   ])("fails closed on changed refresh identity %#", async (claims) => {
     const owner = await session();
     vi.useFakeTimers({ toFake: ["Date"] });

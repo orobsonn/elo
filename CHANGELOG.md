@@ -17,3 +17,4 @@ Mudanças relevantes no formato Keep a Changelog. Sem release/tag publicada; ver
 - Compatibilidade de extração DeepSeek com template sem raciocínio e schema explícito, verificada no serviço real.
 - Leitura de configuração JSONC e conferência da versão ativa após recuperação.
 - Requisições Access/Z-API usam redirect manual compatível com workerd e recusam 3xx; testes constroem Request real para evitar falso verde dos mocks.
+- Login Access OTP aceita email_verified ausente no ID token, recusando valores presentes diferentes de true; instalador exige allowed_idps exclusivo do provedor OTP.

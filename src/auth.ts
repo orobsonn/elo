@@ -362,7 +362,6 @@ async function verifyIdToken(
       "exp",
       "iat",
       "email",
-      "email_verified",
       ...(refresh ? [] : ["nonce"]),
     ],
     maxTokenAge: refresh ? "5m" : "24h",
@@ -395,7 +394,9 @@ async function verifyIdToken(
     throw denied();
   if (
     ((!refresh || payload.nonce !== undefined) && payload.nonce !== nonce) ||
-    payload.email_verified !== true ||
+    // Access OTP authenticates the authorized mailbox but omits this optional OIDC claim.
+    // The provisioner pins the app to OTP; a present claim must still be boolean true.
+    (payload.email_verified !== undefined && payload.email_verified !== true) ||
     typeof payload.email !== "string" ||
     payload.email.toLowerCase() !== env.OWNER_EMAIL.toLowerCase() ||
     !payload.sub ||

@@ -8,21 +8,23 @@ import { provisionAccess } from '../scripts/provision-access.mjs';
 
 async function fixture(run) {
  const stateDirectory=await mkdtemp(join(tmpdir(),'elo-access-synthetic-'));
- const accountId='a'.repeat(32); const state={app:undefined,secrets:new Map(),writes:0,suspended:false,name:'Synthetic Elo'};
+ const accountId='a'.repeat(32); const state={app:undefined,secrets:new Map(),writes:0,suspended:false,name:'Synthetic Elo',providers:[{id:'synthetic-otp',type:'onetimepin'}],requests:[],createdAppOverride:{}};
  const options={token:'synthetic-admin-token',accountId,expectedAccountName:'Synthetic Elo',publicOrigin:'https://elo.example.test',workerName:'elo',stateDirectory};
  const transport=async(input,init)=>{
   const path=new URL(input).pathname.replace('/client/v4',''); let result;
+  state.requests.push({path,method:init.method});
   assert.equal(init.headers.Authorization,'Bearer synthetic-admin-token');
   if(path===`/accounts/${accountId}`)result={id:accountId,name:state.name};
   else if(path==='/user')result={id:'synthetic-profile',email:'owner@example.test',suspended:state.suspended};
   else if(path===`/accounts/${accountId}/access/organizations`)result={auth_domain:'synthetic.cloudflareaccess.com'};
+  else if(path===`/accounts/${accountId}/access/identity_providers` && init.method==='GET')result=state.providers;
   else if(path===`/accounts/${accountId}/access/apps` && init.method==='GET')result=state.app?[{...state.app,saas_app:{...state.app.saas_app,client_secret:undefined}}]:[];
   else if(path===`/accounts/${accountId}/access/apps` && init.method==='POST'){
    state.writes++; const body=JSON.parse(init.body);
    assert.deepEqual(body.policies[0].include,[{email:{email:'owner@example.test'}}]);
    assert.deepEqual(body.saas_app.redirect_uris,['https://elo.example.test/callback']);
    assert.deepEqual(body.saas_app.grant_types,['authorization_code_with_pkce','refresh_tokens']);
-   state.app={...body,id:'synthetic-app',saas_app:{...body.saas_app,client_id:'synthetic-client',client_secret:'private-test-secret'}};result=state.app;
+   state.app={...body,id:'synthetic-app',saas_app:{...body.saas_app,client_id:'synthetic-client',client_secret:'private-test-secret'},...state.createdAppOverride};result=state.app;
   }else if(path.endsWith('/policies'))result=state.app.policies;
   else if(path.endsWith('/secrets') && init.method==='GET')result=[...state.secrets.keys()].map(name=>({name}));
   else if(path.endsWith('/secrets') && init.method==='PUT'){state.writes++;const body=JSON.parse(init.body);state.secrets.set(body.name,body.text);result={};}
@@ -82,4 +84,49 @@ test('accepts actual Wrangler JSONC comments and trailing commas before target c
 test('rejects malformed JSONC before any Cloudflare call',async()=>fixture(async({stateDirectory,state,options})=>{
  const wranglerPath=join(stateDirectory,'bad.jsonc');await writeFile(wranglerPath,'{"name": "elo", nope}');let calls=0;
  await assert.rejects(()=>provisionAccess({...options,wranglerPath},()=>{calls++;throw new Error('must not call')}),/inválida/);assert.equal(calls,0);assert.equal(state.writes,0);
+}));
+
+test('pins creation and resume to the single OTP provider without altering global providers', async () => fixture(async ({ state, options, transport }) => {
+  state.providers.push({ id: 'synthetic-google', type: 'google' });
+  await provisionAccess(options, transport);
+  assert.deepEqual(state.app.allowed_idps, ['synthetic-otp']);
+  assert.equal(Object.hasOwn(state.app, 'allow_all_identity_providers'), false);
+  await provisionAccess(options, transport);
+  assert.equal(state.writes, 5);
+  assert.deepEqual(state.requests.filter(r => r.path.includes('/identity_providers')).map(r => r.method), ['GET', 'GET']);
+}));
+
+for (const [label, providers] of [
+  ['absent', []],
+  ['only another provider', [{ id: 'synthetic-google', type: 'google' }]],
+  ['ambiguous', [{ id: 'otp-one', type: 'onetimepin' }, { id: 'otp-two', type: 'onetimepin' }]],
+  ['missing provider id', [{ type: 'onetimepin' }]],
+]) test(`refuses ${label} OTP configuration before secrets or mutations`, async () => fixture(async ({ state, options, transport }) => {
+  state.providers = providers;
+  await assert.rejects(() => provisionAccess(options, transport), /OTP/);
+  assert.equal(state.writes, 0);
+  assert(!state.requests.some(r => r.path.endsWith('/secrets')));
+}));
+
+for (const [label, drift] of [
+  ['all providers enabled', { allow_all_identity_providers: true }],
+  ['provider list empty', { allowed_idps: [] }],
+  ['OTP and another provider', { allowed_idps: ['synthetic-otp', 'synthetic-google'] }],
+  ['another provider only', { allowed_idps: ['synthetic-google'] }],
+  ['provider list omitted', { allowed_idps: undefined }],
+]) test(`refuses existing application drift (${label}) without repairing or writing secrets`, async () => fixture(async ({ state, options, transport }) => {
+  await provisionAccess(options, transport);
+  Object.assign(state.app, drift);
+  state.secrets.delete('AUTH_EPOCH');
+  const before = state.requests.length;
+  await assert.rejects(() => provisionAccess(options, transport), /OTP/);
+  assert.equal(state.writes, 5);
+  assert(!state.requests.slice(before).some(r => r.path.endsWith('/secrets') || r.method !== 'GET'));
+}));
+
+test('rejects a creation response that does not enforce the requested OTP restriction before publishing secrets', async () => fixture(async ({ state, options, transport }) => {
+  state.createdAppOverride = { allow_all_identity_providers: true };
+  await assert.rejects(() => provisionAccess(options, transport), /OTP/);
+  assert.equal(state.writes, 1);
+  assert.equal(state.secrets.size, 0);
 }));

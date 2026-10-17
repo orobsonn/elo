@@ -83,6 +83,35 @@ export async function provisionAccess(options, transport = fetch) {
     throw new Error(
       "Conta Zero Trust ainda não inicializada. A IA deve concluir essa etapa da conta e retomar.",
     );
+  const providers = await api(
+    `/accounts/${accountId}/access/identity_providers`,
+  );
+  const otpProviders = Array.isArray(providers)
+    ? providers.filter((provider) => provider?.type === "onetimepin")
+    : [];
+  if (
+    otpProviders.length !== 1 ||
+    typeof otpProviders[0].id !== "string" ||
+    !otpProviders[0].id.trim()
+  )
+    throw new Error(
+      "A instalação exige exatamente um provedor OTP existente. Nenhum provedor global foi alterado.",
+    );
+  const otpId = otpProviders[0].id;
+  function requireOtpOnly(app) {
+    // The Access API contract pins providers through allowed_idps. The optional
+    // legacy flag is not in its schema; absence is normal, explicit widening is not.
+    if (
+      (app.allow_all_identity_providers !== undefined &&
+        app.allow_all_identity_providers !== false) ||
+      !Array.isArray(app.allowed_idps) ||
+      app.allowed_idps.length !== 1 ||
+      app.allowed_idps[0] !== otpId
+    )
+      throw new Error(
+        "Aplicação Elo diverge da restrição exclusiva ao OTP selecionado. Interrompido sem corrigir em silêncio.",
+      );
+  }
   const appName = `Elo · ${workerName} · ${origin.hostname}`;
   const callback = `${publicOrigin}/callback`;
   const stateDir = resolve(
@@ -133,6 +162,7 @@ export async function provisionAccess(options, transport = fetch) {
   const desired = {
     name: appName,
     type: "saas",
+    allowed_idps: [otpId],
     app_launcher_visible: false,
     auto_redirect_to_identity: false,
     saas_app: {
@@ -154,6 +184,8 @@ export async function provisionAccess(options, transport = fetch) {
       "Aplicações Elo duplicadas; a IA deve conciliar antes de retomar.",
     );
   let app = apps[0];
+  // Reject drift before reading or publishing Worker secrets or updating the app.
+  if (app) requireOtpOnly(app);
   const prefix = `/accounts/${accountId}/workers/scripts/${workerName}`;
   const existingSecrets = await api(`${prefix}/secrets`);
   const existingNames = new Set(existingSecrets.map((secret) => secret.name));
@@ -184,6 +216,7 @@ export async function provisionAccess(options, transport = fetch) {
       authEpoch: randomUUID(),
     };
     await save(); // Persist once-only secret before any further network request.
+    requireOtpOnly(app);
   } else {
     if (
       state &&
