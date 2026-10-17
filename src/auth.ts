@@ -587,6 +587,14 @@ async function consent(
 ) {
   const client = await env.OAUTH_PROVIDER.lookupClient(auth.clientId);
   if (!client) throw denied();
+  const redirect = new URL(auth.redirectUri);
+  // URL serialization alone accepts CSP wildcards/delimiters in hostnames.
+  // The OAuth provider separately enforces registered URI equality and HTTP loopback.
+  if (
+    !["https:", "http:"].includes(redirect.protocol) ||
+    !/^(?:[a-z0-9.-]+|\[[a-f0-9:]+\])$/i.test(redirect.hostname)
+  )
+    throw denied();
   const handle = random();
   await store(
     `consent:${handle}`,
@@ -596,9 +604,14 @@ async function consent(
   );
   const headers = secureHeaders();
   headers.set("Content-Type", "text/html; charset=utf-8");
+  // Browsers apply form-action to redirect chains too: allow this client only.
+  headers.set(
+    "Content-Security-Policy",
+    `default-src 'none'; form-action 'self' ${redirect.origin}; frame-ancestors 'none'; base-uri 'none'`,
+  );
   if (cookieHeader) headers.set("Set-Cookie", cookieHeader);
   const clientName = client.clientName || "Cliente MCP";
-  const redirectHost = new URL(auth.redirectUri).hostname;
+  const redirectHost = redirect.hostname;
   const localWarning = /^(localhost|127\.|\[::1\])/.test(redirectHost)
     ? "<p>Acesso para um aplicativo neste computador. Autorize somente se acabou de iniciar esta conexão nele.</p>"
     : "";
@@ -625,7 +638,7 @@ export async function defaultAuthHandler(
       url.pathname === "/login" &&
       url.searchParams.get("purpose") === "setup"
     )
-      return beginLogin(request, env);
+      return await beginLogin(request, env);
     if (request.method === "GET" && url.pathname === "/authorize") {
       const auth = await checkedAuthRequest(request, env);
       let owner: OwnerAuth;
@@ -633,9 +646,9 @@ export async function defaultAuthHandler(
         owner = await requireOwner(request, env);
       } catch (error) {
         if (error instanceof AuthUnavailable) throw error;
-        return beginLogin(request, env, auth);
+        return await beginLogin(request, env, auth);
       }
-      return consent(auth, owner, env);
+      return await consent(auth, owner, env);
     }
     if (request.method === "GET" && url.pathname === "/callback") {
       const state = url.searchParams.get("state"),
@@ -710,7 +723,7 @@ export async function defaultAuthHandler(
         owner.authUntil - now(),
       );
       if (flow.authRequest)
-        return consent(flow.authRequest, owner, env, sessionCookie);
+        return await consent(flow.authRequest, owner, env, sessionCookie);
       const headers = secureHeaders();
       headers.set("Location", `${env.PUBLIC_ORIGIN}/setup`);
       headers.set("Set-Cookie", sessionCookie);
