@@ -78,7 +78,7 @@ const esc = (s: string) =>
 const secureHeaders = () =>
   new Headers({
     "Cache-Control": "no-store",
-    "Referrer-Policy": "no-referrer",
+    "Referrer-Policy": "strict-origin",
     "X-Content-Type-Options": "nosniff",
     "Content-Security-Policy":
       "default-src 'none'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'",

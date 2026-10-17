@@ -490,6 +490,7 @@ describe("MCP OAuth flow", () => {
     };
     const consent = await finish(flow);
     expect(consent.status).toBe(200);
+    expect(consent.headers.get("Referrer-Policy")).toBe("strict-origin");
     const html = await consent.text();
     expect(html).toContain("Synthetic &#60;client&#62;");
     expect(html).not.toContain("synthetic-upstream-token");
@@ -506,9 +507,19 @@ describe("MCP OAuth flow", () => {
         },
         body: new URLSearchParams({ handle, csrf, decision: "approve" }),
       });
-    const forged = approve();
-    forged.headers.set("Origin", "https://attacker.test");
-    expect((await worker.fetch(forged, appEnv, ctx)).status).toBe(401);
+    for (const origin of ["https://attacker.test", "null", ""]) {
+      const forged = approve();
+      if (origin) forged.headers.set("Origin", origin);
+      else forged.headers.delete("Origin");
+      expect((await worker.fetch(forged, appEnv, ctx)).status).toBe(401);
+    }
+    const { setup } = await import("../src/setup");
+    const settings = await setup(
+      new Request(`${base}/setup`, { headers: { Cookie: cookie } }),
+      appEnv,
+    );
+    expect(settings.status).toBe(200);
+    expect(settings.headers.get("Referrer-Policy")).toBe("strict-origin");
     const approved = await worker.fetch(approve(), appEnv, ctx);
     expect(approved.status).toBe(302);
     const redirect = new URL(approved.headers.get("Location")!);
