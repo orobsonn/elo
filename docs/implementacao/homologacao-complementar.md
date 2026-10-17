@@ -33,3 +33,5 @@ Uma tela de consentimento anterior não pôde concluir; reiniciar o mesmo fluxo 
 No Claude web pessoal Free, **Sonnet 5.5 Médio** executou `installation_status`, `memory_get` e `tasks_get` somente no contato fictício autorizado. Os retornos de memória/tarefas tinham cursor nulo: três memórias (duas confirmadas e uma pendente) e uma tarefa aberta do consultor até **23/10/2026**, com fonte. O diagnóstico confirmou código/versão publicados. Nenhuma escrita ou mensagem foi executada. A resposta inicial descreveu `needs_review=false` como ausência de revisão, apesar de preservar `state=pending`; o pedido seguinte explicitou que a incerteza e a validação continuam pendentes. O erro de WhatsApp do diagnóstico é histórico; esta leitura não testa o provedor.
 
 Isso comprova conexão e leitura neste cliente. Skills instaladas/approve, escritas, renovação natural, revogação, Cowork agendado e aparelho físico no Claude continuam pendentes.
+
+Limite de interpretação: mesmo após o esclarecimento, o Claude descreveu `needs_review=false` como ausência na fila de revisão. A prova valida os retornos e a preservação de `state=pending`, não essa interpretação residual do indicador.
