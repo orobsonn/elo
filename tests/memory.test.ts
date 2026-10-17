@@ -337,6 +337,37 @@ describe("memory and retention", () => {
       ).first(),
     ).toMatchObject({ n: 0 });
   });
+  it("does not claim complete coverage when a previously empty source fills between reads",async()=>{
+    const c=await contact(),sid=await source(c);await sql(env.DB,'UPDATE sources SET content=NULL WHERE id=?',sid).run();
+    let filled=false;
+    function statement(stmt:D1PreparedStatement,q:string):D1PreparedStatement{return new Proxy(stmt,{get(target,key){
+      if(key==='bind')return (...args:unknown[])=>statement(target.bind(...args),q);
+      if(key==='first'&&q.includes('COALESCE(SUM(CASE'))return async()=>{if(!filled){filled=true;await sql(env.DB,"UPDATE sources SET content='Texto tardio',version=2 WHERE id=?",sid).run();}return target.first();};
+      const v=Reflect.get(target,key);return typeof v==='function'?v.bind(target):v;
+    }});}
+    const db=new Proxy(env.DB,{get(target,key){if(key==='prepare')return(q:string)=>statement(target.prepare(q),q);const v=Reflect.get(target,key);return typeof v==='function'?v.bind(target):v;}});
+    const page=await reviewPage(db,{});expect(page.items).toHaveLength(0);
+    expect(page.coverage).toMatchObject({complete:false,current_versions_complete:false,unseen_sources_pending:1});
+    await expect(reviewComplete(env.DB,{run_id:page.run_id,page_token:page.page_token})).rejects.toThrow();
+    expect(await sql(env.DB,'SELECT reviewed_version FROM sources WHERE id=?',sid).first()).toMatchObject({reviewed_version:0});
+  });
+  it.each(["Texto tardio",null])("rechecks newly eligible unseen edits at completion commit (%s)",async text=>{
+    const c=await contact(),sid=await source(c);await sql(env.DB,'UPDATE sources SET received_at=?,content=NULL WHERE id=?',now()-DAY,sid).run();
+    await source(c);const page=await reviewPage(env.DB,{});expect(page.coverage.complete).toBe(true);
+    await sql(env.DB,"UPDATE sources SET content=?,version=2 WHERE id=?",text,sid).run();
+    await expect(reviewComplete(env.DB,{run_id:page.run_id,page_token:page.page_token})).rejects.toThrow();
+  });
+  it("explains unavailable sources without double-counting or claiming review completion", async () => {
+    const c = await contact();
+    const expired = await source(c, 31), unsupported = await source(c), missing = await source(c), available = await source(c);
+    for (const sid of [expired, unsupported, missing]) await sql(env.DB, "UPDATE sources SET content=NULL WHERE id=?", sid).run();
+    for (const sid of [expired, unsupported]) await sql(env.DB, "INSERT INTO messages(id,source_id,provider_key,contact_id,direction,kind) VALUES(?,?,?,?,'in','unsupported_media')", id('msg'), sid, sid, c).run();
+    const p = await reviewPage(env.DB, {limit:50});
+    expect(p.items.map(x=>x.source_id)).toEqual([available]);
+    expect(p.coverage).toMatchObject({unavailable_count:3,unavailable_reasons:{expired:1,unsupported_format:1,missing_text:1},complete:false,available_complete:true});
+    await expect(reviewComplete(env.DB,{run_id:p.run_id,page_token:p.page_token})).rejects.toThrow();
+    expect(await sql(env.DB,"SELECT SUM(reviewed_version) n FROM sources").first()).toMatchObject({n:0});
+  });
   it("cannot complete review when the requested raw history is unavailable", async () => {
     const c = await contact(),
       s = await source(c);

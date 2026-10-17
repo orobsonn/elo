@@ -94,3 +94,11 @@ Cursor final não significa automaticamente cobertura completa: fontes indispon�
 ## Diagnóstico técnico e evidência de operação
 
 `installation_status` mostra configuração, versão, última recepção e último erro registrado. O erro pode ser histórico, e a lista `pending` de validações é atualmente um checklist conservador, não uma dedução de todos os ensaios já feitos. “Configurada, não verificada” não é teste de desconexão atual. Confirme as evidências de cada recebimento/envio e não confunda esse diagnóstico com monitoramento ao vivo da Z-API.
+
+## Fontes sem texto e preenchimento posterior
+
+A revisão separa `unavailable_reasons.expired`, `unsupported_format` e `missing_text`. As categorias não se sobrepõem e somam `unavailable_count`. A classificação histórica `unsupported_media` registra apenas falta de texto utilizável; sem payload/subtipo não distingue mídia, reação ou callback temporariamente sem texto. Não prometa recuperação nem marque revisão completa com lacunas.
+
+Se o provedor enviar posteriormente texto válido para o mesmo ID, o backend pode preencher apenas a fonte ainda vazia e ativa, preservando datas/vencimento e identidade. A operação transacional impede duplicação e revalida exclusão, tombstone, conexão, direção e ordem. Não busca mídia nem garante replay retroativo. [Investigação e testes](fontes-indisponiveis-1710.md).
+
+Uma fonte pode ganhar texto atrás do cursor durante a leitura. `unseen_sources_pending` na página final impede declarar completude; inclui fontes do escopo nunca mostradas, mesmo indisponíveis. Pode se sobrepor a `unavailable_count`; não some os dois contadores. Um novo run só pode avaliar o que estiver legível. A confirmação também verifica fontes elegíveis ainda não mostradas no instante do commit. Versões posteriores de fonte já mostrada continuam reportadas separadamente, sem marcar a versão nova como avaliada.

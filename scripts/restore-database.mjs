@@ -13,6 +13,6 @@ export function restoreDatabase(cli, database, target, isBookmark) {
   // restored snapshot before running cleanup or exposing the current Worker.
   cli(["d1", "migrations", "apply", database, "--remote"]);
   const sql =
-    "UPDATE settings SET sends_paused=1,data_generation=data_generation+1; UPDATE actions SET status=CASE WHEN status IN ('prepared','awaiting_approval','authorized') THEN 'cancelled' WHEN status='executing' THEN 'uncertain' ELSE status END; UPDATE sources SET content=NULL,extract_state='done',lease=NULL WHERE expires_at<=unixepoch()*1000; DELETE FROM auth_state WHERE key!='owner_binding';";
+    "UPDATE settings SET sends_paused=1,data_generation=data_generation+1; UPDATE actions SET status=CASE WHEN status IN ('prepared','awaiting_approval','authorized') THEN 'cancelled' WHEN status='executing' THEN 'uncertain' ELSE status END; UPDATE actions SET content='',address='' WHERE prepared_at<=(unixepoch()-30*86400)*1000; UPDATE sources SET content=NULL,extract_state='done',lease=NULL,lease_until=NULL WHERE expires_at<=unixepoch()*1000 OR occurred_at<=(unixepoch()-30*86400)*1000; DELETE FROM auth_state WHERE key!='owner_binding';";
   cli(["d1", "execute", database, "--remote", "--command", sql]);
 }
