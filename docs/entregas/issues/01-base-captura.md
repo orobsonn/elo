@@ -10,8 +10,8 @@ O consultor precisa conectar sua própria instalação e consultar as mensagens 
 ## Critérios de aceite (testáveis e observáveis)
 
 - [ ] #ac-1.1: A instalação pertence à conta Cloudflare da pessoa e não exige uma base central operada pelo Elo. Duas instalações de teste não consultam nem alteram dados uma da outra. (PRD R01)
-- [ ] #ac-2.1: O aluno recebe um ponto de entrada único e um roteiro legível, com contas, planos, custos e intervenções humanas antes de começar. Não precisa editar código, SQL ou arquivos de configuração. (PRD R02)
-- [ ] #ac-3.1: Avaliar botão Deploy como caminho preferencial e orientação por IA local como alternativa. O caminho selecionado deve criar recursos, configurar a aplicação e conduzir até conexão e teste; publicar um Worker sozinho não significa instalação concluída. (PRD R03)
+- [ ] #ac-2.1: O aluno recebe um ponto de entrada único e um roteiro legível, com contas, planos, custos e intervenções humanas antes de começar. Isso inclui ativar/configurar Cloudflare Access e o login MCP: não precisa conhecer OAuth/OIDC, criar políticas, preencher callbacks/IDs técnicos, editar código, SQL ou arquivos de configuração. (PRD R02)
+- [ ] #ac-3.1: A instalação completa, incluindo Cloudflare Access/autorização MCP, usa botão como caminho preferencial ou IA assistente que configura por API/CLI/computer use com permissões adequadas. Gera aplicação, política restrita ao dono, callbacks e bindings sem configuração técnica manual pelo leigo. Login/consentimento/verificações inevitáveis têm instrução clara; interrupção permite retomar e testar. Publicar um Worker ou apenas entregar tutorial técnico não conclui instalação. (PRD R03)
 - [ ] #ac-4.1: Login, consentimento, QR do WhatsApp, verificações de conta e eventual pagamento são apresentados como ações da pessoa. Nenhum caminho depende de burlar essas etapas ou compartilhar contas. (PRD R04)
 - [ ] #ac-5.1: Segredos são configurados em superfícies protegidas, sem colá-los em chats, materiais de aula ou logs. Orientação por IA não presume invisibilidade de senhas em screenshots ou terminal. (PRD R05)
 - [ ] #ac-7.1: Configuração interrompida pode ser retomada sem recriar recursos ou apagar dados; a pessoa distingue configuração pendente, número desconectado e serviço indisponível. (PRD R07)
@@ -33,6 +33,8 @@ O consultor precisa conectar sua própria instalação e consultar as mensagens 
 - [ ] #ac-41.2: Na conexão MCP, o cliente usa OAuth e o dono entra pelo Cloudflare Access; uma identidade diferente, mesmo admitida por política ampla por engano, não assume a instalação. Validar vínculo de emissor/subject com o dono autorizado e callbacks/state/nonce/PKCE conforme o fluxo.
 - [ ] #ac-41.3: Token expirado, revogado, de emissor/destinatário incorreto ou dono inativo é recusado sem revelar dados. Definir e testar o prazo efetivo de revogação de tokens MCP derivados; não supor revogação instantânea só pela política Access.
 - [ ] #ac-41.4: Origem workers.dev/hostname alternativo e preview não permitem contornar autorização. Callback Z-API tem autenticação própria, sem exigir login humano nem abrir o MCP por exceção. Segredos Access/OIDC ficam em configuração protegida, não em retorno de tool.
+
+- [ ] #ac-3.2: Em conta de teste, o botão/assistente cria e configura Access/OAuth (aplicação, política restrita, callbacks e vínculo MCP) sem exigir que o usuário monte políticas ou copie IDs técnicos. Quando API/CLI não cobrir uma etapa, oferecer execução por IA/computer use autorizado e isolar apenas login/consentimento/verificação/entrada protegida inevitáveis. Erro ou interrupção retoma sem abrir acesso indevido nem recriar tudo.
 
 ### Verificações complementares da entrega
 

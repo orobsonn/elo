@@ -62,6 +62,14 @@ Preserve este produto:
   logins não é limite de contatos nem gratuidade de toda a stack. Automatizar ou
   orientar configuração Access na conta pessoal sem pedir segredos no chat;
   não impor compra de domínio se o fluxo OIDC em workers.dev satisfizer o requisito.
+  A FACILIDADE TAMBÉM VALE PARA CRIAR/CONFIGURAR ACCESS: botão ou IA deve fazer
+  aplicação/política restrita/callbacks/bindings e configuração OAuth pelo usuário,
+  usando APIs/CLI/computer use autorizados. Não entregar um roteiro de painel
+  técnico para o leigo montar à mão nem pedir que entenda OAuth/Zero Trust ou
+  copie IDs técnicos. Deixar só login, consentimento, verificações e entrada
+  protegida inevitáveis, com instrução simples e retomada. Testar a jornada
+  Access/MCP com dados sintéticos sem depender de Z-API; prova com leigo permanece
+  explícita se exigir sua presença. Não sacrificar auth/segredos por automação.
 - Z-API: captura normalizada, contatos com ID/alias e destinatário resolvido
   exclusivamente no backend. Sem telefone/JID/LID/CPF/e-mail/sobrenome em campos
   estruturados das tools. Texto da conversa pode conter dados pessoais;

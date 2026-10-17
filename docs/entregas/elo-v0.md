@@ -42,3 +42,5 @@ A instância Z-API ainda não foi contratada. Isso não bloqueia código, deploy
 ## Atualização de autenticação — PRD v1.1
 
 Cloudflare Access agora é o padrão de login por decisão de Robson, integrado ao OAuth MCP. E1 implementa identidade, tokens, revogação e ausência de bypass; E4 valida conexão/renovação/rotinas nos dois clientes e o roteiro de configuração. A revisão adversarial apontou que login Access sozinho não autoriza toda identidade, nem revoga automaticamente tokens MCP derivados: os aceites agora exigem vínculo com dono e prazo/mecanismo de revogação testados. A instância Z-API ausente não bloqueia estes testes.
+
+**Esclarecimento de adoção:** a criação/configuração do Access também precisa ser leiga: botão ou IA executando a parte técnica por API/CLI/computer use, não um roteiro para aprender políticas/OAuth ou copiar IDs. R02/R03 e aceites E1/E4 foram reforçados; prompt exige jornada retomável e validação Access/MCP independente da instância Z-API.

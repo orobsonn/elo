@@ -22,6 +22,8 @@ O Elo só tem valor para pessoas leigas quando conecta, funciona nas IAs usadas,
 - [ ] #ac-42.2: Matriz Claude/ChatGPT distingue login Access, autorização MCP, renovação, revogação e uso em rotina agendada. Demonstrar as combinações reais possíveis; documentar impedimento humano/cliente sem desativar auth para passar no smoke.
 - [ ] #ac-6.2: Roteiro inclui ativação/configuração do Access na conta individual, dono autorizado, callback e entrada protegida de segredos. Não exigir compra de domínio só por usar Access quando o caminho OIDC em workers.dev atender. Free cobre até 50 logins conforme oferta verificada, não 50 contatos nem toda a infraestrutura gratuita; verificar elegibilidade concreta de recursos usados.
 
+- [ ] #ac-6.3: Uma pessoa leiga segue o ponto de entrada e conclui ativação/configuração do Access e conexão MCP por botão ou IA executando por ela, sem estudar OAuth/Zero Trust, editar configuração técnica ou depender de suporte individual de engenharia. Registrar atritos e o que a pessoa realmente fez; tutorial técnico manual não basta. Teste de autenticação não espera contratação Z-API. Segredos continuam em entrada protegida, fora do chat.
+
 ### Verificações complementares da entrega
 
 - [ ] Instalação termina com autenticação, recebimento, consulta por ID, envio aprovado a destino controlado e leitura do estado. Ponto de entrada único não promete eliminar login/consentimento/QR/pagamento; botão é preferido, orientação IA local é caminho complementar.
