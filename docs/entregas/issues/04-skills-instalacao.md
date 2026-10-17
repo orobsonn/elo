@@ -19,6 +19,9 @@ O Elo só tem valor para pessoas leigas quando conecta, funciona nas IAs usadas,
 - [ ] #ac-50.1: GPS e rotinas são Skills instaladas no harness da pessoa; o pacote inclui orientação de cron no Work/Cowork. O backend oferece operações de dados e ação, sem duplicar esses procedimentos como serviços próprios. (PRD R50)
 - [ ] #ac-51.1: Entregar “Otimize meu processo”: entrevistar o consultor sobre a rotina e o resultado desejado; avaliar recursos disponíveis na plataforma/harness (computer use, cron, conectores, MCP, arquivos e demais capacidades pertinentes); desenhar uma rotina melhor; criar/adaptar a Skill e testá-la junto com a pessoa até demonstrar o resultado ou explicitar um bloqueio. Conferir disponibilidade/permissões reais, sem prometer toda capacidade em todo ambiente. GPS é exemplo, sem formato único obrigatório. (PRD R51)
 
+- [ ] #ac-42.2: Matriz Claude/ChatGPT distingue login Access, autorização MCP, renovação, revogação e uso em rotina agendada. Demonstrar as combinações reais possíveis; documentar impedimento humano/cliente sem desativar auth para passar no smoke.
+- [ ] #ac-6.2: Roteiro inclui ativação/configuração do Access na conta individual, dono autorizado, callback e entrada protegida de segredos. Não exigir compra de domínio só por usar Access quando o caminho OIDC em workers.dev atender. Free cobre até 50 logins conforme oferta verificada, não 50 contatos nem toda a infraestrutura gratuita; verificar elegibilidade concreta de recursos usados.
+
 ### Verificações complementares da entrega
 
 - [ ] Instalação termina com autenticação, recebimento, consulta por ID, envio aprovado a destino controlado e leitura do estado. Ponto de entrada único não promete eliminar login/consentimento/QR/pagamento; botão é preferido, orientação IA local é caminho complementar.
@@ -35,15 +38,15 @@ O Elo só tem valor para pessoas leigas quando conecta, funciona nas IAs usadas,
 
 Pacote e instruções por plataforma; Skills de revisão/brief/approve e Otimize meu processo; cron Work/Cowork; finalização do botão/roteiro de instalação, operação, atualização, diagnóstico, exportação e exclusão. Concluir integração das entregas anteriores.
 
-Base: [PRD v1.0](https://github.com/orobsonn/elo/blob/main/docs/prd/elo-v1.md). Padrão: `.pi/harness/skills/creating-issues/SKILL.md`, formulário `harness-task.yml` e contratos de entrega/governança. Este texto define resultado/aceites, não sela plano técnico nem requer cerimônia do harness. Execução por goal será autorizada em outra sessão; a label `harness:ready` indica metadados validados conforme o harness; não autoriza configurar um scheduler ou iniciar a implementação nesta sessão.
+Base: [PRD v1.1](https://github.com/orobsonn/elo/blob/main/docs/prd/elo-v1.md). Padrão: `.pi/harness/skills/creating-issues/SKILL.md`, formulário `harness-task.yml` e contratos de entrega/governança. Este texto define resultado/aceites, não sela plano técnico nem requer cerimônia do harness. Execução por goal será autorizada em outra sessão; a label `harness:ready` indica metadados validados conforme o harness; não autoriza configurar um scheduler ou iniciar a implementação nesta sessão.
 
 **Paths permitidos e exclusões:** Pode: skills/, scripts/ e configuração de distribuição/instalação; tela já prevista de configuração; docs/; testes/smokes de integração, migração/recuperação e saída; configuração de CI/Workers necessária ao fechamento. Ajustes de integração em src/ exigem regressão da área. Não tocar: .pi/, fontes/privadas/, outros projetos, contas/rotinas reais sem autorização; não criar CRM/dashboard, anexos ou novos fluxos de produto.
 
 ## Decisões já resolvidas (opcional)
 
-Infraestrutura individual Cloudflare; Claude e ChatGPT; grupos/anexos fora da V0; approve por Skill no chat sem tela adicional; identificadores de entrega restritos ao backend; histórico bruto ativo até 30 dias; fatos claros automáticos e conflitos pendentes; Skills/cron no harness e Work/Cowork; única tela própria de configuração Z-API/webhook.
+Infraestrutura individual Cloudflare; login padrão Cloudflare Access integrado ao OAuth MCP; Claude e ChatGPT; grupos/anexos fora da V0; approve por Skill no chat sem tela adicional; identificadores de entrega restritos ao backend; histórico bruto ativo até 30 dias; fatos claros automáticos e conflitos pendentes; Skills/cron no harness e Work/Cowork; única tela própria de configuração Z-API/webhook.
 
-O escopo detalhado e as exclusões adicionais estão no PRD v1.0. Robson autorizou organizar estas quatro entregas e implementar em outra sessão por goal, sem a cerimônia do harness; testes, revisão e verificação continuam exigidos.
+O escopo detalhado e as exclusões adicionais estão no PRD v1.1. Robson autorizou organizar estas quatro entregas e implementar em outra sessão por goal, sem a cerimônia do harness; testes, revisão e verificação continuam exigidos.
 
 ### Suposições do modelo (atacáveis)
 

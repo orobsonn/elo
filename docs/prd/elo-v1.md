@@ -2,7 +2,7 @@
 
 - **slug:** elo-v1
 - **status:** pronto
-- **versão do documento:** 1.0
+- **versão do documento:** 1.1
 - **criado:** 2026-10-16 · **atualizado:** 2026-10-16
 - **autoria:** decisões de Robson consolidadas com pesquisa e revisão adversarial; escolhas de engenharia identificadas separadamente
 - **limite desta entrega:** requisitos e pesquisa; nenhuma implementação, implantação ou validação com dados reais
@@ -127,7 +127,7 @@ Um requisito de resultado como “gerar GPS” é entregue pela Skill usando a I
 
 | ID | Comportamento e critério observável | Prioridade |
 |---|---|---|
-| R41 | MCP remoto autentica dono e limita ferramentas e dados no servidor. Antes do primeiro uso, somente o dono comprova posse e conclui o bootstrap; ser a primeira pessoa a abrir uma URL pública não concede propriedade. Permissão para consultar/preparar não dispensa o fluxo approve da Skill antes do envio. Nenhum bypass de desenvolvimento, chave compartilhada entre alunos ou endpoint alternativo público pode expor a instalação. | Núcleo |
+| R41 | Cloudflare Access é o padrão de login do dono, integrado ao OAuth do MCP compatível com Claude/ChatGPT. A identidade validada (emissor e subject) é vinculada ao dono previamente autorizado; primeiro visitante ou política ampla de login não concede propriedade. Servidor valida sessão/tokens, permissões, expiração e revogação; nenhum hostname alternativo, preview, bypass de desenvolvimento ou chave compartilhada expõe dados/ferramentas. Consulta/preparação autenticadas não dispensam approve da Skill para envio. | Núcleo |
 | R42 | Documentar matriz por plataforma/plano: conectar, ler, escrever, revisar, celular e agendar. Arquivos da própria IA, se descritos, não implicam envio de anexos WhatsApp na V0. Marcar suportado documentalmente, testado ou pendente; não presumir paridade Claude/ChatGPT. | Primeira prova |
 | R43 | Jornadas principais são testadas no celular real. Configuração inicial orientada no computador é a hipótese de planejamento, coerente com a instalação assistida pela IA local; uso diário não pode depender de terminal. Restrição maior exige apresentar impacto antes de mudar o escopo. | Núcleo |
 | R44 | Credenciais revogadas, número desconectado, quotas e indisponibilidade geram mensagem compreensível com próxima ação. Queda da IA não interrompe captura por webhook quando backend/provedor continuam disponíveis. | Núcleo |
@@ -138,6 +138,16 @@ Um requisito de resultado como “gerar GPS” é entregue pela Skill usando a I
 | R49 | Extração auxiliar backend processa novidades em lotes limitados com generativo, sem Clef obrigatório. Valida schema, contato, campos, fontes e estado antes da escrita; fato claro sem conflito pode entrar automaticamente, demais candidatos ficam pendentes. Falha não perde mensagens, não marca período incompleto como concluído nem estende retenção. Extração e Skills compartilham escrita idempotente, origem e regras de conflito. Qualidade incremental, formato, custo e limite de execução são aceites da entrega. | V0 / escolha de engenharia |
 | R50 | GPS e rotinas são Skills instaladas no harness da pessoa; o pacote inclui orientação de cron no Work/Cowork. O backend oferece operações de dados e ação, sem duplicar esses procedimentos como serviços próprios. | Decidido |
 | R51 | Entregar “Otimize meu processo”: entrevistar o consultor sobre a rotina e o resultado desejado; avaliar recursos disponíveis na plataforma/harness (computer use, cron, conectores, MCP, arquivos e demais capacidades pertinentes); desenhar uma rotina melhor; criar/adaptar a Skill e testá-la junto com a pessoa até demonstrar o resultado ou explicitar um bloqueio. Conferir disponibilidade/permissões reais, sem prometer toda capacidade em todo ambiente. GPS é exemplo, sem formato único obrigatório. | Decidido |
+
+### Login e autorização MCP — padrão Cloudflare Access
+
+**Decidido por Robson:** Cloudflare Access é o login padrão, dentro da conta individual de cada instalação. O fluxo do usuário é conectar MCP → entrar pelo Access → autorizar o cliente → usar as tools conforme as permissões. Clientes financeiros cadastrados são contatos, não usuários convidados a entrar no Access.
+
+**Caminho inicial de engenharia:** OAuth do MCP integrado ao Access for SaaS/OIDC, seguindo a referência oficial Cloudflare; o exemplo suporta Worker em `workers.dev`, sem impor compra de domínio como pré-requisito. A biblioteca/protocolo MCP deve tratar descoberta, consentimento e tokens próprios; não presumir que um cookie de navegador ou headers de service token sejam suficientes nos clientes. Managed OAuth é alternativa técnica somente após verificar elegibilidade/configuração e validação do JWT de Access no servidor, sem confundir suas regras com o fluxo OIDC. [Referência MCP/Access](https://developers.cloudflare.com/cloudflare-one/access-controls/ai-controls/secure-mcp-servers/), [autorização MCP](https://developers.cloudflare.com/agents/model-context-protocol/protocol/authorization/).
+
+**Aceites, distribuídos em R41/R42:** política do dono restrita; vínculo de identidade/sessão com autorização MCP; callbacks exatos, state/nonce e PKCE conforme o protocolo; validação de emissor, destinatário, validade e assinatura quando aplicável ao token recebido; revogação/expiração e renovação com limite definido. Revogar no Access não deve ser anunciado como revogação imediata de todo token MCP derivado sem mecanismo e teste. Verificar tools com dono inativo, reuso de sessão e execução agendada, sem login interativo a cada rodada. Testar origens alternativas e preview: mesmo que acessíveis, não podem fornecer acesso sem autorização. O webhook Z-API tem autenticação própria e não fica atrás de um login humano que o provedor não consegue completar. Segredos administrativos e tokens não chegam ao modelo.
+
+**Gratuidade:** a oferta Zero Trust Free consultada em 16/10/2026 cobre até 50 usuários de acesso; isso não conta os contatos CRM nem torna Workers/Workers AI/Z-API gratuitos. Confirmar provisionamento e recursos concretos usados no plano escolhido, sem assumir que toda opção Managed OAuth está incluída. Instalação deve orientar configuração e permissões do Access; domínio, plano ou intervenção adicional só entram se realmente necessários e explicitados. [Planos oficiais](https://www.cloudflare.com/plans/).
 
 ### Padrões de engenharia para começar, sem nova pesquisa bloqueante
 
@@ -225,6 +235,8 @@ Essas recomendações não dispensam aprovação de escopo nem resolvem por disc
 19. V0 sem envio de imagem ou documento: apenas texto pelo WhatsApp.
 20. A Skill se chama **Otimize meu processo**, substituindo o nome anterior “Simplifique meu processo”. Ela entrevista, considera os recursos da plataforma/harness, cria uma Skill para o processo escolhido e testa junto com o consultor. GPS em Downloads é referência/exemplo, sem formato único obrigatório.
 21. Robson autorizou novo goal experimental para comparar modelo generativo + Clef na análise de histórico sintético de 30 dias. Não autoriza implementar essa stack no produto antes de avaliar resultados e integrar o desenho.
+
+22. Cloudflare Access é o padrão de login do dono, integrado à autorização OAuth do MCP; o pedido substitui a indefinição anterior de provedor. A integração concreta e sua validação são responsabilidade da engenharia.
 
 ### Resultado experimental e escolha inicial para construção
 

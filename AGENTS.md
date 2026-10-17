@@ -17,6 +17,8 @@ Isso não desativa autenticação, proteção de segredos ou limites operacionai
 ## Escopo e privacidade
 
 - Instalação individual Cloudflare; MCP para Claude e ChatGPT; sem SaaS central.
+- Cloudflare Access é login padrão do dono, integrado ao OAuth MCP. Ver PRD v1.1;
+  não basta cookie/gate HTML nem headers de service token. Webhook tem auth própria.
 - Envios V0: texto individual, com approve pela Skill no chat. Sem grupos/anexos.
 - Telefone/JID/LID e identificadores de entrega ficam restritos ao backend.
 - Texto de conversas pode conter dados pessoais; não anunciar anonimização universal.

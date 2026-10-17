@@ -26,9 +26,13 @@ O consultor precisa conectar sua própria instalação e consultar as mensagens 
 - [ ] #ac-18.1: O texto das mensagens pode chegar à IA e conter dados pessoais, inclusive números escritos por participantes. Não há requisito de anonimização ou remoção universal do conteúdo. Não criar campos estruturados de CPF/e-mail/sobrenome/telefone na memória consultável. (PRD R18)
 - [ ] #ac-19.1: Histórico declara quando a captura começou, indisponibilidades e tipos não suportados. A solução não afirma ter histórico anterior que não recebeu. Captura desde a ativação é a hipótese inicial. (PRD R19)
 - [ ] #ac-20.1: Eventos inválidos, tardios ou fora de ordem não podem trocar a identidade da conversa nem regredir um estado válido. Mudanças de telefone/endereço do provedor não unem pessoas automaticamente. (PRD R20)
-- [ ] #ac-41.1: MCP remoto autentica dono e limita ferramentas e dados no servidor. Antes do primeiro uso, somente o dono comprova posse e conclui o bootstrap; ser a primeira pessoa a abrir uma URL pública não concede propriedade. Permissão para consultar/preparar não dispensa o fluxo approve da Skill antes do envio. Nenhum bypass de desenvolvimento, chave compartilhada entre alunos ou endpoint alternativo público pode expor a instalação. (PRD R41)
+- [ ] #ac-41.1: Cloudflare Access é o padrão de login do dono, integrado ao OAuth do MCP compatível com Claude/ChatGPT. A identidade validada (emissor e subject) é vinculada ao dono previamente autorizado; primeiro visitante ou política ampla de login não concede propriedade. Servidor valida sessão/tokens, permissões, expiração e revogação; nenhum hostname alternativo, preview, bypass de desenvolvimento ou chave compartilhada expõe dados/ferramentas. Consulta/preparação autenticadas não dispensam approve da Skill para envio. (PRD R41)
 - [ ] #ac-44.1: Credenciais revogadas, número desconectado, quotas e indisponibilidade geram mensagem compreensível com próxima ação. Queda da IA não interrompe captura por webhook quando backend/provedor continuam disponíveis. (PRD R44)
 - [ ] #ac-47.1: Diagnóstico e testes usam dados fictícios por padrão. O suporte em grupo recebe estado técnico suficiente sem receber base de clientes ou acesso administrativo permanente. (PRD R47)
+
+- [ ] #ac-41.2: Na conexão MCP, o cliente usa OAuth e o dono entra pelo Cloudflare Access; uma identidade diferente, mesmo admitida por política ampla por engano, não assume a instalação. Validar vínculo de emissor/subject com o dono autorizado e callbacks/state/nonce/PKCE conforme o fluxo.
+- [ ] #ac-41.3: Token expirado, revogado, de emissor/destinatário incorreto ou dono inativo é recusado sem revelar dados. Definir e testar o prazo efetivo de revogação de tokens MCP derivados; não supor revogação instantânea só pela política Access.
+- [ ] #ac-41.4: Origem workers.dev/hostname alternativo e preview não permitem contornar autorização. Callback Z-API tem autenticação própria, sem exigir login humano nem abrir o MCP por exceção. Segredos Access/OIDC ficam em configuração protegida, não em retorno de tool.
 
 ### Verificações complementares da entrega
 
@@ -45,19 +49,19 @@ O consultor precisa conectar sua própria instalação e consultar as mensagens 
 
 Workers + D1, migrations iniciais, MCP remoto autenticado, integração Z-API REST/webhooks, projeção de dados permitidos, aliases e histórico paginado. Instalação guiada inicial e única tela simples para credenciais Z-API e webhook. A tela não é CRM e não aprova envios. Reaproveitar seletivamente padrões das bases auditadas após conferir licença/permissão. Não copiar o framework inteiro.
 
-Base: [PRD v1.0](https://github.com/orobsonn/elo/blob/main/docs/prd/elo-v1.md). Padrão: `.pi/harness/skills/creating-issues/SKILL.md`, formulário `harness-task.yml` e contratos de entrega/governança. Este texto define resultado/aceites, não sela plano técnico nem requer cerimônia do harness. Execução por goal será autorizada em outra sessão; a label `harness:ready` indica metadados validados conforme o harness; não autoriza configurar um scheduler ou iniciar a implementação nesta sessão.
+Base: [PRD v1.1](https://github.com/orobsonn/elo/blob/main/docs/prd/elo-v1.md). Padrão: `.pi/harness/skills/creating-issues/SKILL.md`, formulário `harness-task.yml` e contratos de entrega/governança. Este texto define resultado/aceites, não sela plano técnico nem requer cerimônia do harness. Execução por goal será autorizada em outra sessão; a label `harness:ready` indica metadados validados conforme o harness; não autoriza configurar um scheduler ou iniciar a implementação nesta sessão.
 
 **Paths permitidos e exclusões:** Pode: src/ de autenticação, configuração, Z-API, MCP de leitura e repositórios de captura/identidade; migrations/; test/ ou tests/ correspondentes; scripts/ de instalação; package.json/lockfile, configuração Workers e CI mínimo necessário; docs/ de instalação/diagnóstico. Esses paths são áreas candidatas a criar, não arquivos já existentes. Não tocar: .pi/, fontes/privadas/, serviços de outros projetos; não implementar envios, extração IA ou CRM nesta issue.
 
 ## Decisões já resolvidas (opcional)
 
-Infraestrutura individual Cloudflare; Claude e ChatGPT; grupos/anexos fora da V0; approve por Skill no chat sem tela adicional; identificadores de entrega restritos ao backend; histórico bruto ativo até 30 dias; fatos claros automáticos e conflitos pendentes; Skills/cron no harness e Work/Cowork; única tela própria de configuração Z-API/webhook.
+Infraestrutura individual Cloudflare; login padrão Cloudflare Access integrado ao OAuth MCP; Claude e ChatGPT; grupos/anexos fora da V0; approve por Skill no chat sem tela adicional; identificadores de entrega restritos ao backend; histórico bruto ativo até 30 dias; fatos claros automáticos e conflitos pendentes; Skills/cron no harness e Work/Cowork; única tela própria de configuração Z-API/webhook.
 
-O escopo detalhado e as exclusões adicionais estão no PRD v1.0. Robson autorizou organizar estas quatro entregas e implementar em outra sessão por goal, sem a cerimônia do harness; testes, revisão e verificação continuam exigidos.
+O escopo detalhado e as exclusões adicionais estão no PRD v1.1. Robson autorizou organizar estas quatro entregas e implementar em outra sessão por goal, sem a cerimônia do harness; testes, revisão e verificação continuam exigidos.
 
 ### Suposições do modelo (atacáveis)
 
-Workers + D1, Z-API REST, organização de módulos e paths acima são escolhas iniciais de engenharia, atacáveis pelo revisor. Botão/roteiro e autenticação precisam dos aceites da entrega. Não importar automaticamente arquitetura/garantias das bases auditadas.
+Integração OAuth MCP → Access for SaaS/OIDC como caminho inicial, com referência oficial em https://developers.cloudflare.com/cloudflare-one/access-controls/ai-controls/secure-mcp-servers/. Login HTML/cookie isolado ou service-token headers não substituem a integração. Workers + D1, Z-API REST, organização de módulos e paths acima são escolhas iniciais de engenharia, atacáveis pelo revisor. Botão/roteiro e autenticação precisam dos aceites da entrega. Não importar automaticamente arquitetura/garantias das bases auditadas.
 
 ## Dependências
 

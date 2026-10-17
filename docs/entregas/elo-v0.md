@@ -1,6 +1,6 @@
 # Elo V0 — entregas e rastreabilidade
 
-PRD de referência: [v1.0](../prd/elo-v1.md). Produto fechado para planejamento; implementação ainda não iniciada. As issues seguem `creating-issues` e o formulário `harness-task.yml` do Pi: título `[harness]`, journeys `#uj-N`, aceites `#ac-N.M`, escopo/paths, decisões e suposições separadas, domínio sensível, prioridade e tamanho, além de riscos/verificação.
+PRD de referência: [v1.1](../prd/elo-v1.md). Produto fechado para planejamento; implementação ainda não iniciada. As issues seguem `creating-issues` e o formulário `harness-task.yml` do Pi: título `[harness]`, journeys `#uj-N`, aceites `#ac-N.M`, escopo/paths, decisões e suposições separadas, domínio sensível, prioridade e tamanho, além de riscos/verificação.
 
 ## Issues publicadas
 
@@ -38,3 +38,7 @@ Revisão adversarial independente Sol/medium não encontrou decisão de produto 
 Robson autorizou que o goal da próxima sessão integre as entregas revisadas, publique o Elo na sua conta pessoal Cloudflare e valide o ambiente publicado com dados sintéticos. O prompt especifica publicação versionada com smokes antes/depois, versão ativa e saúde verificadas. Essa autorização não iniciou implementação/deploy nesta sessão.
 
 A instância Z-API ainda não foi contratada. Isso não bloqueia código, deploy, memória/MCP e testes independentes: adaptador/fluxos devem ser testados com provedor controlado, sem alegar integração real. Não comprar a instância. Quando não configurado, o ambiente deve indicar a pendência e rejeitar operações/callbacks sem autorização, sem bypass público. Aceites live correspondentes permanecem abertos.
+
+## Atualização de autenticação — PRD v1.1
+
+Cloudflare Access agora é o padrão de login por decisão de Robson, integrado ao OAuth MCP. E1 implementa identidade, tokens, revogação e ausência de bypass; E4 valida conexão/renovação/rotinas nos dois clientes e o roteiro de configuração. A revisão adversarial apontou que login Access sozinho não autoriza toda identidade, nem revoga automaticamente tokens MCP derivados: os aceites agora exigem vínculo com dono e prazo/mecanismo de revogação testados. A instância Z-API ausente não bloqueia estes testes.

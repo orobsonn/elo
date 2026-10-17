@@ -2,11 +2,11 @@
 
 Memória de relacionamento e WhatsApp na IA que o consultor já usa, por MCP e Skills, com infraestrutura individual Cloudflare.
 
-**Estado:** PRD v1.0 fechado, quatro issues organizadas; aplicação ainda não implementada. O uso diário acontece em Claude/ChatGPT. A única tela própria prevista configura Z-API e fornece o webhook.
+**Estado:** PRD v1.1 fechado, quatro issues organizadas; aplicação ainda não implementada. O uso diário acontece em Claude/ChatGPT. A única tela própria prevista configura Z-API e fornece o webhook.
 
 ## Comece aqui
 
-- [PRD v1.0](docs/prd/elo-v1.md): requisitos, decisões, limites e aceites da V0.
+- [PRD v1.1](docs/prd/elo-v1.md): requisitos, decisões, limites e aceites da V0.
 - [Quatro entregas e dependências](docs/entregas/elo-v0.md): rastreabilidade dos 49 requisitos da V0.
 - [Prompt para iniciar o goal de implementação](docs/prompts/implementar-elo-v0.md): nova sessão, qualidade do Pi Harness sem sua cerimônia, deploy na conta pessoal Cloudflare e validação publicada.
 - [Issues no GitHub](https://github.com/orobsonn/elo/issues): padrão Pi completo, `enhancement`/`harness:ready`, prioridade P1, tamanho L e dependências validadas.

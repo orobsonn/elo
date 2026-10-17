@@ -62,3 +62,7 @@ Robson pediu encerrar o PRD, organizar as issues no padrão Pi e fornecer prompt
 Após Robson apontar a ausência de tags, foi aplicada a skill Pi `creating-issues`: títulos `[harness]`, IDs de journeys/aceites, escopo por área, decisões/suposições separadas, sensibilidade, P1/L e formulário canônico. Cada issue passou em `validate-ready.mjs` antes de receber `harness:ready` e `enhancement`. Dependências nativas e `harness-deps` foram preservadas; não aplicar manualmente estados do motor.
 
 Robson também autorizou deploy na conta pessoal Cloudflare ao fim da implementação e informou que ainda não comprou Z-API. O prompt agora exige deploy/validação publicados e progresso sem essa instância, com provedores fake apenas em testes e a limitação live explícita. Não houve compra, novo goal de implementação ou deploy nesta sessão.
+
+## Login padrão Access — atualização de retomada
+
+Robson definiu Cloudflare Access como login padrão e informou que a run de implementação foi pausada antes de começar. O PRD foi atualizado para v1.1, mantendo 49 requisitos V0. E1/E4 receberam aceites específicos; as demais issues preservam a referência e restrição comum. A revisão adversarial Sol/medium exigiu vínculo de identidade com o dono, separação Access/OAuth MCP, revogação efetiva de tokens derivados e proteção de origem/preview sem bloquear webhook com login humano. Essas condições foram incorporadas. As issues foram revalidadas com a ferramenta Pi e labels preservadas. Nenhum Access app, provedor ou infraestrutura foi criado nesta sessão documental.

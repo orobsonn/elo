@@ -1,5 +1,7 @@
 # Instalação individual do Elo na Cloudflare
 
+> **Atualização normativa — PRD v1.1:** Robson definiu Cloudflare Access como login padrão, integrado ao OAuth do MCP. O caminho inicial de engenharia é Access for SaaS/OIDC; o [exemplo oficial](https://developers.cloudflare.com/cloudflare-one/access-controls/ai-controls/secure-mcp-servers/) usa `workers.dev`, portanto uma restrição de domínio para proxy Access não deve ser generalizada a esse fluxo. Configuração, identidade do dono, tokens, renovação/revogação e dois clientes são aceites E1/E4. Free Access até 50 logins é distinto de custo Workers/AI/Z-API e não comprova disponibilidade de toda opção Managed OAuth. Propostas antigas abaixo não substituem essa definição.
+
 Pesquisa documental em 16/10/2026. Nenhum recurso provisionado, credencial consultada, pacote instalado ou integração testada. Números refletem a documentação consultada e devem ser reconferidos antes da oferta e do piloto. Recomendações abaixo são candidatas para revisão adversarial, não arquitetura aprovada.
 
 ## Parecer

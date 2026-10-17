@@ -2,7 +2,7 @@
 
 ## Precedência
 
-1. Decisões de Robson consolidadas no [PRD v1.0](docs/prd/elo-v1.md).
+1. Decisões de Robson consolidadas no [PRD v1.1](docs/prd/elo-v1.md).
 2. Evidência técnica e experimental, com os limites de cada relatório.
 3. [BRIEF.md](BRIEF.md) e [CONTEXT.md](CONTEXT.md), preservados como histórico; suas perguntas antigas não reabrem decisões já respondidas no PRD.
 

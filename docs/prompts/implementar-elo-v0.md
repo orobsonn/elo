@@ -44,9 +44,24 @@ ataques adversariais dos caminhos críticos de autenticação, envio e dados. Ev
 contexto completo em cada agente, coleta redundante e revisão repetida sem mudança
 material. Modelo indisponível deve ter substituição explícita, não alegada.
 
+Atualização de escopo da retomada: PRD v1.1 fixa Cloudflare Access como padrão
+de login. Se esta run já tiver começado com v1.0, releia PRD/issues antes de seguir;
+não continue com auth genérica/chave estática como padrão nem crie outro goal
+se já existir um ativo para esta implementação.
+
 Preserve este produto:
 - Infraestrutura individual Cloudflare, Workers + D1, sem SaaS central; MCP
   funcional em Claude e ChatGPT. Não presumir que protocolo comum prova paridade.
+- Login padrão: Cloudflare Access para o dono, integrado ao OAuth do MCP. Caminho
+  inicial Access for SaaS/OIDC + provedor OAuth MCP, conforme referência oficial;
+  cookies/browser gate e service-token headers sozinhos não provam compatibilidade
+  com Claude/ChatGPT. Vincular identidade validada ao dono autorizado; conferir
+  descoberta/callback/PKCE/state/nonce, expiração, renovação, revogação efetiva e
+  execução agendada. Impedir bypass por origem/preview. Webhook tem autenticação
+  própria, sem login humano e sem abrir as tools por exceção. Access Free até 50
+  logins não é limite de contatos nem gratuidade de toda a stack. Automatizar ou
+  orientar configuração Access na conta pessoal sem pedir segredos no chat;
+  não impor compra de domínio se o fluxo OIDC em workers.dev satisfizer o requisito.
 - Z-API: captura normalizada, contatos com ID/alias e destinatário resolvido
   exclusivamente no backend. Sem telefone/JID/LID/CPF/e-mail/sobrenome em campos
   estruturados das tools. Texto da conversa pode conter dados pessoais;

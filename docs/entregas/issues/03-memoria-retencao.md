@@ -38,15 +38,15 @@ Histórico de chat sozinho não permite lembrar combinados e datas depois que as
 
 Memória, fontes, fatos, conflitos, pendências, datas opcionais, cadência/contato relevante e estado de avaliação. Extração generativa auxiliar no backend por novidades/contexto limitado; Skills consomem dados para revisão/brief. Modelo inicial DeepSeek V4 Flash na Cloudflare, sem Clef obrigatório.
 
-Base: [PRD v1.0](https://github.com/orobsonn/elo/blob/main/docs/prd/elo-v1.md). Padrão: `.pi/harness/skills/creating-issues/SKILL.md`, formulário `harness-task.yml` e contratos de entrega/governança. Este texto define resultado/aceites, não sela plano técnico nem requer cerimônia do harness. Execução por goal será autorizada em outra sessão; a label `harness:ready` indica metadados validados conforme o harness; não autoriza configurar um scheduler ou iniciar a implementação nesta sessão.
+Base: [PRD v1.1](https://github.com/orobsonn/elo/blob/main/docs/prd/elo-v1.md). Padrão: `.pi/harness/skills/creating-issues/SKILL.md`, formulário `harness-task.yml` e contratos de entrega/governança. Este texto define resultado/aceites, não sela plano técnico nem requer cerimônia do harness. Execução por goal será autorizada em outra sessão; a label `harness:ready` indica metadados validados conforme o harness; não autoriza configurar um scheduler ou iniciar a implementação nesta sessão.
 
 **Paths permitidos e exclusões:** Pode: src/ de memória, fontes, pendências, datas, extração/retentativa/expurgo e tools correspondentes; migrations/ e índices; testes/fixtures sintéticos; configuração de binding/modelo e docs/ do perfil de uso. Preservar o contrato de captura e envio já entregue, com regressão quando compartilhado. Não tocar: .pi/, fontes/privadas/, resultados históricos congelados em docs/experimentos/; não criar grafo/embeddings, scheduler de agentes ou gerador GPS no backend.
 
 ## Decisões já resolvidas (opcional)
 
-Infraestrutura individual Cloudflare; Claude e ChatGPT; grupos/anexos fora da V0; approve por Skill no chat sem tela adicional; identificadores de entrega restritos ao backend; histórico bruto ativo até 30 dias; fatos claros automáticos e conflitos pendentes; Skills/cron no harness e Work/Cowork; única tela própria de configuração Z-API/webhook.
+Infraestrutura individual Cloudflare; login padrão Cloudflare Access integrado ao OAuth MCP; Claude e ChatGPT; grupos/anexos fora da V0; approve por Skill no chat sem tela adicional; identificadores de entrega restritos ao backend; histórico bruto ativo até 30 dias; fatos claros automáticos e conflitos pendentes; Skills/cron no harness e Work/Cowork; única tela própria de configuração Z-API/webhook.
 
-O escopo detalhado e as exclusões adicionais estão no PRD v1.0. Robson autorizou organizar estas quatro entregas e implementar em outra sessão por goal, sem a cerimônia do harness; testes, revisão e verificação continuam exigidos.
+O escopo detalhado e as exclusões adicionais estão no PRD v1.1. Robson autorizou organizar estas quatro entregas e implementar em outra sessão por goal, sem a cerimônia do harness; testes, revisão e verificação continuam exigidos.
 
 ### Suposições do modelo (atacáveis)
 
