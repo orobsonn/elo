@@ -40,6 +40,6 @@ Autenticação e leitura/escrita sintéticas podem ser verificadas sem Z-API. A 
 
 ## Custos e privacidade
 
-Antes de habilitar recurso pago, a instalação deve mostrar a cobrança e pedir a autorização que faltar. Plano da IA, Cloudflare/Workers/D1/Access, inferência e Z-API são custos separados; US$5 não é teto da solução. O uso do DeepSeek exige Paid/créditos conforme o caminho de inferência escolhido, com elegibilidade confirmada na conta. Nenhuma medição de consumo é apresentada neste guia.
+Antes de habilitar recurso pago, a instalação deve mostrar a cobrança e pedir a autorização que faltar. Plano da IA, Cloudflare/Workers/D1/Access, inferência e Z-API são custos separados; US$5 não é teto da solução. O uso do DeepSeek exige Paid/créditos conforme o caminho de inferência escolhido, com elegibilidade confirmada na conta. O [perfil de consumo observado](perfil-de-uso.md) separa medidas e projeções; não representa o custo completo da conta nem dispensa mostrar a cobrança antes de ativar recursos.
 
 Texto de conversa pode identificar pessoas. O Elo restringe identificadores estruturados de entrega ao backend, mas não promete anonimização universal. O histórico bruto ativo dura até 30 dias; memória concisa e pendências têm vida distinta. Exclusão de uma camada não apaga automaticamente backups, Z-API ou histórico do chat de IA.
