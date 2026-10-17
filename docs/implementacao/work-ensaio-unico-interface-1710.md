@@ -8,7 +8,7 @@ No mesmo registro Work `6ad38dbe36308191baeafe80910cd16b`, o editor nativo foi c
 
 O cliente relatou `automations.peek` antes do horário: `DTSTART;TZID=America/Fortaleza:20261017T161500`, sem RRULE, `is_enabled=true`, próxima e última execução nulas. Depois do horário, nova consulta somente de metadados relatou **is_enabled=false**, **last_run_time=2026-10-17T19:14:59.510282Z** e **next_run_time=null**. Portanto, o estado do agendador mudou para terminal sem reativação ou execução manual pelo agente.
 
-![Retorno do registro único depois do horário](work-once-ui-1710.jpg)
+As capturas dessa etapa foram preservadas somente no estado local privado; o resumo público omite referências ao contato real.
 
 Na mesma conversa sincronizaram mensagens manuais do iPhone e apareceu uma resposta combinando cancelamento e pauta do contato fictício. Não foi exposto run_id ou resultado isolado da execução; a própria resposta chamou a leitura de manual. **Não atribuir essa pauta ao agendamento nem declarar o ciclo Skill/MCP agendado integralmente comprovado.** O registro de última execução e seu encerramento foram observados; a origem isolada do resultado continua pendente. Não fazer novas tentativas indefinidas nem criar scheduler no Elo.
 
@@ -28,6 +28,6 @@ Essa rodada comprova preparo/cancelamento, mas **não comprova espera em turno s
 
 Um segundo pedido restringiu o turno **somente** a preparar “Teste de espera do Elo. Não enviar.”, proibindo também cancelar naquele turno. O cliente encerrou mostrando proposta e estado **awaiting_approval**. `action_get` independente confirmou esse estado antes da próxima mensagem. Só então foi enviado outro pedido de cancelamento, sem approve ou execução; a resposta final e a D1 confirmaram **cancelled**. Os dois rascunhos do computador terminaram cancelados, com `claimed_at=null` e zero eventos `executing`, conferidos às **19h20 UTC**.
 
-![Cancelamento no turno separado](work-espera-cancelamento-1710.jpg)
+A captura dos turnos foi preservada somente no estado local privado, pois mostra referências ao contato real.
 
 Isso exercita preparação, espera e cancelamento em turnos distintos no computador; os pedidos de teste foram conduzidos pelo agente com autorização do dono. **Não é uma prova independente de gesto humano de approve, de envio web ou de preparo/cancelamento no iPhone.** O desvio do primeiro ensaio não foi apagado pelo segundo resultado. [Resumo estruturado](work-ensaio-unico-interface-1710.json).
