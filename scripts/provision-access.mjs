@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { readConfig } from "./read-config.mjs";
 // Bootstrap owned Elo resources only. No credentials are emitted to stdout.
 import {
   mkdir,
@@ -34,9 +35,7 @@ export async function provisionAccess(options, transport = fetch) {
     throw new Error("Origem HTTPS exata obrigatória.");
   // Verify the local deployment target before any remote creation or secret mutation.
   if (options.wranglerPath) {
-    const config = JSON.parse(
-      await readFile(resolve(options.wranglerPath), "utf8"),
-    );
+    const config = await readConfig(resolve(options.wranglerPath));
     if (config.name !== workerName || config.account_id !== accountId)
       throw new Error("Configuração Wrangler não pertence ao alvo autorizado.");
   }
@@ -287,7 +286,7 @@ export async function provisionAccess(options, transport = fetch) {
   );
   if (options.wranglerPath) {
     const path = resolve(options.wranglerPath);
-    const config = JSON.parse(await readFile(path, "utf8")); // Elo's template is strict JSON despite .jsonc suffix.
+    const config = await readConfig(path);
     if (config.name !== workerName || config.account_id !== accountId)
       throw new Error("Configuração Wrangler não pertence ao alvo autorizado.");
     config.vars = { ...config.vars, ...bindings };

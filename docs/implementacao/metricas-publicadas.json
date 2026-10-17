@@ -1,0 +1,46 @@
+{
+  "queried_at": "2026-10-17T03:01:00Z",
+  "worker_window_utc": [
+    "2026-10-17T02:30:00Z",
+    "2026-10-17T03:01:00Z"
+  ],
+  "d1_date_utc": "2026-10-17",
+  "note": "Analytics têm atraso; D1 ainda reflete amostra anterior. CPU em microssegundos; não é fatura.",
+  "response": {
+    "success": true,
+    "status": 200,
+    "result": {
+      "viewer": {
+        "accounts": [
+          {
+            "d1AnalyticsAdaptiveGroups": [
+              {
+                "sum": {
+                  "readQueries": 30,
+                  "rowsRead": 218,
+                  "rowsWritten": 143,
+                  "writeQueries": 46
+                }
+              }
+            ],
+            "workersInvocationsAdaptive": [
+              {
+                "quantiles": {
+                  "cpuTimeP50": 1639,
+                  "cpuTimeP99": 32332
+                },
+                "sum": {
+                  "errors": 0,
+                  "requests": 51,
+                  "subrequests": 12
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "errors": [],
+    "messages": []
+  }
+}

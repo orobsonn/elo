@@ -1,0 +1,136 @@
+{
+  "synthetic": true,
+  "stage": "awaiting-fixed-cron",
+  "at": "2026-10-17T02:57:53.171Z",
+  "boundary": "D1 administrativo; processamento pelo cron publicado. Não prova recebimento Z-API nem cliente MCP.",
+  "health": {
+    "ok": true,
+    "version": "1a529373-d6b0-49f2-b031-b5b41f9700bf",
+    "commit": "bd87021",
+    "database": true
+  },
+  "jobs": [
+    {
+      "alias": "Mario viagem",
+      "id": "src_500848beae1648f1b34a9155954d59ec",
+      "extract_state": "pending",
+      "attempts": 0,
+      "safe_error": null,
+      "raw_removed": 0
+    },
+    {
+      "alias": "Bia exemplo",
+      "id": "src_0ad9ea9c681648e88154e856ec80167e",
+      "extract_state": "pending",
+      "attempts": 0,
+      "safe_error": null,
+      "raw_removed": 0
+    },
+    {
+      "alias": "Lia exemplo",
+      "id": "src_63d6e3f7ead14f97ac3cc1f9101f7e22",
+      "extract_state": "pending",
+      "attempts": 0,
+      "safe_error": null,
+      "raw_removed": 0
+    },
+    {
+      "alias": "Mario viagem",
+      "id": "src_retention_live",
+      "extract_state": "done",
+      "attempts": 0,
+      "safe_error": null,
+      "raw_removed": 1
+    }
+  ],
+  "memory": [
+    {
+      "alias": "Mario viagem",
+      "field": "context",
+      "value": "Informação sintética a avaliar",
+      "state": "pending",
+      "reason": "uncertain",
+      "source_id": "src_retention_live"
+    }
+  ],
+  "tasks": [],
+  "usage": [
+    {
+      "day": "2026-10-17",
+      "calls": 6,
+      "input_tokens": 2469,
+      "output_tokens": 2505,
+      "failures": 0
+    }
+  ],
+  "query_meta": [
+    {
+      "served_by": "v3-prod",
+      "served_by_region": "WEUR",
+      "served_by_colo": "LIS",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 0.2063
+      },
+      "duration": 0.2063,
+      "changes": 0,
+      "last_row_id": 9,
+      "changed_db": false,
+      "size_after": 245760,
+      "rows_read": 16,
+      "rows_written": 0,
+      "total_attempts": 1
+    },
+    {
+      "served_by": "v3-prod",
+      "served_by_region": "WEUR",
+      "served_by_colo": "LIS",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 0.1729
+      },
+      "duration": 0.1729,
+      "changes": 0,
+      "last_row_id": 9,
+      "changed_db": false,
+      "size_after": 245760,
+      "rows_read": 3,
+      "rows_written": 0,
+      "total_attempts": 1
+    },
+    {
+      "served_by": "v3-prod",
+      "served_by_region": "WEUR",
+      "served_by_colo": "LIS",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 0.0558
+      },
+      "duration": 0.0558,
+      "changes": 0,
+      "last_row_id": 9,
+      "changed_db": false,
+      "size_after": 245760,
+      "rows_read": 1,
+      "rows_written": 0,
+      "total_attempts": 1
+    },
+    {
+      "served_by": "v3-prod",
+      "served_by_region": "WEUR",
+      "served_by_colo": "LIS",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 0.0839
+      },
+      "duration": 0.0839,
+      "changes": 0,
+      "last_row_id": 9,
+      "changed_db": false,
+      "size_after": 245760,
+      "rows_read": 1,
+      "rows_written": 0,
+      "total_attempts": 1
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "synthetic": true,
+  "stage": "before-fix",
+  "at": "2026-10-17T02:57:04.304Z",
+  "boundary": "D1 administrativo; processamento pelo cron publicado. Não prova recebimento Z-API nem cliente MCP.",
+  "health": {
+    "ok": true,
+    "version": "faed03b8-fdf0-402b-9334-523f8cba1c02",
+    "commit": "4b0bc6649af36bd2e72553bb30baae536e8d5568",
+    "database": true
+  },
+  "jobs": [
+    {
+      "alias": "Mario viagem",
+      "id": "src_500848beae1648f1b34a9155954d59ec",
+      "extract_state": "done",
+      "attempts": 1,
+      "safe_error": null,
+      "raw_removed": 0
+    },
+    {
+      "alias": "Bia exemplo",
+      "id": "src_0ad9ea9c681648e88154e856ec80167e",
+      "extract_state": "done",
+      "attempts": 1,
+      "safe_error": null,
+      "raw_removed": 0
+    },
+    {
+      "alias": "Lia exemplo",
+      "id": "src_63d6e3f7ead14f97ac3cc1f9101f7e22",
+      "extract_state": "done",
+      "attempts": 1,
+      "safe_error": null,
+      "raw_removed": 0
+    },
+    {
+      "alias": "Mario viagem",
+      "id": "src_retention_live",
+      "extract_state": "done",
+      "attempts": 0,
+      "safe_error": null,
+      "raw_removed": 1
+    }
+  ],
+  "memory": [
+    {
+      "alias": "Mario viagem",
+      "field": "goals",
+      "value": "Viajar ao Chile em novembro de 2027.",
+      "state": "confirmed",
+      "reason": "Fato explícito na fonte",
+      "source_id": "src_500848beae1648f1b34a9155954d59ec"
+    },
+    {
+      "alias": "Mario viagem",
+      "field": "preferences",
+      "value": "Prefere reuniões pela manhã.",
+      "state": "confirmed",
+      "reason": "Fato explícito na fonte",
+      "source_id": "src_500848beae1648f1b34a9155954d59ec"
+    },
+    {
+      "alias": "Bia exemplo",
+      "field": "context",
+      "value": "O contato não tem filhos.",
+      "state": "confirmed",
+      "reason": "Fato explícito na fonte",
+      "source_id": "src_0ad9ea9c681648e88154e856ec80167e"
+    },
+    {
+      "alias": "Bia exemplo",
+      "field": "context",
+      "value": "O irmão do contato tem três filhos.",
+      "state": "pending",
+      "reason": "Conflito com fato confirmado",
+      "source_id": "src_0ad9ea9c681648e88154e856ec80167e"
+    },
+    {
+      "alias": "Mario viagem",
+      "field": "context",
+      "value": "Informação sintética a avaliar",
+      "state": "pending",
+      "reason": "uncertain",
+      "source_id": "src_retention_live"
+    }
+  ],
+  "tasks": [],
+  "usage": [
+    {
+      "day": "2026-10-17",
+      "calls": 3,
+      "input_tokens": 1467,
+      "output_tokens": 1745,
+      "failures": 0
+    }
+  ],
+  "query_meta": [
+    {
+      "served_by": "v3-prod",
+      "served_by_region": "WEUR",
+      "served_by_colo": "LIS",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 0.2105
+      },
+      "duration": 0.2105,
+      "changes": 0,
+      "last_row_id": 0,
+      "changed_db": false,
+      "size_after": 245760,
+      "rows_read": 16,
+      "rows_written": 0,
+      "total_attempts": 1
+    },
+    {
+      "served_by": "v3-prod",
+      "served_by_region": "WEUR",
+      "served_by_colo": "LIS",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 0.1154
+      },
+      "duration": 0.1154,
+      "changes": 0,
+      "last_row_id": 0,
+      "changed_db": false,
+      "size_after": 245760,
+      "rows_read": 15,
+      "rows_written": 0,
+      "total_attempts": 1
+    },
+    {
+      "served_by": "v3-prod",
+      "served_by_region": "WEUR",
+      "served_by_colo": "LIS",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 0.0774
+      },
+      "duration": 0.0774,
+      "changes": 0,
+      "last_row_id": 0,
+      "changed_db": false,
+      "size_after": 245760,
+      "rows_read": 1,
+      "rows_written": 0,
+      "total_attempts": 1
+    },
+    {
+      "served_by": "v3-prod",
+      "served_by_region": "WEUR",
+      "served_by_colo": "LIS",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 0.0473
+      },
+      "duration": 0.0473,
+      "changes": 0,
+      "last_row_id": 0,
+      "changed_db": false,
+      "size_after": 245760,
+      "rows_read": 1,
+      "rows_written": 0,
+      "total_attempts": 1
+    }
+  ]
+}

@@ -4,6 +4,8 @@ Memória de relacionamento e WhatsApp assistido no Claude/ChatGPT, com infraestr
 
 [Comece pelo guia de primeiro uso](docs/operacao/primeiro-uso.md). Login padrão Cloudflare Access integrado ao OAuth MCP. A configuração Z-API é a única tela própria; uso diário e approve individual acontecem no chat.
 
+**Instalação pessoal:** [abrir Elo](https://elo.robsonlins.workers.dev) · MCP: `https://elo.robsonlins.workers.dev/mcp`. [Evidências da publicação](docs/implementacao/validacao-publicada.md).
+
 ## V0
 
 - MCP tipado com contatos por ID/alias, histórico paginado, memória rastreável, conflitos pendentes, tarefas, datas e revisão diária com cobertura de versões.

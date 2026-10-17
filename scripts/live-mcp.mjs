@@ -12,8 +12,26 @@ const verifier = randomBytes(32).toString("base64url"),
   state = randomBytes(32).toString("base64url");
 let callbackResolve;
 const callback = new Promise((r) => (callbackResolve = r));
+let authorize;
 const server = createServer((request, response) => {
   const u = new URL(request.url, "http://127.0.0.1");
+  if (u.pathname === "/start" && authorize) {
+    response
+      .writeHead(303, {
+        Location: authorize.toString(),
+        "Referrer-Policy": "no-referrer",
+      })
+      .end();
+    return;
+  }
+  if (u.pathname === "/success") {
+    response
+      .writeHead(200, { "Content-Type": "text/html; charset=utf-8" })
+      .end(
+        "<h1>Conexão Elo autorizada.</h1><p>Você pode voltar ao Codex. Os testes usam apenas dados sintéticos.</p>",
+      );
+    return;
+  }
   if (u.pathname !== "/callback" || u.searchParams.get("state") !== state) {
     response.writeHead(400).end("Retorno inválido.");
     return;
@@ -25,10 +43,8 @@ const server = createServer((request, response) => {
   }
   const code = u.searchParams.get("code");
   response
-    .writeHead(200, { "Content-Type": "text/html; charset=utf-8" })
-    .end(
-      "<h1>Conexão Elo autorizada.</h1><p>Você pode voltar ao Codex. Os testes usam apenas dados sintéticos.</p>",
-    );
+    .writeHead(303, { Location: "/success", "Referrer-Policy": "no-referrer" })
+    .end();
   callbackResolve(code);
 });
 await new Promise((r) => server.listen(0, "127.0.0.1", r));
@@ -49,7 +65,7 @@ const registration = await fetch(discovery.registration_endpoint, {
 });
 assert.equal(registration.status, 201);
 const client = await registration.json();
-const authorize = new URL(discovery.authorization_endpoint);
+authorize = new URL(discovery.authorization_endpoint);
 for (const [k, v] of Object.entries({
   client_id: client.client_id,
   redirect_uri: redirect,
@@ -69,6 +85,7 @@ console.log(
     stage: "awaiting_access_login",
     authorizeFile: join(dir, "authorize-url.txt"),
     redirect,
+    start: `http://127.0.0.1:${server.address().port}/start`,
   }),
 );
 const deadline = setTimeout(
@@ -79,7 +96,7 @@ const deadline = setTimeout(
 );
 const code = await callback;
 clearTimeout(deadline);
-server.close();
+setTimeout(() => server.close(), 5000);
 if (!code)
   throw new Error("Login não concluído; nenhuma autenticação simulada.");
 const tokenResponse = await fetch(discovery.token_endpoint, {
@@ -166,6 +183,9 @@ const refreshed = await fetch(discovery.token_endpoint, {
 });
 assert.equal(refreshed.status, 200);
 tokens = await refreshed.json();
+assert.equal(typeof tokens.access_token, "string");
+assert.ok(tokens.access_token.length > 20);
+assert.equal((await tool("installation_status")).whatsapp, "not_configured");
 await writeFile(
   join(dir, "client-tokens.json"),
   JSON.stringify({ origin, client_id: client.client_id, tokens }),

@@ -72,3 +72,14 @@ test('resumes connector bootstrap with public metadata and all four secret names
  const localState=JSON.parse(await readFile(join(stateDirectory,'access-private.json'),'utf8'));assert.equal(localState.externalBootstrap,true);assert(!JSON.stringify(localState).includes('private-test-secret'));assert.equal(localState.clientSecret,undefined);
  await provisionAccess({...options,wranglerPath},transport);assert.equal(state.writes,5);
 }));
+
+test('accepts actual Wrangler JSONC comments and trailing commas before target checks',async()=>fixture(async({stateDirectory,state,options,transport})=>{
+ const wranglerPath=join(stateDirectory,'wrangler.jsonc');
+ await writeFile(wranglerPath,`{ // supported Wrangler syntax\n"name":"elo", "account_id":"${options.accountId}", "vars":{"PRESERVED":"yes",},}`);
+ await provisionAccess({...options,wranglerPath},transport);assert.equal(state.writes,5);
+ const config=JSON.parse(await readFile(wranglerPath,'utf8'));assert.equal(config.vars.PRESERVED,'yes');
+}));
+test('rejects malformed JSONC before any Cloudflare call',async()=>fixture(async({stateDirectory,state,options})=>{
+ const wranglerPath=join(stateDirectory,'bad.jsonc');await writeFile(wranglerPath,'{"name": "elo", nope}');let calls=0;
+ await assert.rejects(()=>provisionAccess({...options,wranglerPath},()=>{calls++;throw new Error('must not call')}),/inválida/);assert.equal(calls,0);assert.equal(state.writes,0);
+}));

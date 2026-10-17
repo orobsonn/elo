@@ -1,5 +1,7 @@
 # Primeiro uso do Elo
 
+Sua instalação pessoal está em **https://elo.robsonlins.workers.dev**. Para conectar um cliente, o endereço MCP é **https://elo.robsonlins.workers.dev/mcp**. Entre com o Cloudflare Access; não há senha estática do Elo.
+
 Este guia acompanha a instalação assistida. Não comprova uma instalação concluída. A URL publicada, o ponto de entrada do instalador e a versão efetiva devem vir da evidência de deploy da própria instalação; não há link fictício de botão neste guia. Use os [ensaios de aceite](ensaios.md) e a [matriz de clientes](clientes-e-agendamento.md).
 
 ## O que você precisa fazer

@@ -12,3 +12,7 @@ Mudanças relevantes no formato Keep a Changelog. Sem release/tag publicada; ver
 
 ### Security
 - Projeções explícitas, destinatários restritos, callback autenticado separadamente, isolamento por instalação, fencing de fontes e revogação por epoch externo ao banco.
+
+### Fixed
+- Compatibilidade de extração DeepSeek com template sem raciocínio e schema explícito, verificada no serviço real.
+- Leitura de configuração JSONC e conferência da versão ativa após recuperação.
