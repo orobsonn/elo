@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-17",
+  "timezone": "America/Fortaleza",
+  "schedule": {
+    "same_task_id": "6ad38dbe36308191baeafe80910cd16b",
+    "configured_via": "native Scheduled editor",
+    "repeat_switch": false,
+    "scheduled_at": "2026-10-17T19:15:00Z",
+    "rrule_present": false,
+    "before_client_peek": {
+      "is_enabled": true,
+      "next_run_time": null,
+      "last_run_time": null
+    },
+    "after_client_peek": {
+      "is_enabled": false,
+      "next_run_time": null,
+      "last_run_time": "2026-10-17T19:14:59.510282Z"
+    },
+    "manual_run_now": false,
+    "new_task_created": false,
+    "isolated_scheduled_mcp_result_proven": false,
+    "limit": "Same conversation received manual iPhone input; no isolated run_id/result exposed"
+  },
+  "mobile": {
+    "owner_report": "aparentemente deu certo",
+    "new_action_found_in_readonly_D1_check_at_19_14_UTC": false,
+    "observed_client_result": "Contact lookup failed before preparation; nothing to cancel",
+    "owner_requested_followup_on_computer": true,
+    "prepare_cancel_mobile_proven": false
+  },
+  "computer": {
+    "client": "ChatGPT Work web / GPT-6 Luna High",
+    "contact_lookup_recovered": true,
+    "first_draft": {
+      "prepared_and_cancelled_same_turn": true,
+      "requested_separate_wait_observed": false,
+      "final_status": "cancelled",
+      "claimed_at": null,
+      "executing_events": 0
+    },
+    "second_draft": {
+      "awaiting_approval_before_next_turn_confirmed_independently": true,
+      "cancel_requested_in_separate_turn": true,
+      "final_status": "cancelled",
+      "claimed_at": null,
+      "executing_events": 0
+    },
+    "independent_final_D1_check": "2026-10-17T19:20:19Z",
+    "send_executed": false,
+    "human_send_approval_proven": false
+  },
+  "runtime_changed": false
+}
