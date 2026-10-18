@@ -1,8 +1,10 @@
 # Changelog
 
-Mudanças relevantes no formato Keep a Changelog. Sem release/tag publicada; versão 0.0.0 identifica desenvolvimento pré-release.
+Mudanças relevantes no formato Keep a Changelog.
 
 ## [Unreleased]
+
+## [0.1.0] - 2026-10-17
 
 ### Added
 - Backend individual Workers/D1, MCP OAuth com login Cloudflare Access, instalação protegida e adaptador Z-API sem dependência de instância no provisionamento.
@@ -20,3 +22,11 @@ Mudanças relevantes no formato Keep a Changelog. Sem release/tag publicada; ver
 - Login Access OTP aceita email_verified ausente no ID token, recusando valores presentes diferentes de true; instalador exige allowed_idps exclusivo do provedor OTP.
 - Formulários de consentimento/configuração preservam Origin nativo via strict-origin, sem divulgar query no Referer e sem aceitar Origin null.
 - CSP de consentimento permite o retorno apenas à origem validada daquele cliente, recusando wildcard/delimitadores; erros assíncronos do handler passam pela recusa segura.
+
+- Revisão diária usa índices de período e edições pendentes, com regressão de custo e ensaio em D1 real isolada.
+- Preenchimento tardio de texto, cobertura de revisão concorrente e limpeza de ações vencidas na recuperação.
+
+### Notes
+- Primeira minor aceita pelo dono para uso diário. Issues #1–#4 encerradas por aceite operacional.
+- Agendamento aceito pelo dono sem exigir nova homologação; resultado automático isolado não foi comprovado. Uso manual das Skills e recepção/envio individual aprovado foram exercitados.
+- Áudio, anexos e envio em lote continuam fora da V0.
