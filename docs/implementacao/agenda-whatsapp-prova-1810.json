@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-18",
+  "origin": "https://elo.robsonlins.workers.dev",
+  "commit": "f9285065271617ece67739ea95022d3b641cf0f8",
+  "worker_version": "e14b230c-396b-456c-9b18-9564c9b0ef45",
+  "production_traffic_percent": 100,
+  "migration": "0008_contact_directory.sql",
+  "tests": {
+    "worker_d1": 189,
+    "node": 22,
+    "typecheck": true,
+    "build": true,
+    "production_smokes": 6
+  },
+  "directory": {
+    "pages": 10,
+    "provider_records": 936,
+    "mapped_contacts": 935,
+    "contacts_without_sources": 935,
+    "complete": true,
+    "page_quota_used": 10
+  },
+  "journey": {
+    "lookup_without_message_history": true,
+    "draft_prepared": true,
+    "draft_cancelled": true,
+    "whatsapp_sent": false
+  },
+  "plugin": {
+    "version": "1.0.4",
+    "new_skill": "configurar-elo",
+    "approve_updated": true,
+    "package_bytes_verified": true,
+    "runtime_setup_skill_tested": false
+  },
+  "rollback_worker": "4bc7c47b-2d8b-4c19-84ca-a0c81a614354",
+  "privacy": "Only aggregate counts. No names, addresses, credentials, message text or client state."
+}

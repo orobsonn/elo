@@ -1,0 +1,54 @@
+1
+00:00:00,000 --> 00:00:04,759
+Nesta demonstração, uso o Elo dentro do ChatGPT,
+com dados fictícios. Depois da reunião, escrevo
+
+2
+00:00:04,759 --> 00:00:09,518
+as notas no próprio chat.
+
+3
+00:00:12,000 --> 00:00:17,514
+O pedido identifica a origem da reunião. A Skill
+registra os fatos, a dúvida e a tarefa, e
+
+4
+00:00:17,514 --> 00:00:23,028
+consulta o resultado. A espera foi encurtada
+neste vídeo.
+
+5
+00:00:23,200 --> 00:00:26,881
+A resposta confirma a preferência de Lia por
+reuniões à tarde. Essa informação ficou como
+
+6
+00:00:26,881 --> 00:00:30,562
+fato confirmado.
+
+7
+00:00:31,600 --> 00:00:35,687
+A possibilidade de mudança de cidade continua
+pendente. O Elo preserva a dúvida, sem
+
+8
+00:00:35,687 --> 00:00:39,774
+transformar isso numa decisão.
+
+9
+00:00:40,000 --> 00:00:43,116
+O compromisso de enviar opções virou uma tarefa
+do consultor, com prazo em vinte e um de
+
+10
+00:00:43,116 --> 00:00:46,233
+outubro.
+
+11
+00:00:48,200 --> 00:00:52,318
+Tudo está ligado à origem da reunião. Nenhum
+contato real foi consultado e nenhuma mensagem
+
+12
+00:00:52,318 --> 00:00:56,437
+de WhatsApp foi enviada.
