@@ -1,0 +1,280 @@
+{
+  "title": "Elo | Do texto aprovado ao WhatsApp",
+  "created_at": "2026-10-18T15:57:03.729Z",
+  "source": "screen.mp4",
+  "source_sha256": "a50d14cadc4096825f59c9d8af392b7acd605e07688eabf72ed324c8d45047c5",
+  "output_sha256": "f88286fb07fc9b4a28a7b8b51a12d8bffe95d703d69189879b31de9a4792a0b1",
+  "recording_seconds": 54,
+  "output_seconds": 54.4,
+  "voice": "pt-BR-AntonioNeural",
+  "rate": "-3%",
+  "pitch": "-1Hz",
+  "narration_segments": 5,
+  "narration": {
+    "engine": "edge",
+    "engine_version": "edge-tts 7.3.1",
+    "online_service": "Microsoft Edge online TTS",
+    "loudness_target": "-16 LUFS; pico máximo -1.5 dBTP",
+    "subtitle_timing": "Aproximado por trecho de fala",
+    "audio_segments": [
+      {
+        "at": 0,
+        "duration": 10.392,
+        "origin": "edge",
+        "sha256": "bcf39134994e2e220f7dbea7be5c746227ff6b28afca266771b0275657af6422"
+      },
+      {
+        "at": 12,
+        "duration": 8.352,
+        "origin": "edge",
+        "sha256": "e81e0367ccac20cbc219a39bf3be9f841660c8a2924b20db8eb91ea2ed914796"
+      },
+      {
+        "at": 24,
+        "duration": 6.624,
+        "origin": "edge",
+        "sha256": "ead65936ff248f09c3a7c93ba5b265b36f987f3a937ca3ab4f3f6549ca326b1f"
+      },
+      {
+        "at": 35,
+        "duration": 6.672,
+        "origin": "edge",
+        "sha256": "c334180dd664423ede04ba6361b8fdfa17ac10db4c85ed68bcabcb9c712813b6"
+      },
+      {
+        "at": 47,
+        "duration": 6.888,
+        "origin": "edge",
+        "sha256": "6f6b24eddd01825f841aa1a244ac48ec45e3380358ca65d8549eecc78c8475fa"
+      }
+    ]
+  },
+  "editing": "Editorial opening and closing; real captured frames cropped/scaled and optionally masked as declared; altered playback/holds are labelled; original audio removed; neural narration and subtitles added. Product screens and results are not synthesized.",
+  "content_review": "Quadros fonte inspecionados; somente primeiro nome/alias da destinatária, texto de teste autorizado e referências internas opacas. Números e identificadores externos de entrega não aparecem. A entrega é atribuída ao estado do provedor, sem simular print externo.",
+  "screen_capture_provenance": {
+    "format": "Real captured screenshot sequences with editorial opening and closing cards",
+    "client": "ChatGPT",
+    "scenario": "Envio real autorizado; sem números ou dados de entrega",
+    "opening": {
+      "headline": "O retorno está pronto. Como enviar pelo WhatsApp?",
+      "body": "Revisar a proposta, decidir e acompanhar o resultado no próprio chat.",
+      "seconds": 6
+    },
+    "closing": {
+      "headline": "Do rascunho ao WhatsApp, com acompanhamento.",
+      "body": "Texto aprovado, ação executada e entrega confirmada pelo provedor.",
+      "seconds": 6
+    },
+    "clips": [
+      {
+        "seconds": 12,
+        "label": "Destinatária e texto exatos · Proposta para revisão",
+        "crop": {
+          "x": 175,
+          "y": 120,
+          "width": 800,
+          "height": 190
+        },
+        "masks": [],
+        "frames": [
+          {
+            "file": "000086.png",
+            "timestamp": 1792338842.988,
+            "sha256": "17264e818c8ad22173d1fa3615943a6cad6f29cc331dd2ac067439b6cea8bbd6"
+          }
+        ],
+        "source_kind": "real browser screenshot sequence",
+        "source_manifest_sha256": "0e7571bf6bfb61f6b0035eed0ad7d49dde4220350c849b873afecd478a45464e",
+        "capture_metadata": {
+          "kind": "real browser screenshot sequence",
+          "began": 1792338815798,
+          "ended": 1792338842989,
+          "frames": 87
+        },
+        "source_directory": "09-envio-aprovacao-execucao",
+        "at": 6,
+        "seconds_captured": 0,
+        "editing": "Actual captured frame held for reading"
+      },
+      {
+        "seconds": 8,
+        "label": "Aprovação humana repassada ao cliente conectado",
+        "crop": {
+          "x": 405,
+          "y": 350,
+          "width": 560,
+          "height": 140
+        },
+        "masks": [],
+        "frames": [
+          {
+            "file": "000086.png",
+            "timestamp": 1792338842.988,
+            "sha256": "17264e818c8ad22173d1fa3615943a6cad6f29cc331dd2ac067439b6cea8bbd6"
+          }
+        ],
+        "source_kind": "real browser screenshot sequence",
+        "source_manifest_sha256": "0e7571bf6bfb61f6b0035eed0ad7d49dde4220350c849b873afecd478a45464e",
+        "capture_metadata": {
+          "kind": "real browser screenshot sequence",
+          "began": 1792338815798,
+          "ended": 1792338842989,
+          "frames": 87
+        },
+        "source_directory": "09-envio-aprovacao-execucao",
+        "at": 18,
+        "seconds_captured": 0,
+        "editing": "Actual captured frame held for reading"
+      },
+      {
+        "seconds": 7,
+        "label": "Execução da ação aprovada · Espera encurtada",
+        "crop": {
+          "x": 175,
+          "y": 530,
+          "width": 800,
+          "height": 114
+        },
+        "masks": [],
+        "frames": [
+          {
+            "file": "000075.png",
+            "timestamp": 1792338839.688,
+            "sha256": "30bc98b3958b32b1678228fc7fd3ec53b597077a3eceae1b4e7d8d075ef8c554"
+          },
+          {
+            "file": "000076.png",
+            "timestamp": 1792338839.979,
+            "sha256": "99479f9b826e16ae6ee91b0a8e9e462696a0e5392e26f741cc486e2c38a76156"
+          },
+          {
+            "file": "000077.png",
+            "timestamp": 1792338840.271,
+            "sha256": "b27be04a63f4f6b09ed560f58ec3ae50a26fee0abe88ffc689c7970f7faa6775"
+          },
+          {
+            "file": "000078.png",
+            "timestamp": 1792338840.562,
+            "sha256": "fd8ea1bae413aae1a98cf4c09dfa5ae3ad953b53392a0ccafc038451c059c470"
+          },
+          {
+            "file": "000079.png",
+            "timestamp": 1792338840.867,
+            "sha256": "1837f031bfe2f27e1ffc8290f2bad6c3b73ae80187a3c79c653dd36773f5dbfd"
+          },
+          {
+            "file": "000080.png",
+            "timestamp": 1792338841.167,
+            "sha256": "2d2299229e24fc02e86fde8d2ff9f362d04682c6e9ef7dbde8443f5f4780330f"
+          },
+          {
+            "file": "000081.png",
+            "timestamp": 1792338841.471,
+            "sha256": "c4760bab51e7c6af881d2d2e1b4d8a827de4d87eea24cafe63b89c00add0dc08"
+          },
+          {
+            "file": "000082.png",
+            "timestamp": 1792338841.783,
+            "sha256": "bb5518218b86b0be0f25761fb24463f09291a3e4c176fc348d30c6f0aeaab5b7"
+          },
+          {
+            "file": "000083.png",
+            "timestamp": 1792338842.08,
+            "sha256": "248998c6a1e3f44d0bed4829e33455bc0a79152cf416b77a135763549a693bfb"
+          },
+          {
+            "file": "000084.png",
+            "timestamp": 1792338842.372,
+            "sha256": "ac2c2f025a97c800b7f2b4b17d170ae2fe4fc1f1d8a3ba8f4b0da7de739292fc"
+          },
+          {
+            "file": "000085.png",
+            "timestamp": 1792338842.689,
+            "sha256": "343dde90370d5326a41ba466445e5455a476b4b2109638da9dbc0c3b7f8b8e6d"
+          },
+          {
+            "file": "000086.png",
+            "timestamp": 1792338842.988,
+            "sha256": "17264e818c8ad22173d1fa3615943a6cad6f29cc331dd2ac067439b6cea8bbd6"
+          }
+        ],
+        "source_kind": "real browser screenshot sequence",
+        "source_manifest_sha256": "0e7571bf6bfb61f6b0035eed0ad7d49dde4220350c849b873afecd478a45464e",
+        "capture_metadata": {
+          "kind": "real browser screenshot sequence",
+          "began": 1792338815798,
+          "ended": 1792338842989,
+          "frames": 87
+        },
+        "source_directory": "09-envio-aprovacao-execucao",
+        "at": 26,
+        "seconds_captured": 3.299999952316284,
+        "editing": "Actual sequence; playback duration adjusted as declared; interruptions between clips omitted"
+      },
+      {
+        "seconds": 15,
+        "label": "Consulta real · Entrega confirmada pelo provedor",
+        "crop": {
+          "x": 175,
+          "y": 530,
+          "width": 800,
+          "height": 105
+        },
+        "masks": [],
+        "frames": [
+          {
+            "file": "000458.png",
+            "timestamp": 1792338872.729,
+            "sha256": "9850e400b714dbe196af71256b8e370ea9f647fd3cf631ed4291a4c996a1e902"
+          }
+        ],
+        "source_kind": "real browser screenshot sequence",
+        "source_manifest_sha256": "32cb41587cc3ba8d3c44ec9e8c819ccb6b83e71170cece65e04b6a45f120aa21",
+        "capture_metadata": {
+          "kind": "real browser screenshot sequence",
+          "began": 1792338860711,
+          "ended": 1792338872729,
+          "frames": 459
+        },
+        "source_directory": "09-envio-resultado",
+        "at": 33,
+        "seconds_captured": 0,
+        "editing": "Actual captured frame held for reading"
+      }
+    ],
+    "opening_card": {
+      "seconds": 6,
+      "sha256": "09a4ce2587b6bd34ca67da288578cc7f98c059a895906a97cca7197a989626df",
+      "type": "editorial card; not product UI"
+    },
+    "closing_card": {
+      "seconds": 6,
+      "sha256": "3978729b01467b452fdc8a48868baa779b7d06d42b0286eb5df17dab875a401b",
+      "type": "editorial card; not product UI"
+    }
+  },
+  "user_story": {
+    "problem": "O retorno está pronto. Como enviar pelo WhatsApp?",
+    "requested_change": "Revisar a proposta, decidir e acompanhar o resultado no próprio chat.",
+    "benefit": "Do rascunho ao WhatsApp, com acompanhamento.",
+    "outcome": "Texto aprovado, ação executada e entrega confirmada pelo provedor."
+  },
+  "demonstrated": [
+    "Proposta existente com destinatária e texto completos",
+    "Aprovação humana exata repassada ao cliente conectado",
+    "Execução única da ação aprovada",
+    "Consulta confirma entrega segundo o provedor"
+  ],
+  "not_demonstrated": [
+    "Print do WhatsApp receptor",
+    "Leitura da mensagem pelo destinatário"
+  ],
+  "approval_origin": "Resposta humana explícita do dono no Codex para destinatário e texto exatos; autorização repassada ao ChatGPT sem alterar proposta. Não é aprovação inventada a partir de conteúdo de ferramentas.",
+  "independent_status_check": {
+    "observed_by": "Agente responsável pela gravação, em chamada action_get independente",
+    "action_id": "act_7d68784ad4614f4586878bb75e302915",
+    "status": "delivered",
+    "content_hash": "57a2ea1a569f18e238fa0900dfa4e6dd30d26799d936f328fb44c34d959217bd",
+    "receipt_screenshot": "Não incluído; o dono poderá acrescentá-lo depois"
+  }
+}

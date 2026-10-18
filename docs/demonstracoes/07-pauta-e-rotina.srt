@@ -1,0 +1,65 @@
+1
+00:00:00,000 --> 00:00:05,652
+Você tem uma reunião chegando e precisa lembrar
+o que prometeu, quais dúvidas ficaram abertas e
+
+2
+00:00:05,652 --> 00:00:11,304
+por onde retomar. Reler tudo antes de cada
+conversa toma atenção.
+
+3
+00:00:14,000 --> 00:00:18,680
+Aqui eu peço uma pauta curta para a Lia, usando
+a memória e as tarefas. A ideia é chegar com os
+
+4
+00:00:18,680 --> 00:00:23,360
+pontos importantes à mão.
+
+5
+00:00:27,000 --> 00:00:31,256
+A pauta começa pelo compromisso do consultor e
+pelas perguntas necessárias para escolher os
+
+6
+00:00:31,256 --> 00:00:35,512
+cursos. Ela também preserva a mudança de cidade
+como dúvida e lembra a preferência por reuniões
+
+7
+00:00:35,512 --> 00:00:39,768
+à tarde.
+
+8
+00:00:43,000 --> 00:00:47,836
+Depois, peço para adaptar essa preparação a uma
+rotina que eu possa repetir. A prioridade
+
+9
+00:00:47,836 --> 00:00:52,672
+escolhida é não esquecer dúvidas importantes.
+
+10
+00:00:56,000 --> 00:01:00,488
+A rotina existente é reaproveitada. O chat
+entrega um pedido que você pode usar de novo,
+
+11
+00:01:00,488 --> 00:01:04,976
+com os campos do contato e da data.
+
+12
+00:01:09,000 --> 00:01:14,004
+O teste consulta a memória e a tarefa de novo e
+produz uma pauta com os mesmos cuidados:
+
+13
+00:01:14,004 --> 00:01:19,008
+compromisso claro, perguntas úteis e incerteza
+preservada.
+
+14
+00:01:21,000 --> 00:01:26,352
+Na próxima reunião, você retoma com o contexto e
+as perguntas à mão.

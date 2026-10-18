@@ -1,0 +1,41 @@
+1
+00:00:00,000 --> 00:00:05,304
+No fim do dia, você fica sem saber o que ainda
+exige atenção. Um prazo numa conversa, uma
+
+2
+00:00:05,304 --> 00:00:10,608
+dúvida em outra, e o retorno fica para depois.
+
+3
+00:00:13,000 --> 00:00:17,380
+Aqui eu peço uma revisão do período. O Elo reúne
+o que foi capturado e a inteligência artificial
+
+4
+00:00:17,380 --> 00:00:21,760
+organiza os próximos passos.
+
+5
+00:00:26,000 --> 00:00:30,296
+O resumo separa a tarefa de enviar as opções,
+uma conversa cujo desfecho precisa ser
+
+6
+00:00:30,296 --> 00:00:34,592
+verificado e a possível mudança de cidade.
+
+7
+00:00:38,000 --> 00:00:43,304
+Neste exemplo, três mensagens fictícias foram
+avaliadas. Essas três foram revisadas, e as
+
+8
+00:00:43,304 --> 00:00:48,608
+dúvidas continuam aparecendo para o
+acompanhamento.
+
+9
+00:00:51,000 --> 00:00:57,408
+Você começa o próximo contato com uma lista de
+prioridades, em vez de reler tudo do zero.
