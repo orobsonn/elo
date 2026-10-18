@@ -1,8 +1,18 @@
 # Demonstrações do Elo
 
-Vídeos curtos para apresentar a solução ao Ronald, ao Lucas e a quem vai usá-la. Cada vídeo deve mostrar uma execução real no ChatGPT ou Claude conectado ao Elo, com voz em português e legendas. **Este arquivo é o roteiro de produção; não comprova que os vídeos já foram gravados.**
+Vídeos curtos para apresentar a solução ao Ronald, ao Lucas e a quem vai usá-la. Cada vídeo mostra uma execução real no ChatGPT ou Claude conectado ao Elo, com voz em português e legendas. O primeiro vídeo está pronto; a série completa ainda está em produção.
 
-As capacidades atuais vêm do [primeiro uso](../operacao/primeiro-uso.md), das [Skills](../../skills/) e da [pauta](../exemplos/elo-preparar-pauta/SKILL.md). A busca de contatos sem histórico é uma entrega em andamento e só entra como concluída após sua validação publicada.
+As capacidades atuais vêm do [primeiro uso](../operacao/primeiro-uso.md), das [Skills](../../skills/) e da [pauta](../exemplos/elo-preparar-pauta/SKILL.md). A busca de contatos sem histórico foi [publicada e validada](../implementacao/agenda-whatsapp-prova-1810.json): 935 contatos mapeados, busca pelo nome, preparo e cancelamento sem envio.
+
+## Estado da gravação em 18/10/2026
+
+**Entregue:** [memória e pós-reunião — MP4](03-memoria-e-pos-reuniao.mp4), [legendas](03-memoria-e-pos-reuniao.srt) e [proveniência](03-memoria-e-pos-reuniao.json). Duração de 57 segundos, 720p, narração Luciana em português brasileiro, áudio AAC e legenda selecionável. Execução real: criação de contato fictício e reunião pela Skill, seguida de consulta de fato confirmado, dúvida pendente e tarefa do consultor. Espera encurtada e quadro final prolongado estão indicados. Quadros e faixa de áudio foram conferidos; nenhuma mensagem real ou segredo entrou no vídeo.
+
+Também foram capturados diagnóstico e início da alteração de prazo/data especial; início de chamada não é prova de conclusão da alteração posterior. Os demais itens da série abaixo são roteiro, não vídeos entregues.
+
+O navegador reiniciou e o controle de tela passou a recusar gravações. O diagnóstico do Computer Use confirmou o Mac bloqueado e a falha de desbloqueio automático; foi solicitado desbloqueio manual ao dono. Isso bloqueia novas capturas, não o Elo publicado. A issue [#23](https://github.com/orobsonn/elo/issues/23) permanece aberta enquanto a série e o vídeo geral estiverem pendentes.
+
+Ao terminar este trecho, o contato fictício da gravação foi excluído pelo MCP para retirar a tarefa e o aniversário de demonstração do uso diário. Os contatos reais mapeados na agenda foram preservados. As próximas capturas deverão criar uma nova ficha fictícia.
 
 ## Preparação comum
 

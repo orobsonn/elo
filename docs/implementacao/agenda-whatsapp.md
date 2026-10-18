@@ -27,3 +27,13 @@ Homônimos continuam separados e exigem escolha por alias reconhecível/ID. Quan
 4. Revisão adversarial independente: sem bloqueador após incorporar bloqueio de recadastro, cobertura parcial e validação de aparelho. Prova publicada e gravações entram no PR/relatório após implantação; roteiro não é vídeo concluído.
 
 Migração 0008 é aditiva. Rollback do Worker preserva as tabelas; não reverte banco. Nenhum novo envio real integra este ensaio.
+
+## Prova publicada em 18/10/2026
+
+[Relatório sanitizado](agenda-whatsapp-prova-1810.json): 189 testes Worker/D1 + 22 Node, TypeScript/build e seis smokes publicados aprovados. PR [#24](https://github.com/orobsonn/elo/pull/24), commit `f9285065271617ece67739ea95022d3b641cf0f8`, Worker `e14b230c-396b-456c-9b18-9564c9b0ef45` a 100% na conta pessoal Robson Lins. Preview confirmou saúde/D1/commit e recusou MCP em origem alternativa antes da promoção. Migração remota: seis comandos, 0,88 ms reportados pelo D1.
+
+Z-API real via MCP autenticado: dez páginas, 936 registros retornados e 935 endereços mapeados, sem fontes de mensagens no Elo. O próprio aparelho foi excluído. Busca real pelo nome encontrou um contato sem histórico; preparo e cancelamento foram confirmados, sem `action_execute` nem envio WhatsApp. Aliases reais mantidos; eventual alias de demonstração temporário foi restaurado. Os contatos mapeados permanecem disponíveis para o dono.
+
+Plugin pessoal [Elo](https://chatgpt.com/plugins/plugin_asdk_app_6ad36d6a59f881919b3de4f512858abf) atualizado para 1.0.4 com `configurar-elo` e `approve`; leitura de volta confirmou bytes contra o repositório, identidade/App/conexão e privacidade preservadas. Isso prova o pacote, não a execução da nova Skill pelo host. Nenhuma inferência foi usada para mapear a agenda; o contador observado foi dez páginas da cota própria, sem inferir valor de cobrança Z-API.
+
+Rollback de código disponível: Worker `4bc7c47b-2d8b-4c19-84ca-a0c81a614354`; não reverte a migração nem os contatos importados. A série de vídeos tem acompanhamento na issue [#23](https://github.com/orobsonn/elo/issues/23), separada da prova técnica acima.

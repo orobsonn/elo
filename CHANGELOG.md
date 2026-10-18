@@ -4,6 +4,12 @@ Mudanças relevantes no formato Keep a Changelog.
 
 ## [Unreleased]
 
+### Added
+- Agenda WhatsApp paginada via Z-API e busca de contatos sem mensagens anteriores, com nome restrito ao backend e IDs/aliases no MCP.
+- Skill `configurar-elo` e atualização de `approve` para mapear contatos antes de preparar mensagens.
+- Bloqueio privado de recadastro após exclusão, validação do aparelho e proteção contra troca concorrente de conexão.
+- Primeiro vídeo real de memória/pós-reunião no ChatGPT, narrado em português e legendado; roteiros e compositor da série restante.
+
 ## [0.2.0] - 2026-10-18
 
 ### Added

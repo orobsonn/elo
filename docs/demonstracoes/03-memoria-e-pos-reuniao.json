@@ -1,0 +1,1341 @@
+{
+  "title": "Elo — memória e pós-reunião no ChatGPT",
+  "created_at": "2026-10-18T15:02:08.968Z",
+  "source": "screen-recording-edited.mp4",
+  "source_sha256": "9e4930bafe51266c408200fdb663b239bc9654a27ea4b8bea0609891e6d7e851",
+  "output_sha256": "2f1f0a1d723d868cec40c490abffd532c774b95a2eb9458da34423bf64eb794c",
+  "recording_seconds": 56,
+  "output_seconds": 56.937,
+  "voice": "Luciana",
+  "rate": 165,
+  "narration_segments": 6,
+  "editing": "Screencast real do ChatGPT: digitação acelerada, corte de espera indicado, resultado ampliado e quadro final mantido para leitura; sem reconstrução da interface. Áudio original removido; narração sintética Luciana e legendas adicionadas.",
+  "content_review": "Quadros originais selecionados inspecionados; somente dados fictícios da demonstração, sem diagnóstico histórico, contatos reais, formulário de credenciais ou pedido posterior. Narração descreve somente os resultados visíveis; legendas automáticas por trechos.",
+  "screen_capture_provenance": {
+    "capture": "Browser screencast CDP; original JPEG frames and timestamps",
+    "date": "2026-10-18",
+    "timezone": "America/Fortaleza",
+    "plans": [
+      {
+        "name": "03-memoria",
+        "duration": 12,
+        "crop": "920:208:120:594",
+        "scale": "1152:-2",
+        "y": 244,
+        "label": "1. Registrar as notas · Digitação acelerada",
+        "kind": "sequence",
+        "capture_manifest_sha256": "9cfcfbc8c3ebee5f7878794f116c0756fac4ed6120b306b52d4b02aa0a31254e",
+        "source_frames": [
+          {
+            "file": "000000.jpg",
+            "timestamp": 1792334490.165837,
+            "sha256": "6fb9d8bee8c901775e4d9de2b930d6ca7ba1173c07a22a1070ec483957599f6b"
+          },
+          {
+            "file": "000001.jpg",
+            "timestamp": 1792334491.022861,
+            "sha256": "af084527a7dd1559db821b86c8ae76e5dca264dbc6bea2c22c774f5288941f73"
+          },
+          {
+            "file": "000002.jpg",
+            "timestamp": 1792334491.46131,
+            "sha256": "5e5970426d503c1956052d1ebdaad17e5a11bcacfeadc9e0a7a637dcbebfd64d"
+          },
+          {
+            "file": "000003.jpg",
+            "timestamp": 1792334491.858962,
+            "sha256": "0b4dfef5230e02a50b4fd868d4d08a271d3f9f39d3b00939ee1b600edc676022"
+          },
+          {
+            "file": "000004.jpg",
+            "timestamp": 1792334492.29022,
+            "sha256": "90dda634580af49fbcad20cd1ca04892f9063d92a2af4124f9e5ae4696972a73"
+          },
+          {
+            "file": "000005.jpg",
+            "timestamp": 1792334492.461434,
+            "sha256": "67fe288303c5c6434d9384ddef3a44401bca60d83f4342f3b9d920299db21ac7"
+          },
+          {
+            "file": "000006.jpg",
+            "timestamp": 1792334492.6265,
+            "sha256": "7ba852382f855baa4224897b9846f50a6b2f197bb7f091ebd0ea201d67c077b0"
+          },
+          {
+            "file": "000007.jpg",
+            "timestamp": 1792334493.374006,
+            "sha256": "085e17bc4a5f4f280dd6465beeaf0394b9a9c348f3b62c2b79cfc2a0ac1082d1"
+          },
+          {
+            "file": "000008.jpg",
+            "timestamp": 1792334494.093618,
+            "sha256": "8731ab040e3455201df9dc33e482a190dc32f166c9b49f67a1f06c249dd339d3"
+          },
+          {
+            "file": "000009.jpg",
+            "timestamp": 1792334494.324496,
+            "sha256": "f9ea34e4d213c48a4c00cccd43d2f66592ef3659436908ac338cf489ea146dc3"
+          },
+          {
+            "file": "000010.jpg",
+            "timestamp": 1792334494.635117,
+            "sha256": "7635530f928ba4204a80c29b3933e6fa0b2ed2ef7a3e1bbfb37dd6b8d362cbb3"
+          },
+          {
+            "file": "000011.jpg",
+            "timestamp": 1792334495.264376,
+            "sha256": "525d37dbe262c0a0a03428195c84bd00a0fc6ee724357bd271189d8a74dc1370"
+          },
+          {
+            "file": "000012.jpg",
+            "timestamp": 1792334495.482236,
+            "sha256": "1726e1a5d16c56f5b0fb677d60dfd89a0d20c97b32cb85ae0fa27d51e27a3251"
+          },
+          {
+            "file": "000013.jpg",
+            "timestamp": 1792334495.861034,
+            "sha256": "9539409511b1e33821a656c233e2ead79b319d6a7f379165eb853f401db122d6"
+          },
+          {
+            "file": "000014.jpg",
+            "timestamp": 1792334496.297495,
+            "sha256": "f4399fb3aabd37cb23d4284a1290a96c5d4b5bf6b3eb86aa06836a3b10c225eb"
+          },
+          {
+            "file": "000015.jpg",
+            "timestamp": 1792334496.646762,
+            "sha256": "298792bbde4c735dfd296dd8819699c4706ad818ed52b72eff726205c67fadab"
+          },
+          {
+            "file": "000016.jpg",
+            "timestamp": 1792334497.156196,
+            "sha256": "8f020cb6eeae28476a4c52b8f49e7369f4da15bec31f7bc123c8b2151aa3633e"
+          },
+          {
+            "file": "000017.jpg",
+            "timestamp": 1792334497.314139,
+            "sha256": "9bc38c718f442aa7f4082ba72c09f315731371804f04ac469600585cf0ff1a5b"
+          },
+          {
+            "file": "000018.jpg",
+            "timestamp": 1792334497.571365,
+            "sha256": "8e5bd33e1a935363468011619e77c17eed3aa6aebb924fc9182786031eafdfcf"
+          },
+          {
+            "file": "000019.jpg",
+            "timestamp": 1792334497.655707,
+            "sha256": "641b5f366b7bf6bf5f318e084c525f499269825b3673ff5b898ccb60f4486b29"
+          },
+          {
+            "file": "000020.jpg",
+            "timestamp": 1792334497.829163,
+            "sha256": "f9828ce1c092e03bba153c09327b487549f15b604a87c3ad748ed7b961d3a832"
+          },
+          {
+            "file": "000021.jpg",
+            "timestamp": 1792334497.971573,
+            "sha256": "6a14e14e5ca30811afbe43eb3564ee18aa34acba6612fbd779cc23944a6e2e34"
+          },
+          {
+            "file": "000022.jpg",
+            "timestamp": 1792334498.298854,
+            "sha256": "dcfa4117f234a0876b716467c0610790235d7bc6e4e9f42d85b423632521b5fc"
+          },
+          {
+            "file": "000023.jpg",
+            "timestamp": 1792334498.611654,
+            "sha256": "b6d5017f6787fabc0b5a2a2fcba3ac212ec97e8717a856f51dd7bd1382139e55"
+          },
+          {
+            "file": "000024.jpg",
+            "timestamp": 1792334498.878326,
+            "sha256": "9c1fe62a923887eb873241f5f76adfeff146136fa58bf329973db4b9f833a979"
+          },
+          {
+            "file": "000025.jpg",
+            "timestamp": 1792334499.098734,
+            "sha256": "71874c1019c826ab8caf222451a61a42c2a6d4c3876a38337860f73dcd27dc5a"
+          },
+          {
+            "file": "000026.jpg",
+            "timestamp": 1792334499.410833,
+            "sha256": "4d4bd6d5c6809e67f64965ce4e056733ed5160692501858c949be6e77c2cb82d"
+          },
+          {
+            "file": "000027.jpg",
+            "timestamp": 1792334499.680399,
+            "sha256": "67f081ad66ec1fc7f32cdcceee2c8da654defaee7dd5f9cef603325457a958f3"
+          },
+          {
+            "file": "000028.jpg",
+            "timestamp": 1792334500.423386,
+            "sha256": "256b970a363fe4c30556115f80327278a5d840342854fa92cf4e810bc77173cb"
+          },
+          {
+            "file": "000029.jpg",
+            "timestamp": 1792334500.610053,
+            "sha256": "408d5813ce7619554aaf73064770e6334377aec8f16e8fcbe744b956281b1514"
+          },
+          {
+            "file": "000030.jpg",
+            "timestamp": 1792334500.841904,
+            "sha256": "dc31ae15986094959edc6fc3db671bbb48f6fca167c3dfca7910c771bb95af0d"
+          },
+          {
+            "file": "000031.jpg",
+            "timestamp": 1792334501.06447,
+            "sha256": "dfb0f2ac6341f2d718891c1eeacfaf8fba7e3ce0e417bf794c3aee6ebc148661"
+          },
+          {
+            "file": "000032.jpg",
+            "timestamp": 1792334502.86688,
+            "sha256": "e7ec4cc91b9075486a971cc27b521f27784977d11450ade24e4a5c8b1e15a41a"
+          },
+          {
+            "file": "000033.jpg",
+            "timestamp": 1792334503.020408,
+            "sha256": "840dad2a58e37e2cba018b09a963919dd08b4dbd1b640ff22ce247657da95d95"
+          },
+          {
+            "file": "000034.jpg",
+            "timestamp": 1792334503.610309,
+            "sha256": "6ef2241dd8ced117a1cb8e9790155440e2433c5c54a18980d8702878b9354858"
+          },
+          {
+            "file": "000035.jpg",
+            "timestamp": 1792334504.121992,
+            "sha256": "ff14c8eb16881288166397227ea718219c3688c272b16b6920989c3ed01d8c5a"
+          },
+          {
+            "file": "000036.jpg",
+            "timestamp": 1792334504.754083,
+            "sha256": "a05f54e606657a6f3534c3d8274a59f427a348d10914622bf9977e5fb96af71f"
+          },
+          {
+            "file": "000037.jpg",
+            "timestamp": 1792334505.025069,
+            "sha256": "ba7fb1542039a3811c006d2cf492e2430ec5a0715e2a8fb5e211f7e733afa47a"
+          },
+          {
+            "file": "000038.jpg",
+            "timestamp": 1792334505.190364,
+            "sha256": "2d3f8497e957e9bf0b9fab6462b48aacf8eb2cb3f4a0c603b3447e1d559ff7a9"
+          },
+          {
+            "file": "000039.jpg",
+            "timestamp": 1792334505.89493,
+            "sha256": "c8888c9e9da7a7374df0900006b6f4c89f90dc11397d2900f74132863f757999"
+          },
+          {
+            "file": "000040.jpg",
+            "timestamp": 1792334506.15806,
+            "sha256": "eb7e99cca44cc60aeada9a7247001c0fbe82ce87b3e3a99ef350ae42e0a6a4a4"
+          },
+          {
+            "file": "000041.jpg",
+            "timestamp": 1792334506.304751,
+            "sha256": "bfd693aaed632bb4fdc4f5238b10c4cba8a30f3ba18b1fb88f59e10e3e0bd9bf"
+          },
+          {
+            "file": "000042.jpg",
+            "timestamp": 1792334506.447098,
+            "sha256": "1eb156593e76a4c3d1a8ff4af96c462fb904c582dd49be474dab0c2e40220e10"
+          },
+          {
+            "file": "000043.jpg",
+            "timestamp": 1792334506.616855,
+            "sha256": "d89cb3a57a0f1c1957bdb997fa8d167f75114e4e645b822eebb56a5bb7f3529c"
+          },
+          {
+            "file": "000044.jpg",
+            "timestamp": 1792334506.731713,
+            "sha256": "b42c913b72307259c91e9e626137f0b4f65f005f0eb8ec4ffb19e56f0b4ae20b"
+          },
+          {
+            "file": "000045.jpg",
+            "timestamp": 1792334506.933721,
+            "sha256": "6bcaba6dcd0cb3a39afc12007a0ccb25589ce7996657d83d2307f8785770e97f"
+          },
+          {
+            "file": "000046.jpg",
+            "timestamp": 1792334507.058538,
+            "sha256": "f623b0a8d819fc6e63b18b5d41cc4fd8489b56e51cdae1157e44877033813d05"
+          },
+          {
+            "file": "000047.jpg",
+            "timestamp": 1792334507.201182,
+            "sha256": "05fb2d3c2da3d7d106f5a82be7844884784c0ae0805685a24e68e1b2f7e74886"
+          },
+          {
+            "file": "000048.jpg",
+            "timestamp": 1792334507.502524,
+            "sha256": "27fde3027955aa9e8c5c086250ed799d60088ef86e07cc4fc64c00f55c66b29c"
+          },
+          {
+            "file": "000049.jpg",
+            "timestamp": 1792334507.680553,
+            "sha256": "ff78e30b8b9bc03330216f65d8094e42af6c7cb63a50f3dbd73d24c5a25a5c57"
+          },
+          {
+            "file": "000050.jpg",
+            "timestamp": 1792334508.015096,
+            "sha256": "a475609839ebf3c470bbb7b7568ae51ca1f66fc7fa7ea628aa4d283e234526b9"
+          },
+          {
+            "file": "000051.jpg",
+            "timestamp": 1792334508.123574,
+            "sha256": "02d19cefa72535319fcd35cb4b99008bd41f7bc1c56a24ad17ef6699814d5b4d"
+          },
+          {
+            "file": "000052.jpg",
+            "timestamp": 1792334508.287618,
+            "sha256": "46ba0db6bb8c564a9d79fe012bc290ed8a1795d461644ae30443d837354a795c"
+          },
+          {
+            "file": "000053.jpg",
+            "timestamp": 1792334508.667742,
+            "sha256": "600f9d07d58133ee532a5bfaab44a9913b5d0bb63add8c4a2b73513d2cdf7d3d"
+          },
+          {
+            "file": "000054.jpg",
+            "timestamp": 1792334508.928189,
+            "sha256": "21802dedbf51c7d02586b315630be29d5d3bc5747ff91c49f257c874f573c9a2"
+          },
+          {
+            "file": "000055.jpg",
+            "timestamp": 1792334509.361545,
+            "sha256": "333e36127cb6cb43886f3fc2089e346098c7afd99746fec2bd7ee1d2a25f0eee"
+          },
+          {
+            "file": "000056.jpg",
+            "timestamp": 1792334509.514118,
+            "sha256": "6312bb402c58b51f393904c928c50a1044da8d12d9dcc71a2232d8308c6c2d51"
+          },
+          {
+            "file": "000057.jpg",
+            "timestamp": 1792334509.710651,
+            "sha256": "19dfd4c5a934eec4a6d145bfd4787524472701f89e12a0ac12e4645adf822623"
+          },
+          {
+            "file": "000058.jpg",
+            "timestamp": 1792334509.891841,
+            "sha256": "69edb84223ac7b3eb540707efaf0b533918969f4dcf5d3ae215aa72567c8249d"
+          },
+          {
+            "file": "000059.jpg",
+            "timestamp": 1792334510.663849,
+            "sha256": "50ba489042710c9cde134d373cd9222e0577f6bff5e5bf55a86b287873f289f8"
+          },
+          {
+            "file": "000060.jpg",
+            "timestamp": 1792334511.120543,
+            "sha256": "29a5ab3000065ab82f9e404cf4a0a3457c91bb7e33078f725dc189a0909acbd7"
+          },
+          {
+            "file": "000061.jpg",
+            "timestamp": 1792334511.173394,
+            "sha256": "cce5158f512d65103e3d2e6698d909a7aff2f0eb43dad17dbdfd154e481e258e"
+          },
+          {
+            "file": "000062.jpg",
+            "timestamp": 1792334511.451824,
+            "sha256": "1381d26b0d998c036eb78db681042bb2c768f29a96b0e4c5352a475820c1b2ed"
+          },
+          {
+            "file": "000063.jpg",
+            "timestamp": 1792334511.740423,
+            "sha256": "dc2bce7bf65df4a3c8fe123d82daecd9573afb4323ab4fc5732af73f97291810"
+          },
+          {
+            "file": "000064.jpg",
+            "timestamp": 1792334511.928416,
+            "sha256": "67ed3e355d03e9a94398c4e2ccd36f54adf58fbc8ea8da208fc1738f6dbcbdcf"
+          },
+          {
+            "file": "000065.jpg",
+            "timestamp": 1792334512.059075,
+            "sha256": "0bd747b3306ec086e9cf80b4bb2af3bbca1ac4080b185f508ec196dac9ca7609"
+          },
+          {
+            "file": "000066.jpg",
+            "timestamp": 1792334512.113299,
+            "sha256": "c3d34ebad5c193c8d1988cb18d979df6a5a7f0b21773781c382f09dc4af7c041"
+          },
+          {
+            "file": "000067.jpg",
+            "timestamp": 1792334512.195108,
+            "sha256": "911de0123059fb7210a8e1d76a7dbdcd29cb940bec188d6168b97d0aa795e3f7"
+          },
+          {
+            "file": "000068.jpg",
+            "timestamp": 1792334512.264039,
+            "sha256": "72277df8d1f3959305009a2a2dcc71a3dd0532bc4e68b246ee842708f5e396c3"
+          },
+          {
+            "file": "000069.jpg",
+            "timestamp": 1792334512.437122,
+            "sha256": "fef73d7b0a20bbf6fd7ffa4efa86288ef03bc7633df073591db1a1e17f32a503"
+          },
+          {
+            "file": "000070.jpg",
+            "timestamp": 1792334512.566541,
+            "sha256": "1fe867ad49c1ca1985006a40b3897c257e37ac491a81c481b5261e817c68af62"
+          },
+          {
+            "file": "000071.jpg",
+            "timestamp": 1792334512.836362,
+            "sha256": "072fea4f2afd1d522c69a2c6d2725df84b43ff3cff0e3987c1575ea79f04a4a8"
+          },
+          {
+            "file": "000072.jpg",
+            "timestamp": 1792334512.91787,
+            "sha256": "d48c86637af7d9a9fa7f813b44ef004f34fa65027eed48a18c0f8955606560be"
+          },
+          {
+            "file": "000073.jpg",
+            "timestamp": 1792334513.253206,
+            "sha256": "ad9975eafad2b089e143659637cef9d689f0cc497566254124b664aedfa8a077"
+          },
+          {
+            "file": "000074.jpg",
+            "timestamp": 1792334513.340015,
+            "sha256": "49fd0f118f9ae8c3bf557dc333931dd9051409870ba01bbe76fe4abba3eae142"
+          },
+          {
+            "file": "000075.jpg",
+            "timestamp": 1792334513.432612,
+            "sha256": "2f692fd49c6a42f719c6638932a0218eb45959d57d34aeabbbbca16067fd6a75"
+          },
+          {
+            "file": "000076.jpg",
+            "timestamp": 1792334513.604084,
+            "sha256": "1470f2c33227e1d318f83fb26c31a9a64dbf3621accf5ebf79a9c9a3693091e9"
+          },
+          {
+            "file": "000077.jpg",
+            "timestamp": 1792334513.802079,
+            "sha256": "9191a8bbdea8b3c0faffe25cf6ac1b9710d131cfcadd4170f413a28fdf60f1f1"
+          },
+          {
+            "file": "000078.jpg",
+            "timestamp": 1792334513.868938,
+            "sha256": "c84ea8364b4fa54a6cb39175bdefabeb7ec271784a09b379486ee8de1591eab4"
+          },
+          {
+            "file": "000079.jpg",
+            "timestamp": 1792334513.913831,
+            "sha256": "0e705cd1d47b4cfff4aaae1aa915f00a3037142ea555e0e5f743b0019841010a"
+          },
+          {
+            "file": "000080.jpg",
+            "timestamp": 1792334513.988284,
+            "sha256": "0c974c0b367b88ac2d327257720719731012b0477185aeec1720f2a3206891ab"
+          },
+          {
+            "file": "000081.jpg",
+            "timestamp": 1792334514.144994,
+            "sha256": "34c29c6546fce3df4d3b78bbf2edde045ab087c667d2878158a439773dfacb94"
+          },
+          {
+            "file": "000082.jpg",
+            "timestamp": 1792334514.209269,
+            "sha256": "1a073816c17fd41b23ebac1155e6e551bbf9027ed45ffb066974fa6d78be8855"
+          },
+          {
+            "file": "000083.jpg",
+            "timestamp": 1792334514.261215,
+            "sha256": "275b6d1d3c9e72b7093f27c5529c44fbee503d8916d025f54bbd09a50952cd4c"
+          },
+          {
+            "file": "000084.jpg",
+            "timestamp": 1792334514.295805,
+            "sha256": "b5f31a72789d66a7253b1275789291636e682270a99c5adfd270045024ea03bb"
+          },
+          {
+            "file": "000085.jpg",
+            "timestamp": 1792334514.349127,
+            "sha256": "ed408976daa69ee6a61ee52ac7e770fb9848b3dd3b28de3f3fa55ccf06c2c12a"
+          },
+          {
+            "file": "000086.jpg",
+            "timestamp": 1792334514.397852,
+            "sha256": "0e3b1089b37331230934f694188253935adb7d5acb51feeb6db78d01a0595b31"
+          },
+          {
+            "file": "000087.jpg",
+            "timestamp": 1792334514.46785,
+            "sha256": "3953c4ae0ac5a6b49f8879bfb8186f484b8c294ee751bad94e0656134cf0af7a"
+          },
+          {
+            "file": "000088.jpg",
+            "timestamp": 1792334514.513856,
+            "sha256": "872ca5f172431ed9d52d8e7c3a17fbaabd01ad4612802695f71d1efd1de1ea9c"
+          },
+          {
+            "file": "000089.jpg",
+            "timestamp": 1792334514.563051,
+            "sha256": "67a5ad8828ca3d83e9ba8fbe1e5fc19224b1848568a2709373261e6fda501408"
+          },
+          {
+            "file": "000090.jpg",
+            "timestamp": 1792334514.618069,
+            "sha256": "bd41930964b2c772908334e162d6b6d38db26353af29449d8ea15e74c22bd0ae"
+          },
+          {
+            "file": "000091.jpg",
+            "timestamp": 1792334514.704227,
+            "sha256": "be92cf3d5398977b382efc8b13e4a79ef25f2e4a4958cc67a78abe0aadd8019b"
+          },
+          {
+            "file": "000092.jpg",
+            "timestamp": 1792334514.791672,
+            "sha256": "4f4941f4ee075882d45ca0a1fae634a16c68640d6ed935ca42e9db2a157447ff"
+          },
+          {
+            "file": "000093.jpg",
+            "timestamp": 1792334514.845497,
+            "sha256": "745204bbf9c9b431ddd46757c687def20a00bc6157206db37f33a0aa64d14c2e"
+          },
+          {
+            "file": "000094.jpg",
+            "timestamp": 1792334514.918537,
+            "sha256": "62f56fa75c7042e2295091aca9e9a111fe78c2a66327c283562264bbb84df41e"
+          },
+          {
+            "file": "000095.jpg",
+            "timestamp": 1792334514.974539,
+            "sha256": "011813bb59eacec3808838fcdfc1d12e106aafc2b71c31b04238c33866ef7e0c"
+          },
+          {
+            "file": "000096.jpg",
+            "timestamp": 1792334515.097166,
+            "sha256": "cf095aaf6f75dd7aa72589d844e428dd6008694fea91dded52537e9684184c85"
+          },
+          {
+            "file": "000097.jpg",
+            "timestamp": 1792334515.14834,
+            "sha256": "8751c82b15560011478630bdcc2e48740ac2a978b1c775cd13fc9a0a73423534"
+          },
+          {
+            "file": "000098.jpg",
+            "timestamp": 1792334515.235578,
+            "sha256": "af04d6a6e5ee3efe549e7096f0e102e21b1faa0e3d2c482715abea0673c9a394"
+          },
+          {
+            "file": "000099.jpg",
+            "timestamp": 1792334515.294485,
+            "sha256": "ffa3b7bee46105912b56c6076a15f54841983fb970b566cfc78252087a6d59af"
+          },
+          {
+            "file": "000100.jpg",
+            "timestamp": 1792334515.348154,
+            "sha256": "fcd88b1604542f4516afcf503240ac890292f46163104377d3eac2cb08660138"
+          },
+          {
+            "file": "000101.jpg",
+            "timestamp": 1792334515.39677,
+            "sha256": "b469013a11037b8cc657e7dab542caf7743ef433d541cdcea0dd843b1fbf1121"
+          },
+          {
+            "file": "000102.jpg",
+            "timestamp": 1792334515.446472,
+            "sha256": "20613d914125c9f1030973920572285cc30673869cf7e210722d2bdddffa2306"
+          },
+          {
+            "file": "000103.jpg",
+            "timestamp": 1792334515.553768,
+            "sha256": "bce754f74490309048f071e68a4c78237b963de34cd8af500f8b4b0bbe3ed331"
+          },
+          {
+            "file": "000104.jpg",
+            "timestamp": 1792334515.613494,
+            "sha256": "e08e9671c56f7fc97c02f11eabc0366b1d3fbb2498cef47c951da821c2c168d3"
+          },
+          {
+            "file": "000105.jpg",
+            "timestamp": 1792334515.797847,
+            "sha256": "3e9a64fe966359e6d7ba677b1a35226ee1be38bfda64e379edfd4482eebc49fa"
+          },
+          {
+            "file": "000106.jpg",
+            "timestamp": 1792334515.871981,
+            "sha256": "49b4cf516ca02242f3052902879e08c8e72aa7939fa3bd2d218d2389f49f2cd2"
+          }
+        ]
+      },
+      {
+        "name": "03-memoria-resultado",
+        "duration": 10,
+        "crop": "920:365:120:248",
+        "scale": "1152:-2",
+        "y": 164,
+        "label": "2. A Skill registra e consulta · Espera encurtada",
+        "kind": "sequence",
+        "capture_manifest_sha256": "46df52645e85c826c54c92a749e3ad639953aabf8bbb0d26ce5519d723d3b1ec",
+        "source_frames": [
+          {
+            "file": "000000.jpg",
+            "timestamp": 1792334552.768682,
+            "sha256": "0a7fa63554450e4de72eafb7fd0f165f04c9433cbfeee1485a131aa5b230b334"
+          },
+          {
+            "file": "000001.jpg",
+            "timestamp": 1792334552.812147,
+            "sha256": "0b1858a3c3f0ed59a6b08a1efce28f7a40b4b5e2329a5d286b89f0bab46fddda"
+          },
+          {
+            "file": "000002.jpg",
+            "timestamp": 1792334552.858399,
+            "sha256": "07facc6c1d105054f5e2559b4ff9f85545cda1dafe33ec95298ae0533a629b21"
+          },
+          {
+            "file": "000003.jpg",
+            "timestamp": 1792334552.944192,
+            "sha256": "3a78c2c32c39e46441a286f15a2f3fbd4344c3c2115f6f8b667b15616b04a11d"
+          },
+          {
+            "file": "000004.jpg",
+            "timestamp": 1792334553.244924,
+            "sha256": "4a572da4c1d4fa54ee05836ad0a1caf9648b29827df481febfd7f858a4b5157d"
+          },
+          {
+            "file": "000005.jpg",
+            "timestamp": 1792334553.412021,
+            "sha256": "1521f089ac4f71bf4d323b2efceefc1686bb58a940c0fe489c101f96d5df1103"
+          },
+          {
+            "file": "000006.jpg",
+            "timestamp": 1792334553.498285,
+            "sha256": "37df3a1fba379c14a55222e76f164165b7b851d1f796f801da0e7551ffb3a311"
+          },
+          {
+            "file": "000007.jpg",
+            "timestamp": 1792334553.591885,
+            "sha256": "843414a460491b8285527a7b7380a3e96799ebfd6f35041652a1861dde299995"
+          },
+          {
+            "file": "000008.jpg",
+            "timestamp": 1792334553.743419,
+            "sha256": "13e621ec17223b78ee499ba1c98d9aea1002d5ed0355e7a9a31b190748b7655b"
+          },
+          {
+            "file": "000009.jpg",
+            "timestamp": 1792334553.810968,
+            "sha256": "2d3132f3598d19b070d0d8eca1e578aa8c9888b53bb0036c16e0c5e6b310ae72"
+          },
+          {
+            "file": "000010.jpg",
+            "timestamp": 1792334553.858795,
+            "sha256": "b61fa67af961eff0fb0b4bba3e4660ff4a15fe8ea61ad90889fee11f3c4ef64e"
+          },
+          {
+            "file": "000011.jpg",
+            "timestamp": 1792334553.909394,
+            "sha256": "34afbe677b4928f0c7fccbc6b79ac80674c4981bef001e67019327a336e85f44"
+          },
+          {
+            "file": "000012.jpg",
+            "timestamp": 1792334553.956057,
+            "sha256": "dc938c331b2067877f5399f0909b416c2cbf69a3c65488c8bc29a98f8990e3ea"
+          },
+          {
+            "file": "000013.jpg",
+            "timestamp": 1792334554.010773,
+            "sha256": "dc938c331b2067877f5399f0909b416c2cbf69a3c65488c8bc29a98f8990e3ea"
+          },
+          {
+            "file": "000014.jpg",
+            "timestamp": 1792334554.059307,
+            "sha256": "e27eb47487247f46c31e00c1bf406acd20dcaa5f63c34e505a9fd7642fb87a2e"
+          },
+          {
+            "file": "000015.jpg",
+            "timestamp": 1792334554.260923,
+            "sha256": "ae591a943e87080c16ab6141a46f59bb02be44b8b4078f95e7c12abc966943ec"
+          },
+          {
+            "file": "000016.jpg",
+            "timestamp": 1792334554.3731,
+            "sha256": "906bd10d508cfad2b0b08681b08aa8f4e3acee045eb3969c87607d7886c788c4"
+          },
+          {
+            "file": "000017.jpg",
+            "timestamp": 1792334554.475637,
+            "sha256": "4ac829ba5468db42ba1e168170644aed6c332ef916128cc017cf6813c1af0db0"
+          },
+          {
+            "file": "000018.jpg",
+            "timestamp": 1792334554.581208,
+            "sha256": "8cb33d147127702688c13a30e881d7d61229017d57e446f7669daa91552b10e8"
+          },
+          {
+            "file": "000019.jpg",
+            "timestamp": 1792334554.87507,
+            "sha256": "6fb44567f12d16ce08bf78bceebfb94ec164b5c58e6bc6b4894595f9f0c251a6"
+          },
+          {
+            "file": "000020.jpg",
+            "timestamp": 1792334554.92674,
+            "sha256": "8213f663befd7aff62f8ac756e34ed6c54ea14efff85a7d141df3cbf6af6ea75"
+          },
+          {
+            "file": "000021.jpg",
+            "timestamp": 1792334555.126426,
+            "sha256": "61f0a3df9bc6367b4442dbd918849f0cbcf0eeb6cb1303dc17504e93aca80f22"
+          },
+          {
+            "file": "000022.jpg",
+            "timestamp": 1792334555.526509,
+            "sha256": "0440f279a49ce0727f3a6c5696b9cd3166144e9152548086724c00f7aa447ca9"
+          },
+          {
+            "file": "000023.jpg",
+            "timestamp": 1792334555.777742,
+            "sha256": "af389bf4492c41f7c7f81831c382de6dd40428ede49b50a4452665734cebf906"
+          },
+          {
+            "file": "000024.jpg",
+            "timestamp": 1792334556.071755,
+            "sha256": "1682244d6865de28b02ec653d2ddb31e1bd9b0b155db24d8fb764afeb3e218a8"
+          },
+          {
+            "file": "000025.jpg",
+            "timestamp": 1792334556.560577,
+            "sha256": "cd1083117af5538b10e9f7a7a42690132a4410bbb69528c21b38870541efaaa7"
+          },
+          {
+            "file": "000026.jpg",
+            "timestamp": 1792334556.693267,
+            "sha256": "f9df5c377df9b2de58a9891ac6f164fb95aa6e1925a62c2c4fb44b675a1dcb33"
+          },
+          {
+            "file": "000027.jpg",
+            "timestamp": 1792334556.798104,
+            "sha256": "da0a0e6e0ba23e9dc2f2e7784e987e9846a09453bb3315f5046f46741d5bd82c"
+          },
+          {
+            "file": "000028.jpg",
+            "timestamp": 1792334557.113443,
+            "sha256": "0f96f34f2b25c860d70e461f2a98c129b974663264bea9e9beb05fe74d688fd5"
+          },
+          {
+            "file": "000029.jpg",
+            "timestamp": 1792334557.309347,
+            "sha256": "d649880d1dd62c7adde76cdeaa1b821dcc7d639925271934a5fa96ff533d7ba6"
+          },
+          {
+            "file": "000030.jpg",
+            "timestamp": 1792334557.56089,
+            "sha256": "99d6ee74f713fa1dad1ee772cedb64d3f304465df5975b18e76cd1bdeec2d598"
+          },
+          {
+            "file": "000031.jpg",
+            "timestamp": 1792334557.86074,
+            "sha256": "305beba4551c4b5d9d40ec5ad77cc18aa4c3156594fe19650cd7e5584a83f7cf"
+          },
+          {
+            "file": "000032.jpg",
+            "timestamp": 1792334558.020954,
+            "sha256": "1f9ccdec0f5ddd8caffb05b1445c4d23b66ce4e4662483d8747570ae3b6bd1cc"
+          },
+          {
+            "file": "000033.jpg",
+            "timestamp": 1792334558.313867,
+            "sha256": "ed4681ed8bc068036d4022e89b3f0c3e4cec29ef3ba745c5cf23702a37ea98a4"
+          },
+          {
+            "file": "000034.jpg",
+            "timestamp": 1792334558.713141,
+            "sha256": "48fa4fa2ec41a201f652d5a1ee87fd92bafa4fe0a65ee0eba868b1e9e32545bf"
+          },
+          {
+            "file": "000035.jpg",
+            "timestamp": 1792334558.809605,
+            "sha256": "7393c088f24ac7df7debd4a81c9707c175236d747b499613974bd8b2cecebe9e"
+          },
+          {
+            "file": "000036.jpg",
+            "timestamp": 1792334558.958747,
+            "sha256": "be7d2838e094082e52ff5dafdfe15cf3bbae105b2964a54188adf6a88ecbd4e5"
+          },
+          {
+            "file": "000037.jpg",
+            "timestamp": 1792334559.307756,
+            "sha256": "3e610119c92d16c919ddf77c141760452e40c07c317fd9e238f4d89ed7fc2de1"
+          },
+          {
+            "file": "000038.jpg",
+            "timestamp": 1792334559.387837,
+            "sha256": "cd4df8b76a086f43d8bc6f5a20df40e7642a5b56a960747b2db200f98039443e"
+          },
+          {
+            "file": "000039.jpg",
+            "timestamp": 1792334559.508471,
+            "sha256": "7f999c639356b25d80895df3cb40fb0d0ba91e29591000b8a9c2d389cb6ef0ab"
+          },
+          {
+            "file": "000040.jpg",
+            "timestamp": 1792334559.558527,
+            "sha256": "b35f7d810b77b093fc7814fcf5a3c100215f04559922dcea86f5f90d31a353fa"
+          },
+          {
+            "file": "000041.jpg",
+            "timestamp": 1792334559.692991,
+            "sha256": "ff774767cd2852789b54ed434ee54e73d5ff72d29bd4e069432cba5cee1a17d1"
+          },
+          {
+            "file": "000042.jpg",
+            "timestamp": 1792334559.791759,
+            "sha256": "e6ce1b910f98f35d92247bd2014591a1cb9cf225c235b8c3e93fed8504003b87"
+          },
+          {
+            "file": "000043.jpg",
+            "timestamp": 1792334559.89436,
+            "sha256": "683454a9f727bb3f80e4ae3125b01f7175fca310ea42f538a41aa3bb7da3604e"
+          },
+          {
+            "file": "000044.jpg",
+            "timestamp": 1792334560.193122,
+            "sha256": "01874f3c5e4645427771942b967b45b12fa4dc775f91314e70b1ddb5c70d87f9"
+          },
+          {
+            "file": "000045.jpg",
+            "timestamp": 1792334560.542245,
+            "sha256": "f19f79198fb4bed213aa1425333d4050fdc3791692db07a0c569cc41a9b2582b"
+          },
+          {
+            "file": "000046.jpg",
+            "timestamp": 1792334560.745741,
+            "sha256": "339e4ff58f7a6f1c4b7aba3837c7ccf8f603b4b74d7f6ddcc7b68da59064157f"
+          },
+          {
+            "file": "000047.jpg",
+            "timestamp": 1792334560.892585,
+            "sha256": "54dbf3f57087c9f610f99efe28be510601b1d6ce2a9304a34b7cbf14022fe13b"
+          },
+          {
+            "file": "000048.jpg",
+            "timestamp": 1792334560.989893,
+            "sha256": "64c16fe59f0565474c3894cd1c00fa42ec0032e21333ee5d1064d1fd9cfc6b69"
+          },
+          {
+            "file": "000049.jpg",
+            "timestamp": 1792334561.047185,
+            "sha256": "64c16fe59f0565474c3894cd1c00fa42ec0032e21333ee5d1064d1fd9cfc6b69"
+          },
+          {
+            "file": "000050.jpg",
+            "timestamp": 1792334561.143354,
+            "sha256": "40d12a06e3070e2f3dc8153d5b097fd070eba4cdff8dc52a4876debfab552680"
+          },
+          {
+            "file": "000051.jpg",
+            "timestamp": 1792334561.288622,
+            "sha256": "5438ada38f4d2990dea4d66b11c9ea8776de36140b465610338e01f81ad29495"
+          },
+          {
+            "file": "000052.jpg",
+            "timestamp": 1792334561.342854,
+            "sha256": "f6ae61d359f027eea65956e0c32952df5dad8a24899a85efc706eb0a268da39f"
+          },
+          {
+            "file": "000053.jpg",
+            "timestamp": 1792334561.490162,
+            "sha256": "307ba955a29b41a093f66800425f6c6812db2dd501e7b1fa71daa939abbc3615"
+          },
+          {
+            "file": "000054.jpg",
+            "timestamp": 1792334561.541499,
+            "sha256": "bd90450ee494efe7eda756614aa33bc9f6a73182b2dc9c5404a4a128f9163314"
+          },
+          {
+            "file": "000055.jpg",
+            "timestamp": 1792334561.591416,
+            "sha256": "bdfce6b0ff97e8b43234b09ab34d342e51b6029aaa1a2c888c3b89fe86289d7b"
+          },
+          {
+            "file": "000056.jpg",
+            "timestamp": 1792334561.846682,
+            "sha256": "18cabd54c145b822143b45a0aec49a8af9b893b85b21b410a109d78c47450f19"
+          },
+          {
+            "file": "000057.jpg",
+            "timestamp": 1792334562.193958,
+            "sha256": "b71f4d224e898d89966611e077baf97d19454e1185d39f23d4661efef9aad23f"
+          },
+          {
+            "file": "000058.jpg",
+            "timestamp": 1792334562.330148,
+            "sha256": "cb2d01ecad6cb0d5405c74f8260df2864aeae49a1dc38f0842f474f19904bdee"
+          },
+          {
+            "file": "000059.jpg",
+            "timestamp": 1792334562.441158,
+            "sha256": "2de816fc43ccfb633ec7bc1625c29e6c6c4c91d04621ef4bb29a4d7c53d8256d"
+          },
+          {
+            "file": "000060.jpg",
+            "timestamp": 1792334562.556161,
+            "sha256": "6b3e1f9ae1b45601ffc555eb95b22780e42353466120940be49c7b30527302d8"
+          },
+          {
+            "file": "000061.jpg",
+            "timestamp": 1792334562.693399,
+            "sha256": "aae4a9e0838293892d8abc193520a6ca4ebb3142c5e5bc6388cb978f9105cbb5"
+          },
+          {
+            "file": "000062.jpg",
+            "timestamp": 1792334562.790822,
+            "sha256": "9eb71a011b7a0c7192e60f1302fffbbd5b9b979f1a837bbabcb62b49aa66fb1d"
+          },
+          {
+            "file": "000063.jpg",
+            "timestamp": 1792334562.848434,
+            "sha256": "b754c089a9dc86b3d9ca9bfbb5e064b1c88284a0c078243fdfddd43c9e280816"
+          },
+          {
+            "file": "000064.jpg",
+            "timestamp": 1792334562.894423,
+            "sha256": "5d74a607dc0b4a8053cb1bb0d1e80b105d22444d6a6fceaaa07bc0a5e2c2bab0"
+          },
+          {
+            "file": "000065.jpg",
+            "timestamp": 1792334562.99093,
+            "sha256": "342f7a9ef62116852ce403d2e6953d2f3e8b78b3cbf5d4d4b5085db08f620dda"
+          },
+          {
+            "file": "000066.jpg",
+            "timestamp": 1792334563.045861,
+            "sha256": "342f7a9ef62116852ce403d2e6953d2f3e8b78b3cbf5d4d4b5085db08f620dda"
+          },
+          {
+            "file": "000067.jpg",
+            "timestamp": 1792334563.249532,
+            "sha256": "63ce7fd64c36911d561c75455e865fc7fb6adfe0af36deeb6eb508d7b2ce548b"
+          },
+          {
+            "file": "000068.jpg",
+            "timestamp": 1792334563.293076,
+            "sha256": "cb2d01ecad6cb0d5405c74f8260df2864aeae49a1dc38f0842f474f19904bdee"
+          },
+          {
+            "file": "000069.jpg",
+            "timestamp": 1792334563.346661,
+            "sha256": "e466e5ef5d5aa624b150a289580035a9961fab2f1c319a94cdef6155c4c918d8"
+          },
+          {
+            "file": "000070.jpg",
+            "timestamp": 1792334563.391288,
+            "sha256": "c356e4c7267813546bcef9b0cd38910b87ec3e917a9dfaad5784392777f83d43"
+          },
+          {
+            "file": "000071.jpg",
+            "timestamp": 1792334563.441227,
+            "sha256": "c28b860b69b2bd0273f202edc15e8fbd3fe924c3ce4d50daff18fece2b83a08d"
+          },
+          {
+            "file": "000072.jpg",
+            "timestamp": 1792334563.545522,
+            "sha256": "a6e4cd4ae4b6a29211883cb537216748b8acaa93273d4f1c6a1a41cd8f210ebf"
+          },
+          {
+            "file": "000073.jpg",
+            "timestamp": 1792334563.590904,
+            "sha256": "2fcb19b9adcdfd4f4a76ce7da08a72b949868b5170cb8d33c8b7797c6e0bc9ed"
+          },
+          {
+            "file": "000074.jpg",
+            "timestamp": 1792334563.642415,
+            "sha256": "f3c639d0bc03f57a1edb9b7c19f741f3f8f241c7d38ca552777d79d41269f02a"
+          },
+          {
+            "file": "000075.jpg",
+            "timestamp": 1792334563.746554,
+            "sha256": "cb2a7c3677dfd1a045f46b819eb795eb2d8dcc119be88a6547489a1b4a30d3bc"
+          },
+          {
+            "file": "000076.jpg",
+            "timestamp": 1792334563.790557,
+            "sha256": "4563726c7d1de189e9d34b3d11dc3b8025b0ae45c597cfef7659a024eed0e37a"
+          },
+          {
+            "file": "000077.jpg",
+            "timestamp": 1792334563.946372,
+            "sha256": "c3a058ce4da75712850f4c9d97089a9b8eb3ee2baf812a4d588b2e6f5a681f59"
+          },
+          {
+            "file": "000078.jpg",
+            "timestamp": 1792334564.040688,
+            "sha256": "c3a058ce4da75712850f4c9d97089a9b8eb3ee2baf812a4d588b2e6f5a681f59"
+          },
+          {
+            "file": "000079.jpg",
+            "timestamp": 1792334564.092492,
+            "sha256": "4f890db78d2d8dfec3e335a8ea59fcd58e844ab003faf3766bd7e86dfc76a946"
+          },
+          {
+            "file": "000080.jpg",
+            "timestamp": 1792334564.357794,
+            "sha256": "e466e5ef5d5aa624b150a289580035a9961fab2f1c319a94cdef6155c4c918d8"
+          },
+          {
+            "file": "000081.jpg",
+            "timestamp": 1792334564.392364,
+            "sha256": "d5dcc193004243efcb8d03c002da4cd0a1d605cb9befa1deb98e801755db2e31"
+          },
+          {
+            "file": "000082.jpg",
+            "timestamp": 1792334564.547646,
+            "sha256": "933ff2f5b07c76c7d083c900817cf22dabe6a32984a31199cd5023d7f73c65ac"
+          },
+          {
+            "file": "000083.jpg",
+            "timestamp": 1792334564.641347,
+            "sha256": "76d8f1da647c127eaf0d176df4fb0603da2e01cbf55fa0ff95b471b3f5229194"
+          },
+          {
+            "file": "000084.jpg",
+            "timestamp": 1792334564.691743,
+            "sha256": "a387b5ab79db5c67e7cd3d258d4fd8f97f9594d0a8c7429c300476bc401f9d87"
+          },
+          {
+            "file": "000085.jpg",
+            "timestamp": 1792334564.84145,
+            "sha256": "abe87db15c2a5dedc26df28fd0c8b12935417ed6ff5edaf47482476bb1f0726e"
+          },
+          {
+            "file": "000086.jpg",
+            "timestamp": 1792334564.889896,
+            "sha256": "6f47fc9c005af201646bb6209d188d6c9655b0857a4e58bfdd843f1b3d9b4525"
+          },
+          {
+            "file": "000087.jpg",
+            "timestamp": 1792334565.194145,
+            "sha256": "9206a563ed347b6fe476dc6bbbc716e2b8606c8e844643ff96cde46ae9de60b6"
+          },
+          {
+            "file": "000088.jpg",
+            "timestamp": 1792334565.333942,
+            "sha256": "c655bc535bb5e87d9cc07193a349a4cd427e974a3fa7807940a16149a2efd2a9"
+          },
+          {
+            "file": "000089.jpg",
+            "timestamp": 1792334565.446758,
+            "sha256": "100d6363cbe478e7b4e87cfa76bb069b8b9e2090d72eaca0182ee779b2392340"
+          },
+          {
+            "file": "000090.jpg",
+            "timestamp": 1792334565.557177,
+            "sha256": "f7e0e171689861ede82b37f1b21824883a3b5e9cba433f24374588834314e5b0"
+          },
+          {
+            "file": "000091.jpg",
+            "timestamp": 1792334565.693421,
+            "sha256": "e75896c83c3e27ee7fd1cf83d7f9fc40a4d81790743e7510f520be3e9cf2c7f8"
+          },
+          {
+            "file": "000092.jpg",
+            "timestamp": 1792334565.79031,
+            "sha256": "3d3d41d9585bf3bab7a589095febc0a69c77e745f6e66031cccf8fe733444d29"
+          },
+          {
+            "file": "000093.jpg",
+            "timestamp": 1792334565.846046,
+            "sha256": "252a2b0f42c8b836dcb69d52c172d21b8a17539a5cc1d6c47def1b11484777be"
+          },
+          {
+            "file": "000094.jpg",
+            "timestamp": 1792334565.8902,
+            "sha256": "d658a2c7f5d6f762d5a62b25ff8834d5df67a86f9c764b2f7f62ef24232c0ce6"
+          },
+          {
+            "file": "000095.jpg",
+            "timestamp": 1792334565.990179,
+            "sha256": "6b9534a78550ffbcb8951ac9d3bac8913446814ed4da70dedec7125f7d99b8f8"
+          },
+          {
+            "file": "000096.jpg",
+            "timestamp": 1792334566.293322,
+            "sha256": "c655bc535bb5e87d9cc07193a349a4cd427e974a3fa7807940a16149a2efd2a9"
+          },
+          {
+            "file": "000097.jpg",
+            "timestamp": 1792334566.392933,
+            "sha256": "c1bf35530ebd726852ca1ae982ec838f1c1f8e35b6beab303f26f4627e3731ed"
+          },
+          {
+            "file": "000098.jpg",
+            "timestamp": 1792334566.557757,
+            "sha256": "208002297eeaedfecc5a71651a1adccb1f9cb6b45c7d931d23f9f64ae709aecd"
+          },
+          {
+            "file": "000099.jpg",
+            "timestamp": 1792334566.71353,
+            "sha256": "5c91f84f1696f30d6da5cb23fd6d797b3790ad0b294033326dd945cb0630d350"
+          },
+          {
+            "file": "000100.jpg",
+            "timestamp": 1792334566.8579,
+            "sha256": "ed740d31fa8156e375693ec2c29949ce6e28163df20aec8bd813a5b7a76e482a"
+          },
+          {
+            "file": "000101.jpg",
+            "timestamp": 1792334566.986657,
+            "sha256": "af11880e2518bc7031556d4d3ca51119c5fb51364a13c45cb9d22c523af94afa"
+          },
+          {
+            "file": "000102.jpg",
+            "timestamp": 1792334567.081563,
+            "sha256": "205aadc62436458651bbaa4dfc4ac531668cb831718785afd3b3780b38198389"
+          },
+          {
+            "file": "000103.jpg",
+            "timestamp": 1792334567.123469,
+            "sha256": "205aadc62436458651bbaa4dfc4ac531668cb831718785afd3b3780b38198389"
+          },
+          {
+            "file": "000104.jpg",
+            "timestamp": 1792334567.175528,
+            "sha256": "205aadc62436458651bbaa4dfc4ac531668cb831718785afd3b3780b38198389"
+          },
+          {
+            "file": "000105.jpg",
+            "timestamp": 1792334567.221262,
+            "sha256": "9cea849bd93bd8fe2e89c3c9d5d8dfa468e140ed6c083454a70d5a74b2a1a3dd"
+          },
+          {
+            "file": "000106.jpg",
+            "timestamp": 1792334567.523493,
+            "sha256": "3a340fb4f575c9b21ac9daa9ef420fcabdba6e9386bb78c82362e8a71dd5f465"
+          },
+          {
+            "file": "000107.jpg",
+            "timestamp": 1792334567.573238,
+            "sha256": "82857b0f361371a6f61688ee026f49d298fb0c258ec7c522d7875f2190fdce7d"
+          },
+          {
+            "file": "000108.jpg",
+            "timestamp": 1792334567.621654,
+            "sha256": "aed2387d41dd4b80fb7c985b668a9e1f3f262261285b3583a33b0863b935756d"
+          },
+          {
+            "file": "000109.jpg",
+            "timestamp": 1792334568.292862,
+            "sha256": "f34cdb003b4b72fbd6b560433176742497c5a4f33e1bd3adfb2a487442f5d6ab"
+          },
+          {
+            "file": "000110.jpg",
+            "timestamp": 1792334568.445193,
+            "sha256": "f8bea17279a3b16275c3787944eeb799b161843400768f44f6bc878e38907c30"
+          },
+          {
+            "file": "000111.jpg",
+            "timestamp": 1792334568.558498,
+            "sha256": "ec9482707d59651ea1d5a93266bb45889c8a617b53aa4801347396c53d0b3692"
+          },
+          {
+            "file": "000112.jpg",
+            "timestamp": 1792334568.69198,
+            "sha256": "3d3ee79d7f16ca406c94be6703f39e4fcfbb2ab432be65e0b7860f8a1f5ea59c"
+          },
+          {
+            "file": "000113.jpg",
+            "timestamp": 1792334568.792368,
+            "sha256": "4d270f244392949e38fb5bf9e75c359df7515f205349dbeb8d647ebfcc431e57"
+          },
+          {
+            "file": "000114.jpg",
+            "timestamp": 1792334568.845429,
+            "sha256": "eaf7150d2ad85873bacf78bdd9d2d03b3f170c89c7dd62226919c3d04eb1d0ce"
+          },
+          {
+            "file": "000115.jpg",
+            "timestamp": 1792334568.892124,
+            "sha256": "116f27ad19cfcaef177f952760261667de5ea54e4e3bdeceeb0018206e9ca7c0"
+          },
+          {
+            "file": "000116.jpg",
+            "timestamp": 1792334568.946349,
+            "sha256": "fab5c48197a95930d89486c9d56a9a677f2dcb6417a2311c131d9e52c149596f"
+          },
+          {
+            "file": "000117.jpg",
+            "timestamp": 1792334568.990115,
+            "sha256": "fab5c48197a95930d89486c9d56a9a677f2dcb6417a2311c131d9e52c149596f"
+          },
+          {
+            "file": "000118.jpg",
+            "timestamp": 1792334569.048915,
+            "sha256": "fab5c48197a95930d89486c9d56a9a677f2dcb6417a2311c131d9e52c149596f"
+          },
+          {
+            "file": "000119.jpg",
+            "timestamp": 1792334569.090396,
+            "sha256": "61111049c6a34cbfbdb7f433bfa76581cc5c436aae9ad2cbec73443ff12e516e"
+          },
+          {
+            "file": "000120.jpg",
+            "timestamp": 1792334569.145565,
+            "sha256": "61111049c6a34cbfbdb7f433bfa76581cc5c436aae9ad2cbec73443ff12e516e"
+          },
+          {
+            "file": "000121.jpg",
+            "timestamp": 1792334569.246381,
+            "sha256": "e4447875ec0567c0397b16f73bad69142bf1824757141ca9e86bb7e0c5ec0204"
+          },
+          {
+            "file": "000122.jpg",
+            "timestamp": 1792334569.430359,
+            "sha256": "56b16bd1c7fddd5533a4ea9625dba6f9b0844d3f53cb4924f6da28dc70a8dc39"
+          },
+          {
+            "file": "000123.jpg",
+            "timestamp": 1792334569.474944,
+            "sha256": "48d12cefeffdafac118799898054c94b1ef052207c6b3b8be23cd89180355a95"
+          },
+          {
+            "file": "000124.jpg",
+            "timestamp": 1792334569.576103,
+            "sha256": "841f0ea793288ac75203ff2dc8a3719c64c080c280266d8f8babf4789e60d200"
+          },
+          {
+            "file": "000125.jpg",
+            "timestamp": 1792334569.674458,
+            "sha256": "e920f382a97134d22b88badf0a991c8c0199e49c40afa12be52d8ad360d6ea10"
+          },
+          {
+            "file": "000126.jpg",
+            "timestamp": 1792334569.780387,
+            "sha256": "3fa27368f3e501ad05cc5c1b2fb6ada380058232b5ce12f1e9c32b015b97ad00"
+          },
+          {
+            "file": "000127.jpg",
+            "timestamp": 1792334569.874545,
+            "sha256": "75a2222849f48f70e161d02d2dbaefbeaeec575caa750b63ade9902ee7e28db6"
+          },
+          {
+            "file": "000128.jpg",
+            "timestamp": 1792334570.021164,
+            "sha256": "47e009a7732c0ec80d11dbc4172daccecd28080c9cb2bf411bc4e389d7694861"
+          },
+          {
+            "file": "000129.jpg",
+            "timestamp": 1792334570.22208,
+            "sha256": "3e845fe7f68866d487f8f1a567e42d3ac4648c279b4456ad10cdf73f2228c107"
+          },
+          {
+            "file": "000130.jpg",
+            "timestamp": 1792334570.27384,
+            "sha256": "17bda976ae14b2ba21be9a6964d197fed5b8471b719d92abdfc1699859c92dc6"
+          },
+          {
+            "file": "000131.jpg",
+            "timestamp": 1792334570.423732,
+            "sha256": "1fc5d1452d7a89e83b1c4ac98c192627150d13b888788bd7d9583f1295f76893"
+          },
+          {
+            "file": "000132.jpg",
+            "timestamp": 1792334570.579241,
+            "sha256": "a6fc5c19e8e14633a57d160ee7d3c22fb954df20ad534f0fd9ac1798f3ec8f92"
+          },
+          {
+            "file": "000133.jpg",
+            "timestamp": 1792334570.675828,
+            "sha256": "2fae789df13300705ac51c5b197674750d3b20e0a2b703b46df4abe0dad6aa06"
+          },
+          {
+            "file": "000134.jpg",
+            "timestamp": 1792334570.821132,
+            "sha256": "a6c8ca0e023d7353430bfdbc001adfd6c03d43841ff04b41cad8a7b030d7bf12"
+          },
+          {
+            "file": "000135.jpg",
+            "timestamp": 1792334571.059188,
+            "sha256": "e70b1fb2e7503ee88f40251d39722f2e48523e19d7b40e96d44e3a952792531e"
+          },
+          {
+            "file": "000136.jpg",
+            "timestamp": 1792334571.298044,
+            "sha256": "b6335933ad1a183979973544ab0ecd2b41631982146dec948a17f2d27fdfbbc5"
+          },
+          {
+            "file": "000137.jpg",
+            "timestamp": 1792334571.445962,
+            "sha256": "52222a0ced713045e0edcb78c791195480a05844bcfaa1bcbb3ecda96add4455"
+          },
+          {
+            "file": "000138.jpg",
+            "timestamp": 1792334571.559383,
+            "sha256": "495802762d1758924b8ea98393bf87035b0ccd451c3441113e34c12006b04da8"
+          },
+          {
+            "file": "000139.jpg",
+            "timestamp": 1792334571.695812,
+            "sha256": "788bdd86e53ec3ed34e1d74c079d5ecc8b161e12b126bf9248e8f0920e2a980a"
+          },
+          {
+            "file": "000140.jpg",
+            "timestamp": 1792334571.794448,
+            "sha256": "3cad619785b846be874086806e25880d4b446e70bced1b6725e4f88f4401f069"
+          },
+          {
+            "file": "000141.jpg",
+            "timestamp": 1792334571.847816,
+            "sha256": "232fb8ffed020979b58d222c3e078eb8a44d38e4228f2f5fafc81cb0622a8ee0"
+          },
+          {
+            "file": "000142.jpg",
+            "timestamp": 1792334571.89473,
+            "sha256": "a5bcdcf80c87fcce24d290325ea7cf59b83ad3f2f95b579c6d139f3d75c05171"
+          },
+          {
+            "file": "000143.jpg",
+            "timestamp": 1792334572.011889,
+            "sha256": "0ebf9294ac883b7b5825a055fa217cf1610416e978fe55b3a358b5151db2f35b"
+          },
+          {
+            "file": "000144.jpg",
+            "timestamp": 1792334572.463372,
+            "sha256": "b16bb292d58bae6d4bb26c057b68085f45845e18b6c2fcedfdcd95d17910b2c9"
+          },
+          {
+            "file": "000145.jpg",
+            "timestamp": 1792334572.610492,
+            "sha256": "db5cc301effd22a5ef499a455148175d38dd4ef16513d3ee961536f89a0d0bf0"
+          }
+        ]
+      },
+      {
+        "name": "04-tarefas",
+        "duration": 34,
+        "crop": "900:196:120:64",
+        "scale": "1152:-2",
+        "y": 238,
+        "label": "3. Resultado consultado · Quadro final mantido para leitura",
+        "kind": "hold",
+        "frame": "000176.jpg",
+        "capture_manifest_sha256": "e08536f0c06bec316ee2f53e417563c3c0ddc4e49530ac52483f831233e7b9b8",
+        "source_frames": [
+          {
+            "file": "000176.jpg",
+            "timestamp": 1792334831.711618,
+            "sha256": "40d00cf55f856c4411c3ff0e4355978f7a4e51ef14e1fe0fe7a63a99965ba3dd"
+          }
+        ]
+      }
+    ]
+  },
+  "demonstrated": [
+    "Pedido de pós-reunião com origem identificada e notas fictícias",
+    "Resposta consultada: preferência confirmada",
+    "Possibilidade de mudança preservada como dúvida pendente",
+    "Tarefa atribuída ao consultor com prazo em 21/10/2026",
+    "Referência à origem da reunião e ausência de envio WhatsApp"
+  ],
+  "not_demonstrated": [
+    "Reagendamento da tarefa ou aniversário do pedido posterior",
+    "Repetição idempotente da origem",
+    "Extração automática por cron",
+    "Envio real WhatsApp"
+  ]
+}
