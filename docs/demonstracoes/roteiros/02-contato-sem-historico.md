@@ -32,4 +32,4 @@ Homônimos não podem ser resolvidos por palpite. Se não houver referência dis
 
 Capturas reais concluídas: sequências de screenshots Cua `02-encontrar-preparar` e `02-rascunho-final`. Excluir o início da primeira sequência que ainda exibe a conversa anterior; a montagem seleciona apenas o pedido atual e sua execução. O pedido completo é recortado de sua exibição no quadro final da mesma conversa, sem reconstrução de texto. Voz: AntonioNeural, ritmo `-3%`, tom `-1Hz`.
 
-[Vídeo](../02-contato-sem-historico.mp4) · [Legendas](../02-contato-sem-historico.srt) · [Proveniência](../02-contato-sem-historico.json). Renderização e conferência dos arquivos finais são registradas na entrega; o roteiro sozinho não substitui essa verificação.
+[Vídeo](../funcionalidades/02-contato-sem-historico.mp4) · [Legendas](../legendas/02-contato-sem-historico.srt) · [Proveniência](../evidencias/02-contato-sem-historico.json). Renderização e conferência dos arquivos finais são registradas na entrega; o roteiro sozinho não substitui essa verificação.

@@ -5,7 +5,7 @@
   "runtime_commit": "f9285065271617ece67739ea95022d3b641cf0f8",
   "videos": [
     {
-      "file": "01-conexao-e-diagnostico.mp4",
+      "file": "../funcionalidades/01-conexao-e-diagnostico.mp4",
       "seconds": 52.0,
       "bytes": 758092,
       "sha256": "4a66dd1a7b90df9dbb82cb9067443ad4fe6ba6c1f86592377530968473ab9bd4",
@@ -21,7 +21,7 @@
       "hash_matches": true
     },
     {
-      "file": "02-contato-sem-historico.mp4",
+      "file": "../funcionalidades/02-contato-sem-historico.mp4",
       "seconds": 48.011,
       "bytes": 711007,
       "sha256": "1a10ebc90403fc7a95b8e8578c23513c097e56eaced904af10a92ebd22ab2649",
@@ -37,7 +37,7 @@
       "hash_matches": true
     },
     {
-      "file": "03-memoria-e-pos-reuniao.mp4",
+      "file": "../funcionalidades/03-memoria-e-pos-reuniao.mp4",
       "seconds": 65.0,
       "bytes": 1228234,
       "sha256": "cdebe0f1fdb8b662bae342f35778c0a23252e8cad63775787a847fdd90fc4e59",
@@ -53,7 +53,7 @@
       "hash_matches": true
     },
     {
-      "file": "04-tarefas-datas-e-atencao.mp4",
+      "file": "../funcionalidades/04-tarefas-datas-e-atencao.mp4",
       "seconds": 60.0,
       "bytes": 971171,
       "sha256": "5888bd9aaa8fb0f35ff07742f224523de5f905827f800cfa1e1537b6f536171b",
@@ -69,7 +69,7 @@
       "hash_matches": true
     },
     {
-      "file": "05-revisao-diaria.mp4",
+      "file": "../funcionalidades/05-revisao-diaria.mp4",
       "seconds": 58.007,
       "bytes": 997290,
       "sha256": "52b5d82564d6e4e3c9cb457aacd607d87931b91d1678b4e3d7ef27baf574bc15",
@@ -85,7 +85,7 @@
       "hash_matches": true
     },
     {
-      "file": "06-preparar-aprovar-cancelar.mp4",
+      "file": "../funcionalidades/06-preparar-aprovar-cancelar.mp4",
       "seconds": 50.667,
       "bytes": 640178,
       "sha256": "b583cca2b9d1e258bdb2bf043bfe3fc78591b2123aa01e71c1ce0355cb9afe80",
@@ -101,7 +101,7 @@
       "hash_matches": true
     },
     {
-      "file": "07-pauta-e-rotina.mp4",
+      "file": "../funcionalidades/07-pauta-e-rotina.mp4",
       "seconds": 86.867,
       "bytes": 1611483,
       "sha256": "8799139c7c2e2146832482ca32413118694783cb831fa56fa83eaeb7a3d01d80",
@@ -117,7 +117,7 @@
       "hash_matches": true
     },
     {
-      "file": "08-visao-geral.mp4",
+      "file": "../para-compartilhar/08-visao-geral.mp4",
       "seconds": 141.8,
       "bytes": 2280180,
       "sha256": "7aec296a5d83dc8d3e3665b663c1b625f72a226000abc9ab9555f11a2ccddced",
@@ -133,7 +133,7 @@
       "hash_matches": true
     },
     {
-      "file": "09-mensagem-enviada.mp4",
+      "file": "../para-compartilhar/09-mensagem-enviada.mp4",
       "seconds": 54.4,
       "bytes": 752636,
       "sha256": "f88286fb07fc9b4a28a7b8b51a12d8bffe95d703d69189879b31de9a4792a0b1",

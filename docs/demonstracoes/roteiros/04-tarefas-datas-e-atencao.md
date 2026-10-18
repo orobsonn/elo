@@ -31,4 +31,4 @@ Somente a personagem e os compromissos fictícios do ensaio. Conferir a mesma re
 
 Capturas reais concluídas: sequências de screenshots Cua `04-tarefas-e-datas-pedido`, `04-tarefas-e-datas-execucao` e o topo de `05-revisao-diaria-pedido`, que exibe a mesma resposta 04 inteira após rolagem. Somente a resposta 04 foi recortada desse último arquivo; o pedido 05 abaixo dela não aparece. Não houve reconstrução da interface. Voz: AntonioNeural, ritmo `-3%`, tom `-1Hz`.
 
-[Vídeo](../04-tarefas-datas-e-atencao.mp4) · [Legendas](../04-tarefas-datas-e-atencao.srt) · [Proveniência](../04-tarefas-datas-e-atencao.json). Arquivos finais conferidos por decodificação integral, faixas de mídia e quadros selecionados.
+[Vídeo](../funcionalidades/04-tarefas-datas-e-atencao.mp4) · [Legendas](../legendas/04-tarefas-datas-e-atencao.srt) · [Proveniência](../evidencias/04-tarefas-datas-e-atencao.json). Arquivos finais conferidos por decodificação integral, faixas de mídia e quadros selecionados.

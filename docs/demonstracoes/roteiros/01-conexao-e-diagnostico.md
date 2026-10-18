@@ -29,4 +29,4 @@ Capturas reais de navegador por sequência de screenshots, produzidas pela super
 
 Esta é uma agenda real, com nomes, números e outros dados pessoais fora da imagem e da narração. A gravação começa depois do login e da conexão WhatsApp. Não demonstra instalação inteira em um clique, recebimento retroativo de mensagens nem envio. O recorte do pedido é apresentado antes do progresso para explicar a história; o texto foi capturado na mesma conversa concluída, sem reconstruir a interface.
 
-Voz: AntonioNeural aprovada pelo usuário, ritmo `-3%`, tom `-1Hz`. [Vídeo](../01-conexao-e-diagnostico.mp4), [legendas](../01-conexao-e-diagnostico.srt) e [proveniência](../01-conexao-e-diagnostico.json). A versão final exige a conferência visual e das faixas de mídia registrada na entrega.
+Voz: AntonioNeural aprovada pelo usuário, ritmo `-3%`, tom `-1Hz`. [Vídeo](../funcionalidades/01-conexao-e-diagnostico.mp4), [legendas](../legendas/01-conexao-e-diagnostico.srt) e [proveniência](../evidencias/01-conexao-e-diagnostico.json). A versão final exige a conferência visual e das faixas de mídia registrada na entrega.

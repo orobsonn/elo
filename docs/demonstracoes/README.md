@@ -4,23 +4,42 @@ Histórias de uso para apresentar o Elo ao Ronald, ao Lucas e a quem vai usá-lo
 
 A voz aprovada por Robson é **Antonio Neural**, em português brasileiro, com ritmo `-3%` e tom `-1Hz`. Os filmes têm imagem em 720p, áudio e legendas selecionáveis; cada MP4 acompanha um SRT e um JSON com origem, cortes e hashes. As telas foram capturadas no ChatGPT conectado ao Elo publicado, sem desenhar respostas ou simular ferramentas.
 
+## Pegar os vídeos para enviar
+
+A pasta **[para-compartilhar](para-compartilhar/)** contém só os dois vídeos para o grupo:
+
+- **08-visao-geral.mp4** — apresentação da solução, 2min22.
+- **09-mensagem-enviada.mp4** — envio real de WhatsApp, 54s.
+
+Basta pegar os dois MP4; a narração e as legendas selecionáveis já estão dentro deles.
+
+## Organização
+
+| Pasta | Conteúdo |
+|---|---|
+| `para-compartilhar/` | Vídeo geral e envio de WhatsApp |
+| `funcionalidades/` | Sete demonstrações individuais restantes |
+| `legendas/` | Legendas SRT separadas |
+| `roteiros/` | Histórias e falas de cada vídeo |
+| `evidencias/` | Proveniência, hashes e verificações |
+
 ## Assistir
 
-Comece pela **[visão geral](08-visao-geral.mp4)**. Os vídeos individuais permitem avaliar cada situação com mais calma.
+Comece pela **[visão geral](para-compartilhar/08-visao-geral.mp4)**. Os vídeos individuais permitem avaliar cada situação com mais calma.
 
 | Vídeo | Duração | Problema da pessoa e resultado mostrado |
 |---|---:|---|
-| [01 — Começar sem cadastrar a agenda](01-conexao-e-diagnostico.mp4) | 0:52 | “Preciso cadastrar todo mundo de novo?” A Skill `configurar-elo` percorre a agenda conectada e confirma 935 contatos mapeados. |
-| [02 — Encontrar alguém sem histórico](02-contato-sem-historico.mp4) | 0:48 | “Quero escrever para alguém que ainda não conversou comigo no Elo.” A busca encontra a pessoa da agenda e prepara o texto para revisão. |
-| [03 — Guardar os combinados da reunião](03-memoria-e-pos-reuniao.mp4) | 1:05 | “Vou esquecer o que ficou combinado.” As notas viram preferência confirmada, dúvida pendente e tarefa do consultor com prazo. |
-| [04 — Ajustar prazos e lembrar datas](04-tarefas-datas-e-atencao.mp4) | 1:00 | “O prazo mudou; preciso saber o que ainda devo fazer.” A tarefa passa para 22/10 e o aniversário fictício fica registrado em 23/10, sem ano. |
-| [05 — Saber o que ficou pendente no dia](05-revisao-diaria.mp4) | 0:58 | “Não consigo reler todas as conversas.” A revisão avalia três mensagens fictícias, separa próximos passos e dúvidas e informa a cobertura. |
-| [06 — Revisar e poder cancelar](06-preparar-aprovar-cancelar.mp4) | 0:50 | “Quero ajuda para escrever, mantendo a decisão comigo.” A proposta fica aguardando; outro turno cancela o rascunho e confirma que não foi enviado. |
-| [07 — Chegar preparado à próxima reunião](07-pauta-e-rotina.mp4) | 1:26 | “Não lembro todos os combinados e dúvidas.” A pauta consulta memória e tarefas; uma rotina manual reaproveita a Skill para repetir a preparação. |
-| [08 — Elo no dia a dia](08-visao-geral.mp4) | 2:21 | Conversas, notas e compromissos ganham continuidade: encontrar, lembrar, organizar, preparar a reunião e retornar pelo WhatsApp. |
-| [09 — Enviar WhatsApp pela IA](09-mensagem-enviada.mp4) | 0:54 | “Quero mandar uma mensagem sem sair do chat.” Texto e destinatária são revisados, o dono aprova, a ação é executada uma vez e o Elo confirma o estado entregue. |
+| [01 — Começar sem cadastrar a agenda](funcionalidades/01-conexao-e-diagnostico.mp4) | 0:52 | “Preciso cadastrar todo mundo de novo?” A Skill `configurar-elo` percorre a agenda conectada e confirma 935 contatos mapeados. |
+| [02 — Encontrar alguém sem histórico](funcionalidades/02-contato-sem-historico.mp4) | 0:48 | “Quero escrever para alguém que ainda não conversou comigo no Elo.” A busca encontra a pessoa da agenda e prepara o texto para revisão. |
+| [03 — Guardar os combinados da reunião](funcionalidades/03-memoria-e-pos-reuniao.mp4) | 1:05 | “Vou esquecer o que ficou combinado.” As notas viram preferência confirmada, dúvida pendente e tarefa do consultor com prazo. |
+| [04 — Ajustar prazos e lembrar datas](funcionalidades/04-tarefas-datas-e-atencao.mp4) | 1:00 | “O prazo mudou; preciso saber o que ainda devo fazer.” A tarefa passa para 22/10 e o aniversário fictício fica registrado em 23/10, sem ano. |
+| [05 — Saber o que ficou pendente no dia](funcionalidades/05-revisao-diaria.mp4) | 0:58 | “Não consigo reler todas as conversas.” A revisão avalia três mensagens fictícias, separa próximos passos e dúvidas e informa a cobertura. |
+| [06 — Revisar e poder cancelar](funcionalidades/06-preparar-aprovar-cancelar.mp4) | 0:50 | “Quero ajuda para escrever, mantendo a decisão comigo.” A proposta fica aguardando; outro turno cancela o rascunho e confirma que não foi enviado. |
+| [07 — Chegar preparado à próxima reunião](funcionalidades/07-pauta-e-rotina.mp4) | 1:26 | “Não lembro todos os combinados e dúvidas.” A pauta consulta memória e tarefas; uma rotina manual reaproveita a Skill para repetir a preparação. |
+| [08 — Elo no dia a dia](para-compartilhar/08-visao-geral.mp4) | 2:21 | Conversas, notas e compromissos ganham continuidade: encontrar, lembrar, organizar, preparar a reunião e retornar pelo WhatsApp. |
+| [09 — Enviar WhatsApp pela IA](para-compartilhar/09-mensagem-enviada.mp4) | 0:54 | “Quero mandar uma mensagem sem sair do chat.” Texto e destinatária são revisados, o dono aprova, a ação é executada uma vez e o Elo confirma o estado entregue. |
 
-A [verificação final](verificacao-1810.json) registra faixas de mídia, hashes e checagens do ensaio. Os [roteiros](roteiros/) registram a história e o que cada filme comprova. O nome legado do arquivo 06 inclui “aprovar”, mas seu conteúdo demonstra preparo/cancelamento; o envio aprovado está no 09.
+A [verificação final](evidencias/verificacao-1810.json) registra faixas de mídia, hashes e checagens do ensaio. Os [roteiros](roteiros/) registram a história e o que cada filme comprova. O nome legado do arquivo 06 inclui “aprovar”, mas seu conteúdo demonstra preparo/cancelamento; o envio aprovado está no 09.
 
 ## O que foi usado nas gravações
 

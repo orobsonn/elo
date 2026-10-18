@@ -4,7 +4,7 @@
 
 **Problema:** agenda, conversas e combinados ficam dispersos. **Pedido:** usar a IA para ajudar no acompanhamento. **Resultado mostrado:** uma compilação de execuções reais, com exemplos fictícios de reunião e revisão, agenda real com privacidade e um envio real aprovado. O filme dura **2min21,8s**.
 
-[Assistir ao vídeo](../08-visao-geral.mp4) · [Legendas](../08-visao-geral.srt) · [Proveniência](../08-visao-geral.json)
+[Assistir ao vídeo](../para-compartilhar/08-visao-geral.mp4) · [Legendas](../legendas/08-visao-geral.srt) · [Proveniência](../evidencias/08-visao-geral.json)
 
 ## Problema → pedido → solução observada
 

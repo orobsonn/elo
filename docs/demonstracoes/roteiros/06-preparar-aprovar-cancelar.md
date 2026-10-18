@@ -33,4 +33,4 @@ O nome de arquivo preserva a compatibilidade da série; o título visível e a n
 
 Capturas reais concluídas: sequências de screenshots Cua `02-rascunho-final`, `06-cancelar-rascunho` e `06-cancelamento-final`. A proposta anterior é reutilizada como contexto; o pedido de cancelamento aparece em outro turno e a consulta final confirma o estado. Quadros reais são mantidos para leitura, sem reconstrução da interface. Voz: AntonioNeural, ritmo `-3%`, tom `-1Hz`.
 
-[Vídeo](../06-preparar-aprovar-cancelar.mp4) · [Legendas](../06-preparar-aprovar-cancelar.srt) · [Proveniência](../06-preparar-aprovar-cancelar.json). Arquivos finais conferidos por decodificação integral, faixas de mídia e quadros selecionados.
+[Vídeo](../funcionalidades/06-preparar-aprovar-cancelar.mp4) · [Legendas](../legendas/06-preparar-aprovar-cancelar.srt) · [Proveniência](../evidencias/06-preparar-aprovar-cancelar.json). Arquivos finais conferidos por decodificação integral, faixas de mídia e quadros selecionados.
