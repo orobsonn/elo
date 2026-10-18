@@ -50,13 +50,15 @@ O webhook responde após a persistência. **Ele não espera a IA.** Assim, indis
 
 ## 3. Extraímos memória depois, com limites
 
-O cron técnico da instalação roda a cada dez minutos. Em cada execução, [o processamento](../../src/extraction.ts) tenta até três fontes e reserva no máximo 50 chamadas de IA por dia UTC. Isso não é o agendador do consultor: brief diário e outras rotinas continuam sendo Skills executadas no Work/Cowork.
+O cron técnico da instalação roda a cada dez minutos. Em cada execução, [o processamento](../../src/extraction.ts) tenta até três blocos de conversa e reserva, por padrão, no máximo 200 chamadas de IA por dia UTC. Isso não é o agendador do consultor: brief diário e outras rotinas continuam sendo Skills executadas no Work/Cowork.
 
-Uma fonte pendente é reservada atomicamente, com uma concessão temporária de 90 segundos. Cada chamada tem espera limitada a 40 segundos. Falhas têm intervalo crescente e no máximo três tentativas por versão. Uma concessão abandonada pode ser retomada; esgotar as tentativas deixa a fonte como falha, sem simular memória criada.
+Mensagens pendentes do mesmo contato são agrupadas em até 20 fontes e 12.000 caracteres, numa janela de ingresso de até duas horas. O bloco é reservado atomicamente com o orçamento, por 90 segundos; só os membros efetivamente reservados entram no processamento. Cada chamada espera até 40 segundos. Respostas incompletas, truncadas ou saturadas provocam divisão em blocos menores, sem consumir as tentativas individuais das mensagens vizinhas. Na etapa individual, falhas têm backoff e até três tentativas por versão. Mudanças de fonte durante a inferência invalidam o bloco inteiro e devolvem as demais fontes à fila.
 
-O contexto enviado ao modelo contém a fonte atual limitada a 6.000 caracteres, até quatro fontes anteriores do mesmo contato com até 700 caracteres cada e até 16 memórias recentes. Inclui tipo, direção e aviso de truncamento. Não é o histórico inteiro nem conteúdo de outro contato. O modelo publicado é configurável; a instalação atual usa DeepSeek V4 Flash na Workers AI.
+O contexto contém as mensagens do bloco, ordenadas pela data original e com autoria individual, além de até quatro fontes anteriores do mesmo contato com até 700 caracteres cada e até 16 memórias recentes. Reuniões/anotações pertencentes ao backend mantêm extração individual, limitada a 6.000 caracteres. Inclui tipo, direção e aviso de truncamento. Não é o histórico inteiro nem conteúdo de outro contato. O modelo publicado é configurável; a instalação atual usa DeepSeek V4 Flash na Workers AI.
 
 Antes de gravar, o Elo valida o schema, o contato, a fonte, os campos permitidos e trechos de evidência presentes no texto atual. Todos os candidatos precisam passar antes de montar o batch de escrita. A gravação verifica novamente a versão, a validade da fonte, a geração do contato e a reserva de processamento. Uma inferência iniciada antes de uma edição, exclusão ou associação não pode restaurar dados antigos.
+
+Cada candidato aponta para sua fonte original e cita evidência literal naquela mensagem. Fontes do bloco usadas como contexto potencial ficam relacionadas por ID/versão, sem copiar texto. Edição/exclusão desse contexto sinaliza revisão de memórias e tarefas; expurgo normal apenas torna o texto indisponível. Tarefas antigas mantêm versão desconhecida, sem reconstrução fictícia.
 
 Fato explícito novo pode ser confirmado automaticamente. Incerteza, atribuição duvidosa e valores diferentes de um fato já confirmado ficam pendentes. Correção/revisão preserva o registro anterior. Fala enviada pelo consultor não vira automaticamente fato confirmado sobre o contato.
 
@@ -102,3 +104,7 @@ A revisão separa `unavailable_reasons.expired`, `unsupported_format` e `missing
 Se o provedor enviar posteriormente texto válido para o mesmo ID, o backend pode preencher apenas a fonte ainda vazia e ativa, preservando datas/vencimento e identidade. A operação transacional impede duplicação e revalida exclusão, tombstone, conexão, direção e ordem. Não busca mídia nem garante replay retroativo. [Investigação e testes](fontes-indisponiveis-1710.md).
 
 Uma fonte pode ganhar texto atrás do cursor durante a leitura. `unseen_sources_pending` na página final impede declarar completude; inclui fontes do escopo nunca mostradas, mesmo indisponíveis. Pode se sobrepor a `unavailable_count`; não some os dois contadores. Um novo run só pode avaliar o que estiver legível. A confirmação também verifica fontes elegíveis ainda não mostradas no instante do commit. Versões posteriores de fonte já mostrada continuam reportadas separadamente, sem marcar a versão nova como avaliada.
+
+## Limite diário e fila por blocos
+
+`EXTRACTION_CALLS_DAILY` configura de 1 a 1.000 chamadas/dia por instalação; padrão 200, inclusive se a configuração for inválida. Tentativas e divisões consomem chamadas. Ao atingir o teto, a captura continua e as fontes não processadas aguardam a próxima cota UTC. Não há garantia de que todas sejam processadas antes dos 30 dias se houver fila prolongada. Três blocos a cada10 min equivalem a até 432 chamadas/dia pela cadência atual; aumentar só a cota não aumenta essa cadência. Com200 blocos completos de20 mensagens,4.000 mensagens/dia é apenas capacidade aritmética máxima, reduzida por blocos menores, falhas e limites de texto.

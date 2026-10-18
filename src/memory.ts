@@ -386,6 +386,49 @@ export async function importSource(db: D1Database, input: unknown) {
           : "pending",
   };
 }
+async function contextSources(
+  db: D1Database,
+  selected: { id: string; version: unknown }[],
+  contact: string,
+) {
+  const ids = [
+    ...new Map(selected.map((x) => [x.id + ":" + x.version, x])).values(),
+  ];
+  if (!ids.length) return [];
+  return (
+    await sql(
+      db,
+      `SELECT d.source_id,d.source_version,d.context_source_id source_id_context,d.context_source_version version_used,s.occurred_at,s.version current_version,CASE WHEN s.deleted=0 AND s.content IS NOT NULL AND s.expires_at>? THEN 1 ELSE 0 END available FROM source_dependencies d JOIN json_each(?) selected ON d.source_id=json_extract(selected.value,'$.id') AND d.source_version=json_extract(selected.value,'$.version') JOIN sources s ON s.id=d.context_source_id JOIN sources original ON original.id=d.source_id WHERE original.contact_id=? AND s.contact_id=? AND d.context_source_id!=d.source_id ORDER BY d.source_id,d.context_source_id`,
+      now(),
+      JSON.stringify(ids),
+      contact,
+      contact,
+    ).all<{
+      source_id: string;
+      source_version: number;
+      source_id_context: string;
+      version_used: number;
+      occurred_at: number;
+      current_version: number;
+      available: number;
+    }>()
+  ).results;
+}
+function contextFor(
+  rows: Awaited<ReturnType<typeof contextSources>>,
+  source: string,
+  version: unknown,
+) {
+  return rows
+    .filter((x) => x.source_id === source && x.source_version === version)
+    .map((x) => ({
+      source_id: x.source_id_context,
+      version_used: x.version_used,
+      occurred_at: x.occurred_at,
+      available: !!x.available,
+      version_changed: x.current_version !== x.version_used,
+    }));
+}
 export async function getMemory(db: D1Database, input: unknown) {
   const p = parse(memoryQuerySchema, input);
   await activeContact(db, p.contact_id);
@@ -393,12 +436,19 @@ export async function getMemory(db: D1Database, input: unknown) {
     t = now();
   const r = await sql(
     db,
-    `SELECT m.id,m.field,m.value,m.state,m.reason,m.source_id,m.source_version,m.occurred_at,m.recorded_at,m.confirmed_at,m.needs_review,CASE WHEN s.expires_at>? AND s.content IS NOT NULL AND s.deleted=0 THEN 1 ELSE 0 END source_available FROM memory m LEFT JOIN sources s ON s.id=m.source_id WHERE m.contact_id=? AND m.id>? ORDER BY m.id LIMIT ?`,
+    `SELECT m.id,m.field,m.value,m.state,m.reason,m.source_id,m.source_version,m.occurred_at,m.recorded_at,m.confirmed_at,m.needs_review,m.context_revision,CASE WHEN s.expires_at>? AND s.content IS NOT NULL AND s.deleted=0 THEN 1 ELSE 0 END source_available FROM memory m LEFT JOIN sources s ON s.id=m.source_id WHERE m.contact_id=? AND m.id>? ORDER BY m.id LIMIT ?`,
     t,
     p.contact_id,
     p.cursor ?? "",
     limit + 1,
   ).all<Record<string, unknown> & { id: string }>();
+  const contexts = await contextSources(
+    db,
+    r.results
+      .slice(0, limit)
+      .map((x) => ({ id: String(x.source_id), version: x.source_version })),
+    p.contact_id,
+  );
   const interactions = await sql(
     db,
     "SELECT kind,MAX(at) at FROM interactions WHERE contact_id=? GROUP BY kind",
@@ -432,13 +482,16 @@ export async function getMemory(db: D1Database, input: unknown) {
     return values.length ? Math.max(...values) : null;
   };
   return {
-    items: r.results
-      .slice(0, limit)
-      .map((x) => ({
-        ...x,
-        source_available: !!x.source_available,
-        needs_review: !!x.needs_review,
-      })),
+    items: r.results.slice(0, limit).map((x) => ({
+      ...x,
+      source_available: !!x.source_available,
+      needs_review: !!x.needs_review,
+      context_sources: contextFor(
+        contexts,
+        String(x.source_id),
+        x.source_version,
+      ),
+    })),
     next_cursor: r.results.length > limit ? r.results[limit - 1].id : null,
     dates: dates.results.slice(0, 50),
     dates_complete: dates.results.length <= 50,
@@ -451,41 +504,124 @@ export async function getMemory(db: D1Database, input: unknown) {
   };
 }
 export async function reviewMemory(db: D1Database, input: unknown) {
-  const p = parse(memoryReviewSchema, input), t = now();
-  const m = await sql(db,
+  const p = parse(memoryReviewSchema, input),
+    t = now();
+  const m = await sql(
+    db,
     `SELECT m.*,c.generation contact_generation,s.version live_source_version,x.data_generation
      FROM memory m JOIN contacts c ON c.id=m.contact_id JOIN sources s ON s.id=m.source_id CROSS JOIN settings x
-     WHERE m.id=? AND c.deleted=0 AND x.id=1`,p.id,
-  ).first<{id:string;contact_id:string;field:string;value:string;state:string;source_id:string;source_version:number;occurred_at:number;needs_review:number;contact_generation:number;live_source_version:number;data_generation:number}>();
-  if (!m) throw new SafeError("memoria_indisponivel",404);
-  const selected = `id=? AND contact_id=? AND field=? AND value=? AND state=? AND source_id=? AND source_version=? AND needs_review=?
+     WHERE m.id=? AND c.deleted=0 AND x.id=1`,
+    p.id,
+  ).first<{
+    id: string;
+    contact_id: string;
+    field: string;
+    value: string;
+    state: string;
+    source_id: string;
+    source_version: number;
+    occurred_at: number;
+    needs_review: number;
+    context_revision: number;
+    contact_generation: number;
+    live_source_version: number;
+    data_generation: number;
+  }>();
+  if (!m) throw new SafeError("memoria_indisponivel", 404);
+  const selected = `id=? AND contact_id=? AND field=? AND value=? AND state=? AND source_id=? AND source_version=? AND needs_review=? AND context_revision=?
     AND EXISTS(SELECT 1 FROM contacts c WHERE c.id=? AND c.generation=? AND c.deleted=0)
     AND EXISTS(SELECT 1 FROM sources s WHERE s.id=? AND s.contact_id=? AND s.version=?)
     AND EXISTS(SELECT 1 FROM settings x WHERE x.id=1 AND x.data_generation=?)`;
-  const selectedParams = [m.id,m.contact_id,m.field,m.value,m.state,m.source_id,m.source_version,m.needs_review,m.contact_id,m.contact_generation,m.source_id,m.contact_id,m.live_source_version,m.data_generation];
+  const selectedParams = [
+    m.id,
+    m.contact_id,
+    m.field,
+    m.value,
+    m.state,
+    m.source_id,
+    m.source_version,
+    m.needs_review,
+    m.context_revision,
+    m.contact_id,
+    m.contact_generation,
+    m.source_id,
+    m.contact_id,
+    m.live_source_version,
+    m.data_generation,
+  ];
   if (p.decision === "discard") {
-    const changed=await sql(db,`UPDATE memory SET state='discarded',needs_review=0 WHERE ${selected}`,...selectedParams).run();
-    if(!changed.meta.changes)throw new SafeError("memoria_alterada_recarregue",409);
-    return {id:p.id,state:"discarded"};
+    const changed = await sql(
+      db,
+      `UPDATE memory SET state='discarded',needs_review=0 WHERE ${selected}`,
+      ...selectedParams,
+    ).run();
+    if (!changed.meta.changes)
+      throw new SafeError("memoria_alterada_recarregue", 409);
+    return { id: p.id, state: "discarded" };
   }
-  if(!["pending","confirmed","supporting"].includes(m.state))throw new SafeError("revisao_ja_encerrada",409);
-  const marker=`revising:${id('claim')}`,target=p.decision==='correct'?id('mem'):m.id;
+  if (!["pending", "confirmed", "supporting"].includes(m.state))
+    throw new SafeError("revisao_ja_encerrada", 409);
+  const marker = `revising:${id("claim")}`,
+    target = p.decision === "correct" ? id("mem") : m.id;
   // The random claim is first in the transaction. A stale selection cannot
   // supersede another fact or clear identity/source review requirements.
-  const claimed="EXISTS(SELECT 1 FROM memory chosen WHERE chosen.id=? AND chosen.state=?)";
-  const statements=[
-    sql(db,`UPDATE memory SET state=? WHERE ${selected}`,marker,...selectedParams),
-    sql(db,`UPDATE memory SET state='superseded',needs_review=0 WHERE contact_id=? AND field=? AND state='confirmed' AND id!=? AND ${claimed}`,m.contact_id,m.field,m.id,m.id,marker),
+  const claimed =
+    "EXISTS(SELECT 1 FROM memory chosen WHERE chosen.id=? AND chosen.state=?)";
+  const statements = [
+    sql(
+      db,
+      `UPDATE memory SET state=? WHERE ${selected}`,
+      marker,
+      ...selectedParams,
+    ),
+    sql(
+      db,
+      `UPDATE memory SET state='superseded',needs_review=0 WHERE contact_id=? AND field=? AND state='confirmed' AND id!=? AND ${claimed}`,
+      m.contact_id,
+      m.field,
+      m.id,
+      m.id,
+      marker,
+    ),
   ];
-  if(p.decision==='correct'){
-    statements.push(sql(db,`INSERT INTO memory(id,contact_id,field,value,state,reason,source_id,source_version,occurred_at,recorded_at,confirmed_at,dedup_key)
+  if (p.decision === "correct") {
+    statements.push(
+      sql(
+        db,
+        `INSERT INTO memory(id,contact_id,field,value,state,reason,source_id,source_version,occurred_at,recorded_at,confirmed_at,dedup_key)
       SELECT ?,contact_id,field,?,'confirmed',?,source_id,source_version,occurred_at,?,?,? FROM memory WHERE id=? AND state=?`,
-      target,p.value!,`Correção pelo consultor de ${m.id}`,t,t,await hash(`review:${m.id}:${p.value}`),m.id,marker));
-    statements.push(sql(db,"UPDATE memory SET state='superseded',needs_review=0 WHERE id=? AND state=?",m.id,marker));
-  }else statements.push(sql(db,"UPDATE memory SET state='confirmed',confirmed_at=?,needs_review=0,reason='Confirmado pelo consultor' WHERE id=? AND state=?",t,m.id,marker));
-  const changed=await db.batch(statements);
-  if(!changed[0].meta.changes||!changed.at(-1)!.meta.changes)throw new SafeError("memoria_alterada_recarregue",409);
-  return {id:target,state:'confirmed'};
+        target,
+        p.value!,
+        `Correção pelo consultor de ${m.id}`,
+        t,
+        t,
+        await hash(`review:${m.id}:${p.value}`),
+        m.id,
+        marker,
+      ),
+    );
+    statements.push(
+      sql(
+        db,
+        "UPDATE memory SET state='superseded',needs_review=0 WHERE id=? AND state=?",
+        m.id,
+        marker,
+      ),
+    );
+  } else
+    statements.push(
+      sql(
+        db,
+        "UPDATE memory SET state='confirmed',confirmed_at=?,needs_review=0,reason='Confirmado pelo consultor' WHERE id=? AND state=?",
+        t,
+        m.id,
+        marker,
+      ),
+    );
+  const changed = await db.batch(statements);
+  if (!changed[0].meta.changes || !changed.at(-1)!.meta.changes)
+    throw new SafeError("memoria_alterada_recarregue", 409);
+  return { id: target, state: "confirmed" };
 }
 export async function taskStatement(
   db: D1Database,
@@ -502,7 +638,7 @@ export async function taskStatement(
     id: tid,
     statement: sql(
       db,
-      `INSERT OR IGNORE INTO tasks(id,contact_id,subject,responsible,reason,due_date,date_note,state,source_id,dedup_key,updated_at) SELECT ?,?,?,?,?,?,?,?,?,?,? WHERE ${guard.query}`,
+      `INSERT OR IGNORE INTO tasks(id,contact_id,subject,responsible,reason,due_date,date_note,state,source_id,source_version,dedup_key,updated_at) SELECT ?,?,?,?,?,?,?,?,?,?,?,? WHERE ${guard.query}`,
       tid,
       p.contact_id,
       p.subject,
@@ -512,6 +648,7 @@ export async function taskStatement(
       p.date_note ?? null,
       p.state ?? "open",
       p.source_id,
+      f.version,
       key,
       now(),
       ...guard.params,
@@ -607,7 +744,7 @@ export async function attention(db: D1Database, input: unknown = {}) {
     window = dayWindow(day, timezone);
   const tasks = await sql(
     db,
-    `SELECT t.id,t.contact_id,c.alias,t.subject,t.responsible,t.reason,t.due_date,t.date_note,t.state,t.source_id,s.occurred_at source_occurred_at,t.updated_at,CASE WHEN s.expires_at>? AND s.content IS NOT NULL AND s.deleted=0 THEN 1 ELSE 0 END source_available FROM tasks t JOIN contacts c ON c.id=t.contact_id LEFT JOIN sources s ON s.id=t.source_id WHERE c.deleted=0 AND (? IS NULL OR t.contact_id=?) AND t.state='open' AND (t.due_date IS NULL OR t.due_date<=?) ORDER BY t.due_date,t.id LIMIT ?`,
+    `SELECT t.id,t.contact_id,c.alias,t.subject,t.responsible,t.reason,t.due_date,t.date_note,t.state,t.source_id,t.source_version,t.needs_review,t.context_revision,s.occurred_at source_occurred_at,t.updated_at,CASE WHEN s.expires_at>? AND s.content IS NOT NULL AND s.deleted=0 THEN 1 ELSE 0 END source_available FROM tasks t JOIN contacts c ON c.id=t.contact_id LEFT JOIN sources s ON s.id=t.source_id WHERE c.deleted=0 AND (? IS NULL OR t.contact_id=?) AND t.state='open' AND (t.due_date IS NULL OR t.due_date<=?) ORDER BY t.due_date,t.id LIMIT ?`,
     now(),
     contact,
     contact,
@@ -675,7 +812,11 @@ export async function attention(db: D1Database, input: unknown = {}) {
     day,
     tasks: tasks.results
       .slice(0, limit)
-      .map((x) => ({ ...x, source_available: !!x.source_available })),
+      .map((x) => ({
+        ...x,
+        source_available: !!x.source_available,
+        needs_review: !!x.needs_review,
+      })),
     pending: pending.results
       .slice(0, limit)
       .map((x) => ({ ...x, source_available: !!x.source_available })),
@@ -706,17 +847,33 @@ export async function getTasks(db: D1Database, input: unknown) {
   const limit = p.limit ?? 25;
   const r = await sql(
     db,
-    `SELECT t.id,t.contact_id,t.subject,t.responsible,t.reason,t.due_date,t.date_note,t.state,t.source_id,t.updated_at,CASE WHEN s.expires_at>? AND s.content IS NOT NULL AND s.deleted=0 THEN 1 ELSE 0 END source_available FROM tasks t LEFT JOIN sources s ON s.id=t.source_id WHERE t.contact_id=? AND t.id>? AND t.state=? ORDER BY t.id LIMIT ?`,
+    `SELECT t.id,t.contact_id,t.subject,t.responsible,t.reason,t.due_date,t.date_note,t.state,t.source_id,t.source_version,t.needs_review,t.context_revision,t.updated_at,CASE WHEN s.expires_at>? AND s.content IS NOT NULL AND s.deleted=0 THEN 1 ELSE 0 END source_available FROM tasks t LEFT JOIN sources s ON s.id=t.source_id WHERE t.contact_id=? AND t.id>? AND t.state=? ORDER BY t.id LIMIT ?`,
     now(),
     p.contact_id,
     p.cursor ?? "",
     p.state ?? "open",
     limit + 1,
-  ).all<{ id: string; source_available: number }>();
-  return {
-    items: r.results
+  ).all<{
+    id: string;
+    source_id: string;
+    source_version: number | null;
+    source_available: number;
+    needs_review: number;
+  }>();
+  const contexts = await contextSources(
+    db,
+    r.results
       .slice(0, limit)
-      .map((x) => ({ ...x, source_available: !!x.source_available })),
+      .map((x) => ({ id: x.source_id, version: x.source_version })),
+    p.contact_id,
+  );
+  return {
+    items: r.results.slice(0, limit).map((x) => ({
+      ...x,
+      source_available: !!x.source_available,
+      needs_review: !!x.needs_review,
+      context_sources: contextFor(contexts, x.source_id, x.source_version),
+    })),
     next_cursor: r.results.length > limit ? r.results[limit - 1].id : null,
   };
 }
@@ -843,7 +1000,12 @@ export async function reviewPage(db: D1Database, input: unknown = {}) {
     run.from_at,
     run.to_at,
     coverageTime,
-  ).first<{ n: number; expired: number; unsupported_format: number; missing_text: number }>())!;
+  ).first<{
+    n: number;
+    expired: number;
+    unsupported_format: number;
+    missing_text: number;
+  }>())!;
   const unavailable = unavailableRows.n;
   const items = result.results.slice(0, limit),
     availableDone = result.results.length <= limit,
@@ -872,7 +1034,12 @@ export async function reviewPage(db: D1Database, input: unknown = {}) {
         token,
       ),
     ),
-    sql(db, `UPDATE review_runs AS r SET state='unavailable' WHERE id=? AND last_page_token=? AND state='ready' AND EXISTS(SELECT 1 ${unseenReviewSources})`, run.id, token),
+    sql(
+      db,
+      `UPDATE review_runs AS r SET state='unavailable' WHERE id=? AND last_page_token=? AND state='ready' AND EXISTS(SELECT 1 ${unseenReviewSources})`,
+      run.id,
+      token,
+    ),
   ]);
   if (!pageCommit[0].meta.changes)
     throw new SafeError("pagina_invalida_ou_concorrente", 409);
@@ -883,7 +1050,7 @@ export async function reviewPage(db: D1Database, input: unknown = {}) {
       (SELECT COUNT(*) ${unseenReviewSources} AND s.content IS NOT NULL AND s.expires_at>CAST((julianday('now')-2440587.5)*86400000 AS INTEGER)) readable
       FROM review_runs r WHERE r.id=?`,
     run.id,
-  ).first<{ changed:number; unseen:number; readable:number }>())!;
+  ).first<{ changed: number; unseen: number; readable: number }>())!;
   const changed = progress.changed;
   const covered = complete && progress.unseen === 0;
   return {

@@ -3,6 +3,7 @@ import type { OAuthHelpers } from "@cloudflare/workers-oauth-provider";
 export type AppEnv = {
   [K in keyof Env]: Env[K] extends string ? string : Env[K];
 } & {
+  EXTRACTION_CALLS_DAILY?: string;
   OAUTH_PROVIDER: OAuthHelpers;
   ACCESS_CLIENT_SECRET: string;
   OWNER_EMAIL: string;

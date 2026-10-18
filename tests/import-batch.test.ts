@@ -285,7 +285,7 @@ describe("meeting import applied once by its Skill", () => {
       processed: 0,
       failed: 0,
     });
-    expect(await sql(env.DB, "SELECT calls FROM usage").first()).toMatchObject({
+    expect(await sql(env.DB, "SELECT COALESCE(SUM(calls),0) calls FROM usage").first()).toMatchObject({
       calls: 0,
     });
     expect(

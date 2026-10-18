@@ -20,6 +20,12 @@ export async function deleteContact(db: D1Database, contactId: string) {
       "UPDATE actions SET status=CASE WHEN status IN ('prepared','awaiting_approval','authorized') THEN 'cancelled' ELSE status END,content='',address='',alias='Contato excluído' WHERE contact_id=?",
       contactId,
     ),
+    sql(
+      db,
+      "DELETE FROM source_dependencies WHERE source_id IN (SELECT id FROM sources WHERE contact_id=?) OR context_source_id IN (SELECT id FROM sources WHERE contact_id=?)",
+      contactId,
+      contactId,
+    ),
     sql(db, "DELETE FROM memory WHERE contact_id=?", contactId),
     sql(db, "DELETE FROM tasks WHERE contact_id=?", contactId),
     sql(db, "DELETE FROM special_dates WHERE contact_id=?", contactId),
@@ -49,6 +55,7 @@ export async function exportData(env: AppEnv) {
   const tables = [
     "contacts",
     "sources",
+    "source_dependencies",
     "messages",
     "memory",
     "tasks",

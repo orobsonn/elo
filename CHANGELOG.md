@@ -4,6 +4,16 @@ Mudanças relevantes no formato Keep a Changelog.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-18
+
+### Added
+- Extração por blocos do mesmo contato: até 20 mensagens/12 mil caracteres, preservando fonte e autoria; cota padrão de200 chamadas/dia configurável.
+- Proveniência contextual por versão e alertas de revisão para memórias/tarefas após edição de mensagem usada no bloco.
+
+### Fixed
+- Reserva e gravação do bloco inteiras ou nenhuma; subdivisão de respostas incompletas e preservação das tentativas das mensagens vizinhas.
+
+
 ## [0.1.0] - 2026-10-17
 
 ### Added

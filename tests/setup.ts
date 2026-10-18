@@ -6,6 +6,7 @@ import identityLinks from "../migrations/0003_identity.sql?raw";
 import identitySources from "../migrations/0004_source_identity.sql?raw";
 import sourceApplication from "../migrations/0005_source_application.sql?raw";
 import reviewScopeIndexes from "../migrations/0006_review_scope_indexes.sql?raw";
+import conversationBlocks from "../migrations/0007_conversation_blocks.sql?raw";
 beforeAll(async () => {
   await applyD1Migrations(env.DB, [
     {
@@ -45,7 +46,17 @@ beforeAll(async () => {
     },
     {
       name: "0006",
-      queries: reviewScopeIndexes.split(/;\s*(?:\n|$)/).map(s => s.trim()).filter(Boolean),
+      queries: reviewScopeIndexes
+        .split(/;\s*(?:\n|$)/)
+        .map((s) => s.trim())
+        .filter(Boolean),
+    },
+    {
+      name: "0007",
+      queries: conversationBlocks
+        .split(/;(?=\s*(?:ALTER|CREATE)\b|\s*$)/i)
+        .map((s) => s.trim())
+        .filter(Boolean),
     },
   ]);
 });
@@ -53,6 +64,7 @@ beforeAll(async () => {
 // from satisfying a later assertion or concealing an out-of-order failure.
 beforeEach(async () => {
   const tables = [
+    "source_dependencies",
     "contact_associations",
     "review_items",
     "action_events",
