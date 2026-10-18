@@ -1,0 +1,1506 @@
+{
+  "date_utc": "2026-10-18",
+  "baseline_commit": "e65985aa7524823365af18bc31bc444c4b5fa851",
+  "resource": {
+    "name": "elo-load-mvd5mlzu",
+    "id": "2ef863b3-88f6-43f6-aa6f-d15f6d96d9fe",
+    "isolated": true,
+    "synthetic_only": true
+  },
+  "dataset": {
+    "contacts": 100,
+    "sources": 30002,
+    "messages": 30001,
+    "main_sources_per_day": 1000,
+    "days": 30,
+    "content_chars": 500,
+    "eligible": 1003,
+    "readable": 1001,
+    "expired": 1,
+    "unsupported": 1,
+    "missing_text": 0
+  },
+  "baseline": {
+    "pages": 21,
+    "items": 1001,
+    "totals": {
+      "rows_read": 1988424,
+      "rows_written": 2025,
+      "sql_ms": 987.9490000000003,
+      "transport_ms": 59724
+    },
+    "first": [
+      {
+        "query": 1,
+        "rows_read": 1,
+        "rows_written": 0,
+        "sql_ms": 0.1328,
+        "transport_ms": 582
+      },
+      {
+        "query": 2,
+        "rows_read": 0,
+        "rows_written": 2,
+        "sql_ms": 0.1943,
+        "transport_ms": 665
+      },
+      {
+        "query": 3,
+        "rows_read": 29152,
+        "rows_written": 0,
+        "sql_ms": 48.8045,
+        "transport_ms": 570
+      },
+      {
+        "query": 4,
+        "rows_read": 30005,
+        "rows_written": 0,
+        "sql_ms": 17.8952,
+        "transport_ms": 542
+      },
+      {
+        "query": "page_commit",
+        "rows_read": 52,
+        "rows_written": 101,
+        "sql_ms": 3.176899999999999,
+        "transport_ms": 540
+      },
+      {
+        "query": 8,
+        "rows_read": 62109,
+        "rows_written": 0,
+        "sql_ms": 26.6786,
+        "transport_ms": 551
+      }
+    ],
+    "middle": [
+      {
+        "query": 0,
+        "rows_read": 1,
+        "rows_written": 0,
+        "sql_ms": 0.1475,
+        "transport_ms": 467
+      },
+      {
+        "query": 3,
+        "rows_read": 153,
+        "rows_written": 0,
+        "sql_ms": 0.8058,
+        "transport_ms": 461
+      },
+      {
+        "query": 4,
+        "rows_read": 30005,
+        "rows_written": 0,
+        "sql_ms": 14.2701,
+        "transport_ms": 475
+      },
+      {
+        "query": "page_commit",
+        "rows_read": 52,
+        "rows_written": 101,
+        "sql_ms": 2.4792,
+        "transport_ms": 879
+      },
+      {
+        "query": 8,
+        "rows_read": 63109,
+        "rows_written": 0,
+        "sql_ms": 27.0168,
+        "transport_ms": 488
+      }
+    ],
+    "last": {
+      "after": 30001,
+      "done": true,
+      "items": 1,
+      "unavailable": {
+        "n": 2,
+        "expired": 1,
+        "unsupported_format": 1,
+        "missing_text": 0
+      },
+      "progress": {
+        "changed": 0,
+        "unseen": 2,
+        "readable": 0
+      },
+      "costs": [
+        {
+          "query": 0,
+          "rows_read": 1,
+          "rows_written": 0,
+          "sql_ms": 0.1213,
+          "transport_ms": 477
+        },
+        {
+          "query": 3,
+          "rows_read": 4,
+          "rows_written": 0,
+          "sql_ms": 0.3232,
+          "transport_ms": 505
+        },
+        {
+          "query": 4,
+          "rows_read": 30005,
+          "rows_written": 0,
+          "sql_ms": 12.6977,
+          "transport_ms": 514
+        },
+        {
+          "query": "page_commit",
+          "rows_read": 3,
+          "rows_written": 3,
+          "sql_ms": 0.4377,
+          "transport_ms": 476
+        },
+        {
+          "query": 8,
+          "rows_read": 64011,
+          "rows_written": 0,
+          "sql_ms": 28.4061,
+          "transport_ms": 577
+        }
+      ]
+    },
+    "by_query": {
+      "0": {
+        "rows_read": 20,
+        "rows_written": 0,
+        "sql_ms": 3.0034000000000005
+      },
+      "1": {
+        "rows_read": 1,
+        "rows_written": 0,
+        "sql_ms": 0.1328
+      },
+      "2": {
+        "rows_read": 0,
+        "rows_written": 2,
+        "sql_ms": 0.1943
+      },
+      "3": {
+        "rows_read": 32064,
+        "rows_written": 0,
+        "sql_ms": 66.74839999999999
+      },
+      "4": {
+        "rows_read": 630105,
+        "rows_written": 0,
+        "sql_ms": 290.8945
+      },
+      "8": {
+        "rows_read": 1325191,
+        "rows_written": 0,
+        "sql_ms": 578.499
+      },
+      "page_commit": {
+        "rows_read": 1043,
+        "rows_written": 2023,
+        "sql_ms": 48.476600000000005
+      }
+    }
+  },
+  "indexed": {
+    "condition": "two indexes plus PRAGMA optimize; measured SQL chain, not Worker/MCP latency",
+    "totals": {
+      "rows_read": 190808,
+      "rows_written": 2025,
+      "sql_ms": 155.67020000000002
+    },
+    "pages": 21,
+    "items": 1001,
+    "per_page": [
+      {
+        "snapshot": 30002,
+        "after": 29049,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 953,
+          "readable": 951
+        },
+        "costs": [
+          {
+            "query": 1,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.1463,
+            "transport_ms": 638
+          },
+          {
+            "query": 2,
+            "rows_read": 0,
+            "rows_written": 2,
+            "sql_ms": 0.1384,
+            "transport_ms": 608
+          },
+          {
+            "query": 3,
+            "rows_read": 29252,
+            "rows_written": 0,
+            "sql_ms": 12.8975,
+            "transport_ms": 461
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 1.1251,
+            "transport_ms": 622
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 2.4392000000000005,
+            "transport_ms": 523
+          },
+          {
+            "query": 8,
+            "rows_read": 5312,
+            "rows_written": 0,
+            "sql_ms": 1.9647,
+            "transport_ms": 491
+          }
+        ]
+      },
+      {
+        "after": 29099,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 903,
+          "readable": 901
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.1363,
+            "transport_ms": 938
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 0.5343,
+            "transport_ms": 748
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 1.1324,
+            "transport_ms": 644
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 3.0038000000000005,
+            "transport_ms": 766
+          },
+          {
+            "query": 8,
+            "rows_read": 5412,
+            "rows_written": 0,
+            "sql_ms": 3.1103,
+            "transport_ms": 651
+          }
+        ]
+      },
+      {
+        "after": 29149,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 853,
+          "readable": 851
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.135,
+            "transport_ms": 653
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 2.4662,
+            "transport_ms": 675
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 0.9426,
+            "transport_ms": 917
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 3.2149000000000005,
+            "transport_ms": 790
+          },
+          {
+            "query": 8,
+            "rows_read": 5512,
+            "rows_written": 0,
+            "sql_ms": 2.3626,
+            "transport_ms": 655
+          }
+        ]
+      },
+      {
+        "after": 29199,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 803,
+          "readable": 801
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.1696,
+            "transport_ms": 724
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 0.6803,
+            "transport_ms": 624
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 0.7549,
+            "transport_ms": 658
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 3.7668000000000004,
+            "transport_ms": 657
+          },
+          {
+            "query": 8,
+            "rows_read": 5612,
+            "rows_written": 0,
+            "sql_ms": 2.9649,
+            "transport_ms": 653
+          }
+        ]
+      },
+      {
+        "after": 29249,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 753,
+          "readable": 751
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.1834,
+            "transport_ms": 666
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 0.6389,
+            "transport_ms": 863
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 0.8511,
+            "transport_ms": 852
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 1.954,
+            "transport_ms": 656
+          },
+          {
+            "query": 8,
+            "rows_read": 5712,
+            "rows_written": 0,
+            "sql_ms": 2.4782,
+            "transport_ms": 647
+          }
+        ]
+      },
+      {
+        "after": 29299,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 703,
+          "readable": 701
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.132,
+            "transport_ms": 935
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 0.7933,
+            "transport_ms": 678
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 0.7361,
+            "transport_ms": 865
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 1.6960000000000004,
+            "transport_ms": 918
+          },
+          {
+            "query": 8,
+            "rows_read": 5812,
+            "rows_written": 0,
+            "sql_ms": 2.1666,
+            "transport_ms": 880
+          }
+        ]
+      },
+      {
+        "after": 29349,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 653,
+          "readable": 651
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.16,
+            "transport_ms": 461
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 0.769,
+            "transport_ms": 626
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 1.0755,
+            "transport_ms": 482
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 2.0292000000000003,
+            "transport_ms": 615
+          },
+          {
+            "query": 8,
+            "rows_read": 5912,
+            "rows_written": 0,
+            "sql_ms": 2.0711,
+            "transport_ms": 442
+          }
+        ]
+      },
+      {
+        "after": 29399,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 603,
+          "readable": 601
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.1223,
+            "transport_ms": 455
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 0.5407,
+            "transport_ms": 508
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 0.8044,
+            "transport_ms": 442
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 2.5607,
+            "transport_ms": 497
+          },
+          {
+            "query": 8,
+            "rows_read": 6012,
+            "rows_written": 0,
+            "sql_ms": 2.4906,
+            "transport_ms": 456
+          }
+        ]
+      },
+      {
+        "after": 29449,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 553,
+          "readable": 551
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.1545,
+            "transport_ms": 448
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 0.5273,
+            "transport_ms": 467
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 0.8136,
+            "transport_ms": 609
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 3.413199999999998,
+            "transport_ms": 684
+          },
+          {
+            "query": 8,
+            "rows_read": 6112,
+            "rows_written": 0,
+            "sql_ms": 2.4287,
+            "transport_ms": 475
+          }
+        ]
+      },
+      {
+        "after": 29499,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 503,
+          "readable": 501
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.1527,
+            "transport_ms": 619
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 0.6194,
+            "transport_ms": 483
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 0.8368,
+            "transport_ms": 516
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 2.3327000000000004,
+            "transport_ms": 528
+          },
+          {
+            "query": 8,
+            "rows_read": 6212,
+            "rows_written": 0,
+            "sql_ms": 2.5856,
+            "transport_ms": 673
+          }
+        ]
+      },
+      {
+        "after": 29549,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 453,
+          "readable": 451
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.1589,
+            "transport_ms": 684
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 0.6947,
+            "transport_ms": 625
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 0.7551,
+            "transport_ms": 633
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 2.4501,
+            "transport_ms": 705
+          },
+          {
+            "query": 8,
+            "rows_read": 6312,
+            "rows_written": 0,
+            "sql_ms": 2.9872,
+            "transport_ms": 486
+          }
+        ]
+      },
+      {
+        "after": 29599,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 403,
+          "readable": 401
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.135,
+            "transport_ms": 1042
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 0.6581,
+            "transport_ms": 740
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 0.8011,
+            "transport_ms": 961
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 2.5436000000000005,
+            "transport_ms": 778
+          },
+          {
+            "query": 8,
+            "rows_read": 6412,
+            "rows_written": 0,
+            "sql_ms": 3.0295,
+            "transport_ms": 713
+          }
+        ]
+      },
+      {
+        "after": 29649,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 353,
+          "readable": 351
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.1683,
+            "transport_ms": 650
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 0.6263,
+            "transport_ms": 672
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 0.8638,
+            "transport_ms": 789
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 2.3466,
+            "transport_ms": 707
+          },
+          {
+            "query": 8,
+            "rows_read": 6512,
+            "rows_written": 0,
+            "sql_ms": 2.1651,
+            "transport_ms": 645
+          }
+        ]
+      },
+      {
+        "after": 29699,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 303,
+          "readable": 301
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.1613,
+            "transport_ms": 831
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 0.5045,
+            "transport_ms": 690
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 0.7351,
+            "transport_ms": 659
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 2.5345999999999997,
+            "transport_ms": 929
+          },
+          {
+            "query": 8,
+            "rows_read": 6612,
+            "rows_written": 0,
+            "sql_ms": 2.7243,
+            "transport_ms": 649
+          }
+        ]
+      },
+      {
+        "after": 29749,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 253,
+          "readable": 251
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.1918,
+            "transport_ms": 620
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 0.6094,
+            "transport_ms": 718
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 0.6821,
+            "transport_ms": 652
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 2.2697,
+            "transport_ms": 890
+          },
+          {
+            "query": 8,
+            "rows_read": 6712,
+            "rows_written": 0,
+            "sql_ms": 2.3204,
+            "transport_ms": 900
+          }
+        ]
+      },
+      {
+        "after": 29799,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 203,
+          "readable": 201
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.1686,
+            "transport_ms": 1043
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 0.603,
+            "transport_ms": 1010
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 0.9817,
+            "transport_ms": 735
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 2.3907000000000003,
+            "transport_ms": 713
+          },
+          {
+            "query": 8,
+            "rows_read": 6812,
+            "rows_written": 0,
+            "sql_ms": 2.4278,
+            "transport_ms": 702
+          }
+        ]
+      },
+      {
+        "after": 29849,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 153,
+          "readable": 151
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.1503,
+            "transport_ms": 446
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 0.794,
+            "transport_ms": 513
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 0.864,
+            "transport_ms": 478
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 2.7197999999999998,
+            "transport_ms": 496
+          },
+          {
+            "query": 8,
+            "rows_read": 6912,
+            "rows_written": 0,
+            "sql_ms": 2.4661,
+            "transport_ms": 642
+          }
+        ]
+      },
+      {
+        "after": 29899,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 103,
+          "readable": 101
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.1765,
+            "transport_ms": 428
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 0.9304,
+            "transport_ms": 494
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 1.0404,
+            "transport_ms": 442
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 2.0873000000000004,
+            "transport_ms": 792
+          },
+          {
+            "query": 8,
+            "rows_read": 7012,
+            "rows_written": 0,
+            "sql_ms": 2.6556,
+            "transport_ms": 609
+          }
+        ]
+      },
+      {
+        "after": 29949,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 53,
+          "readable": 51
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.1384,
+            "transport_ms": 478
+          },
+          {
+            "query": 3,
+            "rows_read": 253,
+            "rows_written": 0,
+            "sql_ms": 0.611,
+            "transport_ms": 503
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 1.0555,
+            "transport_ms": 477
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 2.7994000000000003,
+            "transport_ms": 496
+          },
+          {
+            "query": 8,
+            "rows_read": 7112,
+            "rows_written": 0,
+            "sql_ms": 2.3191,
+            "transport_ms": 452
+          }
+        ]
+      },
+      {
+        "after": 30000,
+        "done": false,
+        "items": 50,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 3,
+          "readable": 1
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.1486,
+            "transport_ms": 478
+          },
+          {
+            "query": 3,
+            "rows_read": 254,
+            "rows_written": 0,
+            "sql_ms": 1.7587,
+            "transport_ms": 453
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 0.9349,
+            "transport_ms": 455
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 52,
+            "rows_written": 101,
+            "sql_ms": 2.127,
+            "transport_ms": 658
+          },
+          {
+            "query": 8,
+            "rows_read": 7212,
+            "rows_written": 0,
+            "sql_ms": 3.2175,
+            "transport_ms": 451
+          }
+        ]
+      },
+      {
+        "after": 30001,
+        "done": true,
+        "items": 1,
+        "unavailable": {
+          "n": 2,
+          "expired": 1,
+          "unsupported_format": 1,
+          "missing_text": 0
+        },
+        "progress": {
+          "changed": 0,
+          "unseen": 2,
+          "readable": 0
+        },
+        "costs": [
+          {
+            "query": 0,
+            "rows_read": 1,
+            "rows_written": 0,
+            "sql_ms": 0.1295,
+            "transport_ms": 450
+          },
+          {
+            "query": 3,
+            "rows_read": 104,
+            "rows_written": 0,
+            "sql_ms": 0.263,
+            "transport_ms": 465
+          },
+          {
+            "query": 4,
+            "rows_read": 1106,
+            "rows_written": 0,
+            "sql_ms": 0.8562,
+            "transport_ms": 460
+          },
+          {
+            "query": "page_commit",
+            "rows_read": 3,
+            "rows_written": 3,
+            "sql_ms": 0.6244999999999999,
+            "transport_ms": 497
+          },
+          {
+            "query": 8,
+            "rows_read": 7114,
+            "rows_written": 0,
+            "sql_ms": 2.9104,
+            "transport_ms": 494
+          }
+        ]
+      }
+    ]
+  },
+  "equivalence": [
+    {
+      "differences": 0
+    },
+    {
+      "differences": 0
+    }
+  ],
+  "completion": {
+    "blocked_with_unavailable": true,
+    "readable_fixture_change": "Deleted only the two unavailable synthetic QA sources; did not recover or extend retention",
+    "result": [
+      {
+        "results": [],
+        "meta": {
+          "served_by": "v3-prod",
+          "served_by_region": "ENAM",
+          "served_by_colo": "EWR",
+          "served_by_primary": true,
+          "timings": {
+            "sql_duration_ms": 0.9396
+          },
+          "duration": 0.9396,
+          "changes": 1,
+          "last_row_id": 3003,
+          "changed_db": true,
+          "size_after": 29749248,
+          "rows_read": 2005,
+          "rows_written": 1,
+          "total_attempts": 1
+        }
+      },
+      {
+        "results": [],
+        "meta": {
+          "served_by": "v3-prod",
+          "served_by_region": "ENAM",
+          "served_by_colo": "EWR",
+          "served_by_primary": true,
+          "timings": {
+            "sql_duration_ms": 2.824
+          },
+          "duration": 2.824,
+          "changes": 1001,
+          "last_row_id": 3003,
+          "changed_db": true,
+          "size_after": 29736960,
+          "rows_read": 6007,
+          "rows_written": 1001,
+          "total_attempts": 1
+        }
+      },
+      {
+        "results": [
+          {
+            "n": 0
+          }
+        ],
+        "meta": {
+          "served_by": "v3-prod",
+          "served_by_region": "ENAM",
+          "served_by_colo": "EWR",
+          "served_by_primary": true,
+          "timings": {
+            "sql_duration_ms": 0.6912
+          },
+          "duration": 0.6912,
+          "changes": 0,
+          "last_row_id": 3003,
+          "changed_db": false,
+          "size_after": 29736960,
+          "rows_read": 4004,
+          "rows_written": 0,
+          "total_attempts": 1
+        }
+      },
+      {
+        "results": [
+          {
+            "state": "complete",
+            "shown": 1001,
+            "pending_edits": 0
+          }
+        ],
+        "meta": {
+          "served_by": "v3-prod",
+          "served_by_region": "ENAM",
+          "served_by_colo": "EWR",
+          "served_by_primary": true,
+          "timings": {
+            "sql_duration_ms": 0.1603
+          },
+          "duration": 0.1603,
+          "changes": 0,
+          "last_row_id": 3003,
+          "changed_db": false,
+          "size_after": 29736960,
+          "rows_read": 1003,
+          "rows_written": 0,
+          "total_attempts": 1
+        }
+      }
+    ],
+    "last_page": {
+      "after": 30001,
+      "done": true,
+      "items": 1,
+      "unavailable": {
+        "n": 0,
+        "expired": 0,
+        "unsupported_format": 0,
+        "missing_text": 0
+      },
+      "progress": {
+        "changed": 0,
+        "unseen": 0,
+        "readable": 0
+      },
+      "costs": [
+        {
+          "query": 0,
+          "rows_read": 1,
+          "rows_written": 0,
+          "sql_ms": 0.1601,
+          "transport_ms": 646
+        },
+        {
+          "query": 3,
+          "rows_read": 104,
+          "rows_written": 0,
+          "sql_ms": 0.3126,
+          "transport_ms": 683
+        },
+        {
+          "query": 4,
+          "rows_read": 1003,
+          "rows_written": 0,
+          "sql_ms": 1.1059,
+          "transport_ms": 686
+        },
+        {
+          "query": "page_commit",
+          "rows_read": 2007,
+          "rows_written": 3,
+          "sql_ms": 1.4051999999999998,
+          "transport_ms": 688
+        },
+        {
+          "query": 8,
+          "rows_read": 8013,
+          "rows_written": 0,
+          "sql_ms": 2.9841,
+          "transport_ms": 642
+        }
+      ]
+    }
+  },
+  "cleanup": {
+    "pending": false,
+    "deleted": true,
+    "method": "fresh GET verified exact name and UUID, then DELETE success"
+  },
+  "limits": [
+    "No representative-load claim beyond this 30-day distribution",
+    "Not end-to-end MCP/Worker latency or concurrency throughput",
+    "First page still scans historical seq range",
+    "Pending-edit backlog can increase cost",
+    "Indexes add storage and write maintenance"
+  ]
+}
