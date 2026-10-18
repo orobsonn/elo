@@ -33,7 +33,9 @@ Na amostra auxiliar havia 2 fontes pendentes com texto e zero em processamento, 
 
 ## D1 e crescimento
 
-O plano da consulta de revisão usa intervalo da chave primária de `sources` e índice de contato. Isso evita afirmar uma varredura sem índice no join, mas **não prova custo constante por dia**: o predicado de período/edições é aplicado no intervalo de sequências. O custo em bases antigas/grandes ainda precisa de ensaio representativo. O expurgo apaga texto bruto; metadados/tombstones e memória têm vida distinta e também ocupam espaço. Não extrapole os 294.912 bytes atuais por regra de três para todo o produto.
+A [rodada isolada posterior](../implementacao/revisao-carga-1710.md) mediu 30.002 fontes, trinta dias e mil fontes principais por dia. A paginação completa leu 1.988.424 linhas antes e 190.808 com dois índices + atualização de estatísticas na QA; o tempo SQL somado foi de 987,949 para 155,670 ms. Não é latência MCP nem capacidade mensal comprovada. A migração 0006 já acrescentou os dois índices à instalação pessoal, sem executar optimize nela. A primeira página ainda percorreu aproximadamente 29 mil linhas: **não há prova de custo constante por dia**.
+
+O expurgo apaga texto bruto; metadados/tombstones e memória têm vida distinta e também ocupam espaço. O ensaio não mede crescimento prolongado desses metadados ou grande acúmulo de edições pendentes. Não extrapole a amostra anterior de 294.912 bytes por regra de três para todo o produto.
 
 Exemplo aritmético, sem afirmar carga suportada: 100 mensagens/dia × 30 dias × 500 caracteres =1,5 milhão de caracteres brutos ativos. Em UTF-8, o texto isolado pode ocupar até 6 MB nessa hipótese; metadados, índices, ações, memória, pendências e backups são adicionais. Depois de 30 dias o texto expira; isso não implica que todas as linhas/metadados desapareçam.
 
