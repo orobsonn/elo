@@ -448,7 +448,7 @@
   ],
   "example_boundaries": "Compilação de exemplos separados, identificados pelos capítulos: agenda real com alias de privacidade; personagens fictícias DEMO Lia Vídeo, DEMO Lia Histórias e DEMO Revisão Histórias; cancelamento de Marina demonstração; envio real autorizado para Lainny. As memórias fictícias não foram atribuídas aos contatos reais.",
   "delivery_confirmation": {
-    "source_video": "09-mensagem-enviada.mp4",
+    "source_video": "../para-compartilhar/09-mensagem-enviada.mp4",
     "status": "delivered",
     "reported_by": "Provedor, confirmado por action_get na sessão responsável pela gravação",
     "approval_origin": "Humano aprovou destinatária e texto exatos no Codex; autorização foi repassada ao ChatGPT para executar a mesma ação.",
@@ -456,35 +456,35 @@
   },
   "related_feature_videos": [
     {
-      "file": "01-conexao-e-diagnostico.mp4",
+      "file": "../funcionalidades/01-conexao-e-diagnostico.mp4",
       "sha256": "4a66dd1a7b90df9dbb82cb9067443ad4fe6ba6c1f86592377530968473ab9bd4"
     },
     {
-      "file": "02-contato-sem-historico.mp4",
+      "file": "../funcionalidades/02-contato-sem-historico.mp4",
       "sha256": "1a10ebc90403fc7a95b8e8578c23513c097e56eaced904af10a92ebd22ab2649"
     },
     {
-      "file": "03-memoria-e-pos-reuniao.mp4",
+      "file": "../funcionalidades/03-memoria-e-pos-reuniao.mp4",
       "sha256": "cdebe0f1fdb8b662bae342f35778c0a23252e8cad63775787a847fdd90fc4e59"
     },
     {
-      "file": "04-tarefas-datas-e-atencao.mp4",
+      "file": "../funcionalidades/04-tarefas-datas-e-atencao.mp4",
       "sha256": "5888bd9aaa8fb0f35ff07742f224523de5f905827f800cfa1e1537b6f536171b"
     },
     {
-      "file": "05-revisao-diaria.mp4",
+      "file": "../funcionalidades/05-revisao-diaria.mp4",
       "sha256": "52b5d82564d6e4e3c9cb457aacd607d87931b91d1678b4e3d7ef27baf574bc15"
     },
     {
-      "file": "06-preparar-aprovar-cancelar.mp4",
+      "file": "../funcionalidades/06-preparar-aprovar-cancelar.mp4",
       "sha256": "b583cca2b9d1e258bdb2bf043bfe3fc78591b2123aa01e71c1ce0355cb9afe80"
     },
     {
-      "file": "07-pauta-e-rotina.mp4",
+      "file": "../funcionalidades/07-pauta-e-rotina.mp4",
       "sha256": "8799139c7c2e2146832482ca32413118694783cb831fa56fa83eaeb7a3d01d80"
     },
     {
-      "file": "09-mensagem-enviada.mp4",
+      "file": "../para-compartilhar/09-mensagem-enviada.mp4",
       "sha256": "f88286fb07fc9b4a28a7b8b51a12d8bffe95d703d69189879b31de9a4792a0b1"
     }
   ]

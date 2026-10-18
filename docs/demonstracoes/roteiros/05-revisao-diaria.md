@@ -34,4 +34,4 @@ Antes da gravação, a conferência do recorte encontrou três fontes, todas fic
 
 Capturas reais concluídas: screenshots Cua `05-revisao-diaria-pedido`, `05-revisao-diaria-execucao` e `05-revisao-diaria-cobertura`. O resultado é ampliado em dois recortes para manter a leitura dos próximos passos e da cobertura. Voz: AntonioNeural, ritmo `-3%`, tom `-1Hz`.
 
-[Vídeo](../05-revisao-diaria.mp4) · [Legendas](../05-revisao-diaria.srt) · [Proveniência](../05-revisao-diaria.json). Arquivos finais conferidos por decodificação integral, faixas de mídia e quadros selecionados.
+[Vídeo](../funcionalidades/05-revisao-diaria.mp4) · [Legendas](../legendas/05-revisao-diaria.srt) · [Proveniência](../evidencias/05-revisao-diaria.json). Arquivos finais conferidos por decodificação integral, faixas de mídia e quadros selecionados.

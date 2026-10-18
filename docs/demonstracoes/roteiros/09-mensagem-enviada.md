@@ -35,4 +35,4 @@ O dono aprovou o destinatário e o texto exatos por resposta humana na conversa 
 
 Capturas concluídas: screenshots Cua `09-envio-aprovacao-execucao` e `09-envio-resultado`, com proposta, autorização repassada, execução e estado final. Nenhum telefone ou identificador externo de entrega é exibido. Um print externo poderá ser acrescentado pelo dono depois, sem ser pressuposto na narração. Voz: AntonioNeural, ritmo `-3%`, tom `-1Hz`.
 
-[Vídeo](../09-mensagem-enviada.mp4) · [Legendas](../09-mensagem-enviada.srt) · [Proveniência](../09-mensagem-enviada.json). A montagem final e sua conferência são registradas na entrega. Reservar 15–20 segundos do vídeo geral para este caso, com a mesma distinção entre entrega do provedor e print externo.
+[Vídeo](../para-compartilhar/09-mensagem-enviada.mp4) · [Legendas](../legendas/09-mensagem-enviada.srt) · [Proveniência](../evidencias/09-mensagem-enviada.json). A montagem final e sua conferência são registradas na entrega. Reservar 15–20 segundos do vídeo geral para este caso, com a mesma distinção entre entrega do provedor e print externo.

@@ -34,4 +34,4 @@ Personagem, notas e reuniões fictícias. Consultar somente o contato do ensaio.
 
 Capturas reais concluídas: screenshots Cua `07-pauta-pedido`, `07-pauta-fontes`, `07-rotina-pedido` e `07-rotina-teste-final`. As duas listas foram percorridas: duas memórias e uma tarefa. A pauta referencia as fontes, mas não houve leitura das notas brutas. O consultor e os exemplos são hipotéticos; nenhum ganho de tempo foi medido. Sem alterações de dados, instalação de Skill, agendamento ou envio de mensagem.
 
-[Vídeo](../07-pauta-e-rotina.mp4) · [Legendas](../07-pauta-e-rotina.srt) · [Proveniência](../07-pauta-e-rotina.json). Voz: AntonioNeural, ritmo `-3%`, tom `-1Hz`. Decodificação integral, faixas de mídia e quadros selecionados conferidos.
+[Vídeo](../funcionalidades/07-pauta-e-rotina.mp4) · [Legendas](../legendas/07-pauta-e-rotina.srt) · [Proveniência](../evidencias/07-pauta-e-rotina.json). Voz: AntonioNeural, ritmo `-3%`, tom `-1Hz`. Decodificação integral, faixas de mídia e quadros selecionados conferidos.

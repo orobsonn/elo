@@ -4,7 +4,7 @@
 
 O vídeo começa pelo problema, mostra o pedido no ChatGPT e termina com o resultado consultado no Elo. A personagem Lia e as notas são fictícias. A interface mostrada vem da execução real; o cartão de abertura é apenas uma introdução editorial.
 
-[Assistir ao vídeo](../03-memoria-e-pos-reuniao.mp4) · [Legendas](../03-memoria-e-pos-reuniao.srt) · [Origem e edição](../03-memoria-e-pos-reuniao.json)
+[Assistir ao vídeo](../funcionalidades/03-memoria-e-pos-reuniao.mp4) · [Legendas](../legendas/03-memoria-e-pos-reuniao.srt) · [Origem e edição](../evidencias/03-memoria-e-pos-reuniao.json)
 
 ## Problema → pedido → resultado
 
