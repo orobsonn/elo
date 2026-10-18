@@ -1,0 +1,410 @@
+{
+  "title": "Elo | Encontrar alguém sem histórico",
+  "created_at": "2026-10-18T15:48:20.436Z",
+  "source": "screen.mp4",
+  "source_sha256": "cd5ca735db42664365f4f82031aaba39a414958b0109a766fa245b7d83a7f6ce",
+  "output_sha256": "1a10ebc90403fc7a95b8e8578c23513c097e56eaced904af10a92ebd22ab2649",
+  "recording_seconds": 48,
+  "output_seconds": 48.011,
+  "voice": "pt-BR-AntonioNeural",
+  "rate": "-3%",
+  "pitch": "-1Hz",
+  "narration_segments": 5,
+  "narration": {
+    "engine": "edge",
+    "engine_version": "edge-tts 7.3.1",
+    "online_service": "Microsoft Edge online TTS",
+    "loudness_target": "-16 LUFS; pico máximo -1.5 dBTP",
+    "subtitle_timing": "Aproximado por trecho de fala",
+    "audio_segments": [
+      {
+        "at": 0,
+        "duration": 9.048,
+        "origin": "edge",
+        "sha256": "f74fbc10f5f2f0e53bbd4ed36318b8cd343c01b03e77eaf855bd1dd007ca7d66"
+      },
+      {
+        "at": 12,
+        "duration": 7.872,
+        "origin": "edge",
+        "sha256": "971435e14eb08de73b3bdf61b56373f6a966beb826fdea7470fd11ab511cf5de"
+      },
+      {
+        "at": 23,
+        "duration": 7.584,
+        "origin": "edge",
+        "sha256": "f8abf2b2a8268654688f461e121ac0bb65c33c541e921bf283e1dbc7c9421131"
+      },
+      {
+        "at": 33,
+        "duration": 6.528,
+        "origin": "edge",
+        "sha256": "42f48c6d6877d3f7c1998c91537578d018978423dce41d1724550c81e09dec31"
+      },
+      {
+        "at": 42,
+        "duration": 5.088,
+        "origin": "edge",
+        "sha256": "1da63f31c7373b714fa76e86f89779c2d9394ab83df5a7efd72d456c3ea9e518"
+      }
+    ]
+  },
+  "editing": "Editorial opening and closing; real captured frames cropped/scaled and optionally masked as declared; altered playback/holds are labelled; original audio removed; neural narration and subtitles added. Product screens and results are not synthesized.",
+  "content_review": "Quadros fonte inspecionados, primeiro trecho da conversa anterior excluído. Somente alias de privacidade, texto de demonstração e referência interna opaca. Sequências reais de screenshots Cua, sem CDP.",
+  "screen_capture_provenance": {
+    "format": "Real captured screenshot sequences with editorial opening and closing cards",
+    "client": "ChatGPT",
+    "scenario": "Agenda real; alias de privacidade; texto de demonstração",
+    "opening": {
+      "headline": "A pessoa está na agenda. Preciso cadastrar de novo?",
+      "body": "Pedir uma mensagem pelo nome, mesmo sem conversa anterior no Elo.",
+      "seconds": 6
+    },
+    "closing": {
+      "headline": "Começar pelo nome, sem copiar o telefone.",
+      "body": "A pessoa é encontrada e a proposta fica pronta para sua revisão.",
+      "seconds": 5
+    },
+    "clips": [
+      {
+        "seconds": 12,
+        "label": "O pedido no chat · Trecho real mantido para leitura",
+        "crop": {
+          "x": 405,
+          "y": 94,
+          "width": 560,
+          "height": 190
+        },
+        "masks": [],
+        "frames": [
+          {
+            "file": "000227.png",
+            "timestamp": 1792338324.241,
+            "sha256": "f340c7f11866f8658f38a7ae68b3c6338114af561999e2f2f1c3ef44c1c466ad"
+          }
+        ],
+        "source_kind": "real browser screenshot sequence",
+        "source_manifest_sha256": "cdb38f2919acb37a89e8e35d2ef80c0654d7ed5d5f39ecf1782f697933064670",
+        "capture_metadata": {
+          "kind": "real browser screenshot sequence",
+          "began": 1792338318226,
+          "ended": 1792338324243,
+          "frames": 228
+        },
+        "source_directory": "02-rascunho-final",
+        "at": 6,
+        "seconds_captured": 0,
+        "editing": "Actual captured frame held for reading",
+        "editorial_note": "Pedido recortado da mesma conversa concluída, apresentado antes do progresso para explicar o uso; texto real sem reconstrução."
+      },
+      {
+        "seconds": 8,
+        "label": "Busca e preparo no Elo · Espera encurtada",
+        "crop": {
+          "x": 175,
+          "y": 260,
+          "width": 800,
+          "height": 165
+        },
+        "masks": [],
+        "frames": [
+          {
+            "file": "000030.png",
+            "timestamp": 1792338242.793,
+            "sha256": "0c2bd0a01d82508d83ca3b9299bfb8279b838e6f09fee2bb23c5cfc10fcb31cb"
+          },
+          {
+            "file": "000031.png",
+            "timestamp": 1792338243.118,
+            "sha256": "5ae515948224f3aaa4d05e2aecbe449dbdfbbda27c566f5421ed776d0f5323a9"
+          },
+          {
+            "file": "000032.png",
+            "timestamp": 1792338243.429,
+            "sha256": "f0f5bc4ea47970a279c4365ba19c7b644c504bf27480a02f4b1fe46272b451a4"
+          },
+          {
+            "file": "000033.png",
+            "timestamp": 1792338244.023,
+            "sha256": "77311940116dfcc1343b3f6f36144a955dfe7ebe7df66e7e5a402aef8f6dba22"
+          },
+          {
+            "file": "000034.png",
+            "timestamp": 1792338244.347,
+            "sha256": "77311940116dfcc1343b3f6f36144a955dfe7ebe7df66e7e5a402aef8f6dba22"
+          },
+          {
+            "file": "000035.png",
+            "timestamp": 1792338244.666,
+            "sha256": "4cebf4b2fa69c2117bcbaf14db11da53021e30df219d291c0bdc941f66c1b24d"
+          },
+          {
+            "file": "000036.png",
+            "timestamp": 1792338244.969,
+            "sha256": "2c58b46fe29cde089c63db733ea75cbc6efe52afa59e1a764e7ed0666f5aafd5"
+          },
+          {
+            "file": "000037.png",
+            "timestamp": 1792338245.282,
+            "sha256": "b70d5393cf88b8194c1cdf0928354f8a8bfb07b59fb66d2e6edb21fa37a7833c"
+          },
+          {
+            "file": "000038.png",
+            "timestamp": 1792338245.603,
+            "sha256": "4561965b41a817125a3ec8bad5205adf364e3037927374fe5346bdb2f934e6e6"
+          },
+          {
+            "file": "000039.png",
+            "timestamp": 1792338245.913,
+            "sha256": "9b9496c15d75e1b2c46cecb28dec9f10a283ba6ddc3023ee5968d1f9f3c022ad"
+          },
+          {
+            "file": "000040.png",
+            "timestamp": 1792338246.212,
+            "sha256": "ff4c4deb536a32f1f0d5bfd8236ba553b7b3c15c446915686f6fe3efd137eefb"
+          },
+          {
+            "file": "000041.png",
+            "timestamp": 1792338246.586,
+            "sha256": "529b88d425a12d868905b7fd68c089b9906102148aa9f17398e8a3f7f5fa1fd2"
+          },
+          {
+            "file": "000042.png",
+            "timestamp": 1792338246.895,
+            "sha256": "5ec11e21dc5863a26de5f7b44c9be1c4d6c25b15ee5800848654fffb3ee17fa6"
+          },
+          {
+            "file": "000043.png",
+            "timestamp": 1792338247.196,
+            "sha256": "3d096091604a0e8263a1d2d3f92d0538b59c39380ee0ec2843e6d976ccbe22e9"
+          },
+          {
+            "file": "000044.png",
+            "timestamp": 1792338247.524,
+            "sha256": "5ec11e21dc5863a26de5f7b44c9be1c4d6c25b15ee5800848654fffb3ee17fa6"
+          },
+          {
+            "file": "000045.png",
+            "timestamp": 1792338247.902,
+            "sha256": "627880417c3712bb0969da5ab53e6f83355f3694a3741a95b4b9f74b6c076011"
+          },
+          {
+            "file": "000046.png",
+            "timestamp": 1792338248.29,
+            "sha256": "8bd76f03ce8f3f0c85f0dda598a8acc0575603fa2c8322995937d3a819e1c053"
+          },
+          {
+            "file": "000047.png",
+            "timestamp": 1792338248.614,
+            "sha256": "5d8201d48e594ea35d17fdce3fd4ef2bd634604102718f80e238c52734fdcddf"
+          },
+          {
+            "file": "000048.png",
+            "timestamp": 1792338248.948,
+            "sha256": "83f79638ab6f96e5f9a95d6f332c4d546dd02767080477f533cdff4ee97e5c68"
+          },
+          {
+            "file": "000049.png",
+            "timestamp": 1792338249.273,
+            "sha256": "5e1950ffe99ba1b3d2aa251647c8144286411fd87d5f0602e6a43177da2d035a"
+          },
+          {
+            "file": "000050.png",
+            "timestamp": 1792338249.599,
+            "sha256": "01d61064777bcab14313e955532a500a303ac6d0c87e48df82bba730a587a2c9"
+          },
+          {
+            "file": "000051.png",
+            "timestamp": 1792338249.913,
+            "sha256": "6e5469caa2d284f93f0fc4bfc2a9e4a889780f872b6c343017bc6df44f667a03"
+          },
+          {
+            "file": "000052.png",
+            "timestamp": 1792338250.249,
+            "sha256": "06b9e9d0196887d261c91e2eb8af6a20c47a3989530dc05f9f8c03692e877bc9"
+          },
+          {
+            "file": "000053.png",
+            "timestamp": 1792338250.584,
+            "sha256": "6e5469caa2d284f93f0fc4bfc2a9e4a889780f872b6c343017bc6df44f667a03"
+          },
+          {
+            "file": "000054.png",
+            "timestamp": 1792338250.908,
+            "sha256": "a76b6a6e92675412485898fac4001386f98e163ffb6094225b7b7009fb5f2c6f"
+          },
+          {
+            "file": "000055.png",
+            "timestamp": 1792338251.295,
+            "sha256": "64cb5d437d53c372573cb13a92ee9514f39f9eb1ad9ddceb9fd0ebad42e268ac"
+          },
+          {
+            "file": "000056.png",
+            "timestamp": 1792338251.648,
+            "sha256": "a188db2be2f6ae33e8213946235992096a214904aad4ab163be10b522129e7a0"
+          },
+          {
+            "file": "000057.png",
+            "timestamp": 1792338251.958,
+            "sha256": "2a54be6c286341a48f2d29d8352b4d8e3d2d229a386c12fd6020a32617749a4a"
+          },
+          {
+            "file": "000058.png",
+            "timestamp": 1792338252.273,
+            "sha256": "1dc248dcc3bb3a996a48940478cdb756468c9fb0bad098ca9ba575db9bb6bf75"
+          },
+          {
+            "file": "000059.png",
+            "timestamp": 1792338252.576,
+            "sha256": "3293c418a1ffb0eb23942700f911244132c663889372e2a7fe677e200c9115c9"
+          },
+          {
+            "file": "000060.png",
+            "timestamp": 1792338252.882,
+            "sha256": "ec84ae3c6acfa301d79b432dc83cfcaae5f01b5e38cdd094a5bc777eb35003b7"
+          },
+          {
+            "file": "000061.png",
+            "timestamp": 1792338253.184,
+            "sha256": "a165551dc0bfe1f0d601ecf3af6e6b557423475103e29c0ba84924d40f4f9a00"
+          },
+          {
+            "file": "000062.png",
+            "timestamp": 1792338253.474,
+            "sha256": "ec84ae3c6acfa301d79b432dc83cfcaae5f01b5e38cdd094a5bc777eb35003b7"
+          },
+          {
+            "file": "000063.png",
+            "timestamp": 1792338253.771,
+            "sha256": "38e93cfed120a1b13d4a04fe28e3940a9e5bbbed96e344468bfdc18ca9f7a181"
+          },
+          {
+            "file": "000064.png",
+            "timestamp": 1792338254.063,
+            "sha256": "6aed9483c2b879027fc99100cc02a2709372b1bebf21a990801bf6c61322ebdc"
+          },
+          {
+            "file": "000065.png",
+            "timestamp": 1792338254.363,
+            "sha256": "6d21656ba17fe692da5a390ae669bca6440f43a6ceb2f042cb9cb7c6fd1bbde4"
+          },
+          {
+            "file": "000066.png",
+            "timestamp": 1792338254.712,
+            "sha256": "fff3203d8a0ea8aef8bf90025628a5afa1e768e493b34cb7aaf573efb6117cc7"
+          },
+          {
+            "file": "000067.png",
+            "timestamp": 1792338255.008,
+            "sha256": "18a8e5af007ac8728329523a22edda963319fa4c26c5ab4d004b867be8cb91ac"
+          },
+          {
+            "file": "000068.png",
+            "timestamp": 1792338255.307,
+            "sha256": "72fbbb5ea34a1b005e05fff1416b057131415c95cdd35222cf4a508e7a52ead1"
+          },
+          {
+            "file": "000069.png",
+            "timestamp": 1792338255.591,
+            "sha256": "7e787a42e3d33a5290b112e54b1a65cf19fc321655a24bb71cd5324d8cc27dad"
+          },
+          {
+            "file": "000070.png",
+            "timestamp": 1792338255.871,
+            "sha256": "1abbf7112e3ae31bfb6fc1807964ffdf35f4748511bcdb90b95277d6945e48fa"
+          },
+          {
+            "file": "000071.png",
+            "timestamp": 1792338256.158,
+            "sha256": "16739979a4089a2717368fb97be4298708ec02061b44f7b0ecb16525eaa589d9"
+          },
+          {
+            "file": "000072.png",
+            "timestamp": 1792338256.443,
+            "sha256": "1abbf7112e3ae31bfb6fc1807964ffdf35f4748511bcdb90b95277d6945e48fa"
+          },
+          {
+            "file": "000073.png",
+            "timestamp": 1792338256.718,
+            "sha256": "1abbf7112e3ae31bfb6fc1807964ffdf35f4748511bcdb90b95277d6945e48fa"
+          },
+          {
+            "file": "000074.png",
+            "timestamp": 1792338256.997,
+            "sha256": "9916eb2383594996f8c0dfafcd51c753c89152794dd7994b8afd5c98e6243c50"
+          }
+        ],
+        "source_kind": "real browser screenshot sequence",
+        "source_manifest_sha256": "20f2805b86e465ac6a92be23a9e6056a6ae5c7f7776ee7462124f9ef29a44a8a",
+        "capture_metadata": {
+          "kind": "real browser screenshot sequence",
+          "began": 1792338228917,
+          "ended": 1792338256997,
+          "frames": 75
+        },
+        "source_directory": "02-encontrar-preparar",
+        "at": 18,
+        "seconds_captured": 14.203999996185303,
+        "editing": "Actual sequence; playback duration adjusted as declared; interruptions between clips omitted"
+      },
+      {
+        "seconds": 17,
+        "label": "Destinatária e texto para revisão · Nada foi enviado",
+        "crop": {
+          "x": 175,
+          "y": 332,
+          "width": 800,
+          "height": 192
+        },
+        "masks": [],
+        "frames": [
+          {
+            "file": "000227.png",
+            "timestamp": 1792338324.241,
+            "sha256": "f340c7f11866f8658f38a7ae68b3c6338114af561999e2f2f1c3ef44c1c466ad"
+          }
+        ],
+        "source_kind": "real browser screenshot sequence",
+        "source_manifest_sha256": "cdb38f2919acb37a89e8e35d2ef80c0654d7ed5d5f39ecf1782f697933064670",
+        "capture_metadata": {
+          "kind": "real browser screenshot sequence",
+          "began": 1792338318226,
+          "ended": 1792338324243,
+          "frames": 228
+        },
+        "source_directory": "02-rascunho-final",
+        "at": 26,
+        "seconds_captured": 0,
+        "editing": "Actual captured frame held for reading"
+      }
+    ],
+    "opening_card": {
+      "seconds": 6,
+      "sha256": "7ccae875c0b7917ccb55eb3571040cc5d59d047c94b594939280df507352f90c",
+      "type": "editorial card; not product UI"
+    },
+    "closing_card": {
+      "seconds": 5,
+      "sha256": "90d38605a8a45bd4d2de1c7d70e48d3c09a1d5ad065bf04f15a32bf45a03decb",
+      "type": "editorial card; not product UI"
+    }
+  },
+  "user_story": {
+    "problem": "A pessoa está na agenda. Preciso cadastrar de novo?",
+    "requested_change": "Pedir uma mensagem pelo nome, mesmo sem conversa anterior no Elo.",
+    "benefit": "Começar pelo nome, sem copiar o telefone.",
+    "outcome": "A pessoa é encontrada e a proposta fica pronta para sua revisão."
+  },
+  "demonstrated": [
+    "Pedido de localizar pessoa da agenda sem histórico prévio no Elo",
+    "Busca e preparo pela integração Elo",
+    "Rascunho para a mesma destinatária com alias de privacidade",
+    "Espera pela revisão, sem envio"
+  ],
+  "not_demonstrated": [
+    "Envio, entrega ou leitura de WhatsApp",
+    "Aprovação humana de envio",
+    "Cancelamento, que integra o vídeo 06"
+  ],
+  "privacy": "Pessoa real da agenda com alias substituído; nenhum nome real ou endereço de entrega na imagem ou narração. Notas fictícias não foram vinculadas a esse contato."
+}

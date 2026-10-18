@@ -31,7 +31,16 @@
     "new_skill": "configurar-elo",
     "approve_updated": true,
     "package_bytes_verified": true,
-    "runtime_setup_skill_tested": false
+    "runtime_setup_skill_tested": true,
+    "runtime_setup_skill_evidence": {
+      "client": "ChatGPT Work",
+      "date": "2026-10-18",
+      "tools_refreshed": true,
+      "new_conversation": true,
+      "pages_completed": 10,
+      "mapped_contacts": 935,
+      "video": "../demonstracoes/01-conexao-e-diagnostico.mp4"
+    }
   },
   "rollback_worker": "4bc7c47b-2d8b-4c19-84ca-a0c81a614354",
   "privacy": "Only aggregate counts. No names, addresses, credentials, message text or client state."

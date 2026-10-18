@@ -1,54 +1,51 @@
 1
-00:00:00,000 --> 00:00:04,759
-Nesta demonstração, uso o Elo dentro do ChatGPT,
-com dados fictícios. Depois da reunião, escrevo
+00:00:00,000 --> 00:00:04,428
+Você sai de uma reunião e os combinados se
+perdem nas anotações. Na próxima conversa,
 
 2
-00:00:04,759 --> 00:00:09,518
-as notas no próprio chat.
+00:00:04,428 --> 00:00:08,856
+precisa reconstruir tudo.
 
 3
-00:00:12,000 --> 00:00:17,514
-O pedido identifica a origem da reunião. A Skill
-registra os fatos, a dúvida e a tarefa, e
+00:00:12,000 --> 00:00:16,152
+No Elo, você pede: registre as notas da reunião
+com a Lia, separe os fatos, as dúvidas e os
 
 4
-00:00:17,514 --> 00:00:23,028
-consulta o resultado. A espera foi encurtada
-neste vídeo.
+00:00:16,152 --> 00:00:20,304
+próximos passos.
 
 5
-00:00:23,200 --> 00:00:26,881
-A resposta confirma a preferência de Lia por
-reuniões à tarde. Essa informação ficou como
+00:00:23,000 --> 00:00:28,760
+Em vez de procurar os combinados espalhados no
+texto, você consulta uma memória organizada do
 
 6
-00:00:26,881 --> 00:00:30,562
-fato confirmado.
+00:00:28,760 --> 00:00:34,520
+relacionamento. Aqui, acompanhamos esse pedido
+no ChatGPT.
 
 7
-00:00:31,600 --> 00:00:35,687
-A possibilidade de mudança de cidade continua
-pendente. O Elo preserva a dúvida, sem
+00:00:35,000 --> 00:00:39,696
+A preferência por reuniões à tarde ficou
+confirmada. A mudança de cidade continua
 
 8
-00:00:35,687 --> 00:00:39,774
-transformar isso numa decisão.
+00:00:39,696 --> 00:00:44,392
+pendente, sem virar uma decisão. E enviar as
+opções virou uma tarefa do consultor, com o
 
 9
-00:00:40,000 --> 00:00:43,116
-O compromisso de enviar opções virou uma tarefa
-do consultor, com prazo em vinte e um de
+00:00:44,392 --> 00:00:49,088
+prazo combinado.
 
 10
-00:00:43,116 --> 00:00:46,233
-outubro.
+00:00:53,000 --> 00:00:58,328
+Assim, as preferências, dúvidas e próximos
+passos ficam recuperáveis para o próximo
 
 11
-00:00:48,200 --> 00:00:52,318
-Tudo está ligado à origem da reunião. Nenhum
-contato real foi consultado e nenhuma mensagem
-
-12
-00:00:52,318 --> 00:00:56,437
-de WhatsApp foi enviada.
+00:00:58,328 --> 00:01:03,656
+contato. Você retoma o relacionamento com o
+contexto à mão.

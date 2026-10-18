@@ -1,0 +1,36 @@
+1
+00:00:00,000 --> 00:00:04,524
+Você quer falar com uma pessoa salva no
+WhatsApp, mas ainda não tem conversa com ela no
+
+2
+00:00:04,524 --> 00:00:09,048
+Elo. Como começar só pelo nome?
+
+3
+00:00:12,000 --> 00:00:15,936
+Aqui eu peço para encontrar Marina e preparar
+uma mensagem. O nome exibido é um alias para
+
+4
+00:00:15,936 --> 00:00:19,872
+preservar a agenda.
+
+5
+00:00:23,000 --> 00:00:26,792
+A busca usa a agenda já mapeada. Não é preciso
+copiar o telefone nem criar a pessoa
+
+6
+00:00:26,792 --> 00:00:30,584
+manualmente.
+
+7
+00:00:33,000 --> 00:00:39,528
+O rascunho volta com a destinatária e o texto
+para revisar. Nada foi enviado.
+
+8
+00:00:42,000 --> 00:00:47,088
+Você consegue começar o contato e conferir a
+proposta no próprio chat.

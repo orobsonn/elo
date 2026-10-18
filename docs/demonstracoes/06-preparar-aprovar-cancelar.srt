@@ -1,0 +1,36 @@
+1
+00:00:00,000 --> 00:00:04,896
+Você quer ajuda para escrever uma mensagem, sem
+abrir mão de revisar o que vai sair. O
+
+2
+00:00:04,896 --> 00:00:09,792
+destinatário e o texto precisam estar certos.
+
+3
+00:00:12,000 --> 00:00:16,692
+O Elo prepara a proposta e a mostra no chat. A
+inteligência artificial aguarda sua decisão; o
+
+4
+00:00:16,692 --> 00:00:21,384
+primeiro pedido não virou um envio.
+
+5
+00:00:24,000 --> 00:00:29,352
+Aqui eu decido deixar a conversa para depois e
+peço para cancelar o rascunho.
+
+6
+00:00:32,000 --> 00:00:35,864
+A resposta confirma o cancelamento depois de
+consultar o estado da ação. A mensagem não foi
+
+7
+00:00:35,864 --> 00:00:39,728
+enviada.
+
+8
+00:00:43,000 --> 00:00:50,152
+A inteligência artificial ajuda a preparar. Você
+confere a proposta e decide como continuar.

@@ -1,28 +1,82 @@
 {
-  "title": "Elo — memória e pós-reunião no ChatGPT",
-  "created_at": "2026-10-18T15:02:08.968Z",
+  "title": "Elo — depois da reunião: recuperar combinados sem reconstruir o contexto",
+  "created_at": "2026-10-18T15:39:48.439Z",
   "source": "screen-recording-edited.mp4",
-  "source_sha256": "9e4930bafe51266c408200fdb663b239bc9654a27ea4b8bea0609891e6d7e851",
-  "output_sha256": "2f1f0a1d723d868cec40c490abffd532c774b95a2eb9458da34423bf64eb794c",
-  "recording_seconds": 56,
-  "output_seconds": 56.937,
-  "voice": "Luciana",
-  "rate": 165,
-  "narration_segments": 6,
-  "editing": "Screencast real do ChatGPT: digitação acelerada, corte de espera indicado, resultado ampliado e quadro final mantido para leitura; sem reconstrução da interface. Áudio original removido; narração sintética Luciana e legendas adicionadas.",
-  "content_review": "Quadros originais selecionados inspecionados; somente dados fictícios da demonstração, sem diagnóstico histórico, contatos reais, formulário de credenciais ou pedido posterior. Narração descreve somente os resultados visíveis; legendas automáticas por trechos.",
+  "source_sha256": "a3a70c06fb5aefde4581540c6a0018e8329c48e3b2fa1de730fcf3e008f2aed7",
+  "output_sha256": "cdebe0f1fdb8b662bae342f35778c0a23252e8cad63775787a847fdd90fc4e59",
+  "recording_seconds": 65,
+  "output_seconds": 65,
+  "voice": "pt-BR-AntonioNeural",
+  "rate": "-3%",
+  "pitch": "-1Hz",
+  "narration_segments": 5,
+  "narration": {
+    "engine": "external",
+    "online_service": "Microsoft Edge online TTS, na pré-geração dos arquivos de voz",
+    "loudness_target": "-16 LUFS; pico máximo -1.5 dBTP",
+    "subtitle_timing": "Aproximado por trecho de fala",
+    "audio_segments": [
+      {
+        "at": 0,
+        "duration": 8.856,
+        "origin": "external",
+        "sha256": "0de92e2e6e6d2905dab01a315eb6722ce2bfac98ddce67bfe0a9ab442dd4df02"
+      },
+      {
+        "at": 12,
+        "duration": 8.304,
+        "origin": "external",
+        "sha256": "b8dfe2e5ddee2529892ce4e71eaf34312afeaca9fa4baecb9ee0c2c5629d4f76"
+      },
+      {
+        "at": 23,
+        "duration": 11.52,
+        "origin": "external",
+        "sha256": "4aa19c4b872070a74aa1654b3d9150a6d963d54ccbb5910a24951dd01f06d06f"
+      },
+      {
+        "at": 35,
+        "duration": 14.088,
+        "origin": "external",
+        "sha256": "e188f0f366da478c1819af23c48b20e6c19ca42726dbfd637e95a20a6f360438"
+      },
+      {
+        "at": 53,
+        "duration": 10.656,
+        "origin": "external",
+        "sha256": "62a0a6fdddbe6529b36e087be4a69760dbbc5f994b78d7131da36c1650fc485e"
+      }
+    ],
+    "pre_generated_audio": {
+      "engine": "edge-tts7.3.1",
+      "service": "Microsoft Edge online TTS",
+      "voice": "pt-BR-AntonioNeural",
+      "rate": "-3%",
+      "pitch": "-1Hz",
+      "assembly": "Arquivos de voz pré-gerados; a montagem recebe áudio externo e é local."
+    },
+    "network_during_assembly": false
+  },
+  "editing": "Cartão editorial de abertura por 6 segundos; capturas reais do ChatGPT recortadas/ampliadas; digitação acelerada e espera encurtada com indicação; quadro real do resultado mantido para leitura. Interface e resposta não reconstruídas. Narração neural substitui Luciana; áudio original removido; legendas adicionadas.",
+  "content_review": "Quadros 0/14/25/44/60 segundos inspecionados; somente dados fictícios. Diagnóstico histórico, pedido posterior e outras conversas ficam fora do recorte. Narração descreve os resultados filmados. Decodificação integral, faixas de mídia e presença de voz verificadas.",
+  "user_story": {
+    "problem": "Os combinados da reunião se perdem nas anotações; o consultor precisa reconstruir o contexto no contato seguinte.",
+    "request": "Registrar notas, separando fatos, dúvidas e próximos passos.",
+    "outcome": "Preferências, dúvidas e tarefa com prazo ficam recuperáveis para o próximo contato."
+  },
   "screen_capture_provenance": {
     "capture": "Browser screencast CDP; original JPEG frames and timestamps",
     "date": "2026-10-18",
     "timezone": "America/Fortaleza",
+    "opening_card_seconds": 6,
     "plans": [
       {
         "name": "03-memoria",
-        "duration": 12,
+        "duration": 14,
         "crop": "920:208:120:594",
         "scale": "1152:-2",
         "y": 244,
-        "label": "1. Registrar as notas · Digitação acelerada",
+        "label": "O pedido no chat · Digitação acelerada",
         "kind": "sequence",
         "capture_manifest_sha256": "9cfcfbc8c3ebee5f7878794f116c0756fac4ed6120b306b52d4b02aa0a31254e",
         "source_frames": [
@@ -566,10 +620,10 @@
       {
         "name": "03-memoria-resultado",
         "duration": 10,
-        "crop": "920:365:120:248",
+        "crop": "920:340:120:248",
         "scale": "1152:-2",
         "y": 164,
-        "label": "2. A Skill registra e consulta · Espera encurtada",
+        "label": "Do pedido ao registro · Espera encurtada",
         "kind": "sequence",
         "capture_manifest_sha256": "46df52645e85c826c54c92a749e3ad639953aabf8bbb0d26ce5519d723d3b1ec",
         "source_frames": [
@@ -1307,11 +1361,11 @@
       },
       {
         "name": "04-tarefas",
-        "duration": 34,
+        "duration": 35,
         "crop": "900:196:120:64",
         "scale": "1152:-2",
         "y": 238,
-        "label": "3. Resultado consultado · Quadro final mantido para leitura",
+        "label": "Resultado real no ChatGPT · Quadro mantido para leitura",
         "kind": "hold",
         "frame": "000176.jpg",
         "capture_manifest_sha256": "e08536f0c06bec316ee2f53e417563c3c0ddc4e49530ac52483f831233e7b9b8",
@@ -1323,19 +1377,45 @@
           }
         ]
       }
-    ]
+    ],
+    "opening_card": {
+      "type": "Editorial: introduces the user problem, not a simulated product screen",
+      "seconds": 6,
+      "sha256": "fc706cd2aa4455142e952e1064511a7a877478cc8cae6d6450f951ec82d51ca5"
+    }
+  },
+  "voice_generation": {
+    "library": "edge-tts",
+    "version": "7.3.1",
+    "voice": "pt-BR-AntonioNeural",
+    "rate": "-3%",
+    "pitch": "-1Hz",
+    "service": "Microsoft Edge online TTS",
+    "input": "Somente os textos fictícios da narração; sem capturas, contatos, dados reais ou credenciais.",
+    "approval": "Usuário ouviu a amostra AntonioNeural e aprovou a voz antes da montagem.",
+    "documentation": "https://github.com/rany2/edge-tts/blob/master/README.md",
+    "license": "https://github.com/rany2/edge-tts/blob/master/LICENSE",
+    "package_license": "LGPLv3; srt_composer.py MIT",
+    "cost_observed": "Sem chave paga ou contratação de plano nesta produção; não é garantia de disponibilidade ou termos futuros do serviço."
   },
   "demonstrated": [
     "Pedido de pós-reunião com origem identificada e notas fictícias",
-    "Resposta consultada: preferência confirmada",
+    "Resultado consultado: preferência confirmada",
     "Possibilidade de mudança preservada como dúvida pendente",
-    "Tarefa atribuída ao consultor com prazo em 21/10/2026",
-    "Referência à origem da reunião e ausência de envio WhatsApp"
+    "Tarefa do consultor com prazo de21/10/2026",
+    "Resultado vinculado à origem da reunião"
   ],
   "not_demonstrated": [
-    "Reagendamento da tarefa ou aniversário do pedido posterior",
-    "Repetição idempotente da origem",
+    "Resolução de conflitos",
+    "Repetição idempotente",
+    "Reagendamento ou data especial do pedido posterior",
     "Extração automática por cron",
     "Envio real WhatsApp"
-  ]
+  ],
+  "audio_verification": {
+    "tool": "ffmpeg ebur128",
+    "integrated_lufs": -16.1,
+    "loudness_range_lu": 7.2,
+    "true_peak_dbfs": -1.2
+  }
 }

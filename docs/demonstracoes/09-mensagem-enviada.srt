@@ -1,0 +1,40 @@
+1
+00:00:00,000 --> 00:00:05,196
+Você precisa mandar um retorno pelo WhatsApp sem
+sair da sua inteligência artificial. Depois de
+
+2
+00:00:05,196 --> 00:00:10,392
+escrever, quer enviar e acompanhar o resultado.
+
+3
+00:00:12,000 --> 00:00:16,176
+Aqui eu confiro a destinatária e o texto
+completo. Essa é a proposta exata que será
+
+4
+00:00:16,176 --> 00:00:20,352
+enviada depois da aprovação.
+
+5
+00:00:24,000 --> 00:00:27,312
+Com a aprovação, peço ao Elo para executar essa
+mesma ação uma única vez e consultar o
+
+6
+00:00:27,312 --> 00:00:30,624
+resultado.
+
+7
+00:00:35,000 --> 00:00:38,336
+A consulta confirma: mensagem entregue para
+Lainny, segundo o estado informado pelo
+
+8
+00:00:38,336 --> 00:00:41,672
+provedor.
+
+9
+00:00:47,000 --> 00:00:53,888
+Do rascunho ao WhatsApp, você revisa, decide e
+acompanha a mensagem pelo próprio chat.

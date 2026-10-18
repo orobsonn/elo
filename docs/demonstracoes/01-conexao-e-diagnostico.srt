@@ -1,0 +1,41 @@
+1
+00:00:00,000 --> 00:00:05,412
+Seu WhatsApp já está conectado, mas cadastrar
+toda a agenda de novo seria um trabalho
+
+2
+00:00:05,412 --> 00:00:10,824
+desnecessário. Como começar sem incluir as
+pessoas uma a uma?
+
+3
+00:00:12,000 --> 00:00:16,680
+Você pede no próprio chat: configure o Elo e
+mapeie minha agenda. Não precisa copiar números
+
+4
+00:00:16,680 --> 00:00:21,360
+nem montar uma lista manualmente.
+
+5
+00:00:23,000 --> 00:00:27,092
+A inteligência artificial percorre a agenda e
+informa o andamento. Aqui, o tempo de espera foi
+
+6
+00:00:27,092 --> 00:00:31,184
+encurtado.
+
+7
+00:00:33,000 --> 00:00:37,044
+Ao terminar, a resposta confirma: novecentos e
+trinta e cinco contatos mapeados, com a agenda
+
+8
+00:00:37,044 --> 00:00:41,088
+percorrida até o fim.
+
+9
+00:00:44,000 --> 00:00:50,552
+Pronto. A agenda já pode ajudar a encontrar as
+pessoas pelo nome quando você precisar.

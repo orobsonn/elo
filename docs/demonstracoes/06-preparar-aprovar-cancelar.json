@@ -1,0 +1,188 @@
+{
+  "title": "Elo | Revisar antes de decidir",
+  "created_at": "2026-10-18T15:49:52.266Z",
+  "source": "screen.mp4",
+  "source_sha256": "6c7ced6a7dbf246f0c263f135cdecf640f6dc18cb64b2210c5186278839d5bde",
+  "output_sha256": "b583cca2b9d1e258bdb2bf043bfe3fc78591b2123aa01e71c1ce0355cb9afe80",
+  "recording_seconds": 50,
+  "output_seconds": 50.666667,
+  "voice": "pt-BR-AntonioNeural",
+  "rate": "-3%",
+  "pitch": "-1Hz",
+  "narration_segments": 5,
+  "narration": {
+    "engine": "edge",
+    "engine_version": "edge-tts 7.3.1",
+    "online_service": "Microsoft Edge online TTS",
+    "loudness_target": "-16 LUFS; pico máximo -1.5 dBTP",
+    "subtitle_timing": "Aproximado por trecho de fala",
+    "audio_segments": [
+      {
+        "at": 0,
+        "duration": 9.792,
+        "origin": "edge",
+        "sha256": "94bbae0344e0083c538074b9a0892d681346ad8b4cab148c4214e5371a580607"
+      },
+      {
+        "at": 12,
+        "duration": 9.384,
+        "origin": "edge",
+        "sha256": "5dfee28e65bf1a92f2c9f84487396c83c0d8045c75015bcc39aedb5d11451be9"
+      },
+      {
+        "at": 24,
+        "duration": 5.352,
+        "origin": "edge",
+        "sha256": "b302d736c4217bb38108bcb29c6863b7a00170fb3138cdffbc8cdd68b4b804ba"
+      },
+      {
+        "at": 32,
+        "duration": 7.728,
+        "origin": "edge",
+        "sha256": "336f5e5eb4caec204e10d44c3c2e4a97ef438be5bd6938edf71eb96d9d776887"
+      },
+      {
+        "at": 43,
+        "duration": 7.152,
+        "origin": "edge",
+        "sha256": "775719764fa06d62efec7667cec862449aecf76c1631bf54df38b959572d713d"
+      }
+    ]
+  },
+  "editing": "Editorial opening and closing; real captured frames cropped/scaled and optionally masked as declared; altered playback/holds are labelled; original audio removed; neural narration and subtitles added. Product screens and results are not synthesized.",
+  "content_review": "Quadros de origem inspecionados; preparo anterior reutilizado como contexto explícito, pedido e resultado de cancelamento reais. Nenhuma ferramenta de execução deenvio chamada.",
+  "screen_capture_provenance": {
+    "format": "Real captured screenshot sequences with editorial opening and closing cards",
+    "client": "ChatGPT",
+    "scenario": "Alias de privacidade; texto de demonstração; sem envio",
+    "opening": {
+      "headline": "Quero ajuda para escrever. A decisão continua comigo.",
+      "body": "Conferir a pessoa e o texto antes de decidir se a mensagem deve sair.",
+      "seconds": 6
+    },
+    "closing": {
+      "headline": "A IA prepara. Você confere e decide.",
+      "body": "Neste exemplo, o rascunho foi cancelado sem enviar a mensagem.",
+      "seconds": 5
+    },
+    "clips": [
+      {
+        "seconds": 12,
+        "label": "Pessoa e texto para revisão · A IA aguarda",
+        "crop": {
+          "x": 175,
+          "y": 332,
+          "width": 800,
+          "height": 192
+        },
+        "masks": [],
+        "frames": [
+          {
+            "file": "000227.png",
+            "timestamp": 1792338324.241,
+            "sha256": "f340c7f11866f8658f38a7ae68b3c6338114af561999e2f2f1c3ef44c1c466ad"
+          }
+        ],
+        "source_kind": "real browser screenshot sequence",
+        "source_manifest_sha256": "cdb38f2919acb37a89e8e35d2ef80c0654d7ed5d5f39ecf1782f697933064670",
+        "capture_metadata": {
+          "kind": "real browser screenshot sequence",
+          "began": 1792338318226,
+          "ended": 1792338324243,
+          "frames": 228
+        },
+        "source_directory": "02-rascunho-final",
+        "at": 6,
+        "seconds_captured": 0,
+        "editing": "Actual captured frame held for reading"
+      },
+      {
+        "seconds": 10,
+        "label": "Outro turno no chat · O pedido de cancelamento",
+        "crop": {
+          "x": 405,
+          "y": 231,
+          "width": 560,
+          "height": 93
+        },
+        "masks": [],
+        "frames": [
+          {
+            "file": "000083.png",
+            "timestamp": 1792338362.587,
+            "sha256": "7a98e0c9df9fb1e213994608ab19916b4d5940b5ec70e88ea6ffcec392d9489b"
+          }
+        ],
+        "source_kind": "real browser screenshot sequence",
+        "source_manifest_sha256": "db9ab0d274073d77507b27dbaf6475066a3d8f5e66bfa93511055f64da165283",
+        "capture_metadata": {
+          "kind": "real browser screenshot sequence",
+          "began": 1792338336443,
+          "ended": 1792338362588,
+          "frames": 84
+        },
+        "source_directory": "06-cancelar-rascunho",
+        "at": 18,
+        "seconds_captured": 0,
+        "editing": "Actual captured frame held for reading"
+      },
+      {
+        "seconds": 17,
+        "label": "Consulta final · Cancelamento confirmado",
+        "crop": {
+          "x": 175,
+          "y": 358,
+          "width": 800,
+          "height": 116
+        },
+        "masks": [],
+        "frames": [
+          {
+            "file": "000257.png",
+            "timestamp": 1792338519.363,
+            "sha256": "5e0576285b1478e0647098a4c5d88ce834e99d5f3c86f5018f9c6cd606148ddf"
+          }
+        ],
+        "source_kind": "real browser screenshot sequence",
+        "source_manifest_sha256": "b4e268e6b8e6c24102f01f27b0706db0e5358513adc3930f982a9f07997cd03b",
+        "capture_metadata": {
+          "kind": "real browser screenshot sequence",
+          "began": 1792338513360,
+          "ended": 1792338519364,
+          "frames": 258
+        },
+        "source_directory": "06-cancelamento-final",
+        "at": 28,
+        "seconds_captured": 0,
+        "editing": "Actual captured frame held for reading"
+      }
+    ],
+    "opening_card": {
+      "seconds": 6,
+      "sha256": "eff934cd9ecc6d14dcef8095ad74714e084be6d31d2ce51eef9d81cd3aafde3a",
+      "type": "editorial card; not product UI"
+    },
+    "closing_card": {
+      "seconds": 5,
+      "sha256": "25ebcd5bf212c3ac70d898f18106d4dafcd46e0081555cee15528ff2ec9062f0",
+      "type": "editorial card; not product UI"
+    }
+  },
+  "user_story": {
+    "problem": "Quero ajuda para escrever. A decisão continua comigo.",
+    "requested_change": "Conferir a pessoa e o texto antes de decidir se a mensagem deve sair.",
+    "benefit": "A IA prepara. Você confere e decide.",
+    "outcome": "Neste exemplo, o rascunho foi cancelado sem enviar a mensagem."
+  },
+  "demonstrated": [
+    "Proposta preparada com destinatária e texto exatos",
+    "Espera pela revisão humana, sem execução de envio",
+    "Pedido de cancelamento em outro turno",
+    "Resposta confirma o status cancelado após consulta"
+  ],
+  "not_demonstrated": [
+    "Aprovação humana seguida de envio",
+    "Envio, entrega ou leitura de WhatsApp"
+  ],
+  "privacy": "Agenda real com alias de privacidade; nome real e número fora da imagem/narração. Texto somente para demonstração."
+}

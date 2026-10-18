@@ -1,0 +1,419 @@
+{
+  "title": "Elo | Retomar a reunião com contexto",
+  "created_at": "2026-10-18T16:00:29.831Z",
+  "source": "screen.mp4",
+  "source_sha256": "5c878ed8d5ec4c755a1dd92ab0d22d71a344b1d5dd1dbde667b0da36635a6f9a",
+  "output_sha256": "8799139c7c2e2146832482ca32413118694783cb831fa56fa83eaeb7a3d01d80",
+  "recording_seconds": 85,
+  "output_seconds": 86.866667,
+  "voice": "pt-BR-AntonioNeural",
+  "rate": "-3%",
+  "pitch": "-1Hz",
+  "narration_segments": 7,
+  "narration": {
+    "engine": "edge",
+    "engine_version": "edge-tts 7.3.1",
+    "online_service": "Microsoft Edge online TTS",
+    "loudness_target": "-16 LUFS; pico máximo -1.5 dBTP",
+    "subtitle_timing": "Aproximado por trecho de fala",
+    "audio_segments": [
+      {
+        "at": 0,
+        "duration": 11.304,
+        "origin": "edge",
+        "sha256": "a42e042310c7f0dda95d3ac5faabeb4341aee3420b8fbfe417db9160f0fe4350"
+      },
+      {
+        "at": 14,
+        "duration": 9.36,
+        "origin": "edge",
+        "sha256": "0534055405cdc95f2ee8016aa124399fa3aa6ab5ac7bd9d30ba9088b922e2996"
+      },
+      {
+        "at": 27,
+        "duration": 12.768,
+        "origin": "edge",
+        "sha256": "d14bf800ceb7f09b61b34fd50149ba61a51327fe708c144953c97ba312e50ddf"
+      },
+      {
+        "at": 43,
+        "duration": 9.672,
+        "origin": "edge",
+        "sha256": "f4350035c1f5a60b2c9d6370e642c2090df188b746379499326ecf12f8d7a404"
+      },
+      {
+        "at": 56,
+        "duration": 8.976,
+        "origin": "edge",
+        "sha256": "16502dd8443c1217a65795669cc4927157beba58bbc2be936e40d028da1f5539"
+      },
+      {
+        "at": 69,
+        "duration": 10.008,
+        "origin": "edge",
+        "sha256": "99ba19ddf249767bfdc47f3fe878ec072132a60eecd0a75df8f2a9e4a986ccf0"
+      },
+      {
+        "at": 81,
+        "duration": 5.352,
+        "origin": "edge",
+        "sha256": "fdb69be1c2d227217513240312492dbacad8ce11d7d7a5a4aeb8b2007ff9543f"
+      }
+    ]
+  },
+  "editing": "Editorial opening and closing; real captured frames cropped/scaled and optionally masked as declared; altered playback/holds are labelled; original audio removed; neural narration and subtitles added. Product screens and results are not synthesized.",
+  "content_review": "Quadros fonte inspecionados; somente personagem e notas fictícias. A gravação de pauta é distinta da adaptação da rotina. Nenhuma criação, instalação ou execução agendada é afirmada.",
+  "screen_capture_provenance": {
+    "format": "Real captured screenshot sequences with editorial opening and closing cards",
+    "client": "ChatGPT",
+    "scenario": "Consultor hipotético e dados fictícios",
+    "opening": {
+      "headline": "A reunião está chegando. Por onde retomar?",
+      "body": "Recuperar os combinados e as dúvidas sem reler todo o histórico.",
+      "seconds": 6
+    },
+    "closing": {
+      "headline": "Contexto e perguntas à mão.",
+      "body": "Uma pauta para retomar a conversa e um pedido para repetir a rotina.",
+      "seconds": 5
+    },
+    "clips": [
+      {
+        "seconds": 12,
+        "label": "O pedido da pauta · Espera encurtada",
+        "crop": {
+          "x": 405,
+          "y": 270,
+          "width": 560,
+          "height": 220
+        },
+        "masks": [],
+        "frames": [
+          {
+            "file": "000050.png",
+            "timestamp": 1792338917.751,
+            "sha256": "cd2c521f5f4bc47adf51d0a5cde6dcacf45fb042db482f35434a8313a12b704e"
+          },
+          {
+            "file": "000051.png",
+            "timestamp": 1792338918.04,
+            "sha256": "73df97b29720b61f2588d16beda24a4a56ef6408fdeea7cfcfe7bd39a295f8a3"
+          },
+          {
+            "file": "000052.png",
+            "timestamp": 1792338918.326,
+            "sha256": "76571d48178a18e64d86cc767354c786b1355c002852047ffe9e88e3fbca9c4f"
+          },
+          {
+            "file": "000053.png",
+            "timestamp": 1792338918.631,
+            "sha256": "e421e02eb5f316ce89b0d41d1eb444f9142d4f98621929f71f892d3ad41d734e"
+          },
+          {
+            "file": "000054.png",
+            "timestamp": 1792338918.922,
+            "sha256": "5226b33f6cbafc293b10aa88a99a30543d1cf33b76b045ae6efa49cf44b6bed1"
+          },
+          {
+            "file": "000055.png",
+            "timestamp": 1792338919.206,
+            "sha256": "ecf96ade71d5bf6d9774af0010f3e7bf573866744e9f2661c3154603976bcb07"
+          },
+          {
+            "file": "000056.png",
+            "timestamp": 1792338919.669,
+            "sha256": "37fb0c6a81f20be6cf579a2d23b6a72dd0d24c4bbeb001a7ec7c2f896e7639e5"
+          },
+          {
+            "file": "000057.png",
+            "timestamp": 1792338919.965,
+            "sha256": "3d7f904eea14fce37d0d95e3243bd8fc702e98651071675ffab1afe122448692"
+          },
+          {
+            "file": "000058.png",
+            "timestamp": 1792338920.251,
+            "sha256": "b03fa84866cb836c10c0dedd7f6db1d781b5fb4c7477035db3cbc644dd4aa6ca"
+          },
+          {
+            "file": "000059.png",
+            "timestamp": 1792338920.538,
+            "sha256": "d0d48cccda499f9c5a757f79693cced92b90fff3950ca729e917d5356b8a09ed"
+          },
+          {
+            "file": "000060.png",
+            "timestamp": 1792338920.828,
+            "sha256": "e18bd9be64cf9d7e23463cdd5e7ff854f5b319224179ad92f6fc90fa11c02d00"
+          },
+          {
+            "file": "000061.png",
+            "timestamp": 1792338921.136,
+            "sha256": "004e58ebdb4f24fddaba36cb571dcce3b6ea2ff028e6a12aaf24ff2620b699c7"
+          },
+          {
+            "file": "000062.png",
+            "timestamp": 1792338921.43,
+            "sha256": "2a372f1f99cfae8a90a28b42a338a945e08542facfdf86702d21bc367e0c046a"
+          },
+          {
+            "file": "000063.png",
+            "timestamp": 1792338921.716,
+            "sha256": "e617fbc53cc0a1e681f53c13d0a46ffd85f33e2a2e529e21c9cb103df096173a"
+          },
+          {
+            "file": "000064.png",
+            "timestamp": 1792338922.01,
+            "sha256": "5440b7a68d07d21c3f9da8975a06e700b585b620f566cb995cf6ffcd250c362e"
+          },
+          {
+            "file": "000065.png",
+            "timestamp": 1792338922.316,
+            "sha256": "52a4bf45aee00be9a8e4a10bd2e09879f465c9f5f045d521cd5b8b4644da683a"
+          },
+          {
+            "file": "000066.png",
+            "timestamp": 1792338922.613,
+            "sha256": "573524c6ba2d0ef4a33f5b915dc5f4391e0808e2fec57d2a409c5006cc76e907"
+          },
+          {
+            "file": "000067.png",
+            "timestamp": 1792338922.91,
+            "sha256": "a878e32ccb18beb8fa0959361afe5597d228f062bce0a98b0cf42cd5460d43a6"
+          },
+          {
+            "file": "000068.png",
+            "timestamp": 1792338923.212,
+            "sha256": "8864ca15355222a4c2cd5f6bc0fef08f212015bb9df87ace93d4e34549a48f8e"
+          },
+          {
+            "file": "000069.png",
+            "timestamp": 1792338923.515,
+            "sha256": "8db86ae3a26580267faac0d334ccbb963ce656729c6c59b682cb4018c61d69a4"
+          },
+          {
+            "file": "000070.png",
+            "timestamp": 1792338923.818,
+            "sha256": "af752f33d9831750f16a8319153d09f28e7f9de116f418c898483723cdec4707"
+          },
+          {
+            "file": "000071.png",
+            "timestamp": 1792338924.122,
+            "sha256": "c9b578f0d2f45e5c086ffba21e7de33d7f4425cde60e08382ab0e765c830192b"
+          },
+          {
+            "file": "000072.png",
+            "timestamp": 1792338924.408,
+            "sha256": "a4dd7f366c00a1ebc68644c0cc9beb46aa0a8fda1b869ef7a2fe30b200476a39"
+          },
+          {
+            "file": "000073.png",
+            "timestamp": 1792338924.9,
+            "sha256": "0ba4f3292b68e6729a42901842eec2f3fbc5be430aae9e7839e5f6a94a097ed4"
+          },
+          {
+            "file": "000074.png",
+            "timestamp": 1792338925.193,
+            "sha256": "35d11fac84254937118e7ad1422e1fdcffa1be966a1f7d3a84d53a01b2837195"
+          }
+        ],
+        "source_kind": "real browser screenshot sequence",
+        "source_manifest_sha256": "6e76d20cdb77684953ed286886751ff4a07b4720b8f330b3d9bcf392b0cc810d",
+        "capture_metadata": {
+          "kind": "real browser screenshot sequence",
+          "began": 1792338898166,
+          "ended": 1792338925195,
+          "frames": 75
+        },
+        "source_directory": "07-pauta-pedido",
+        "at": 6,
+        "seconds_captured": 7.442000150680542,
+        "editing": "Actual sequence; playback duration adjusted as declared; interruptions between clips omitted"
+      },
+      {
+        "seconds": 14,
+        "label": "Pauta real · Compromisso e perguntas para escolher",
+        "crop": {
+          "x": 175,
+          "y": 188,
+          "width": 800,
+          "height": 210
+        },
+        "masks": [],
+        "frames": [
+          {
+            "file": "000141.png",
+            "timestamp": 1792338969.796,
+            "sha256": "97088195c3b76af4aee3a049efbad7977cbc519cf442961744ce7b26c583554d"
+          }
+        ],
+        "source_kind": "real browser screenshot sequence",
+        "source_manifest_sha256": "dfc34ec1968db7541d39e004a66f2508bfadf9bfa221a19335816c35b58e87cf",
+        "capture_metadata": {
+          "kind": "real browser screenshot sequence",
+          "began": 1792338964753,
+          "ended": 1792338969797,
+          "frames": 142
+        },
+        "source_directory": "07-pauta-fontes",
+        "at": 18,
+        "seconds_captured": 0,
+        "editing": "Actual captured frame held for reading"
+      },
+      {
+        "seconds": 12,
+        "label": "Dúvida preservada e preferência confirmada",
+        "crop": {
+          "x": 175,
+          "y": 405,
+          "width": 800,
+          "height": 154
+        },
+        "masks": [],
+        "frames": [
+          {
+            "file": "000141.png",
+            "timestamp": 1792338969.796,
+            "sha256": "97088195c3b76af4aee3a049efbad7977cbc519cf442961744ce7b26c583554d"
+          }
+        ],
+        "source_kind": "real browser screenshot sequence",
+        "source_manifest_sha256": "dfc34ec1968db7541d39e004a66f2508bfadf9bfa221a19335816c35b58e87cf",
+        "capture_metadata": {
+          "kind": "real browser screenshot sequence",
+          "began": 1792338964753,
+          "ended": 1792338969797,
+          "frames": 142
+        },
+        "source_directory": "07-pauta-fontes",
+        "at": 32,
+        "seconds_captured": 0,
+        "editing": "Actual captured frame held for reading"
+      },
+      {
+        "seconds": 10,
+        "label": "Adaptar a rotina · Pedido de um consultor hipotético",
+        "crop": {
+          "x": 405,
+          "y": 200,
+          "width": 560,
+          "height": 292
+        },
+        "masks": [],
+        "frames": [
+          {
+            "file": "000064.png",
+            "timestamp": 1792338996.055,
+            "sha256": "f06225355cdbd25a6a74367ff4db96e491ee530fc52c2bfb8545e636e962b1fb"
+          }
+        ],
+        "source_kind": "real browser screenshot sequence",
+        "source_manifest_sha256": "6322187d7b19422fe9f5ef905e70235537778bbd3b1b7bfad769f68b240373d2",
+        "capture_metadata": {
+          "kind": "real browser screenshot sequence",
+          "began": 1792338970807,
+          "ended": 1792338996056,
+          "frames": 65
+        },
+        "source_directory": "07-rotina-pedido",
+        "at": 44,
+        "seconds_captured": 0,
+        "editing": "Actual captured frame held for reading"
+      },
+      {
+        "seconds": 14,
+        "label": "Pedido reutilizável · Rotina existente reaproveitada",
+        "crop": {
+          "x": 175,
+          "y": 186,
+          "width": 800,
+          "height": 242
+        },
+        "masks": [],
+        "frames": [
+          {
+            "file": "000218.png",
+            "timestamp": 1792339070.737,
+            "sha256": "798e54041d9d9fec1415cc3a88c1325fccaf8a829dd1ac73b4ea42b27232df7e"
+          }
+        ],
+        "source_kind": "real browser screenshot sequence",
+        "source_manifest_sha256": "f944858f067bd410fa332159057ac67120f9fc7989db3631d14b685ba67a224d",
+        "capture_metadata": {
+          "kind": "real browser screenshot sequence",
+          "began": 1792339064717,
+          "ended": 1792339070737,
+          "frames": 219
+        },
+        "source_directory": "07-rotina-teste-final",
+        "at": 54,
+        "seconds_captured": 0,
+        "editing": "Actual captured frame held for reading"
+      },
+      {
+        "seconds": 12,
+        "label": "Teste real com dados fictícios · Sem alterar dados",
+        "crop": {
+          "x": 175,
+          "y": 435,
+          "width": 800,
+          "height": 208
+        },
+        "masks": [],
+        "frames": [
+          {
+            "file": "000218.png",
+            "timestamp": 1792339070.737,
+            "sha256": "798e54041d9d9fec1415cc3a88c1325fccaf8a829dd1ac73b4ea42b27232df7e"
+          }
+        ],
+        "source_kind": "real browser screenshot sequence",
+        "source_manifest_sha256": "f944858f067bd410fa332159057ac67120f9fc7989db3631d14b685ba67a224d",
+        "capture_metadata": {
+          "kind": "real browser screenshot sequence",
+          "began": 1792339064717,
+          "ended": 1792339070737,
+          "frames": 219
+        },
+        "source_directory": "07-rotina-teste-final",
+        "at": 68,
+        "seconds_captured": 0,
+        "editing": "Actual captured frame held for reading"
+      }
+    ],
+    "opening_card": {
+      "seconds": 6,
+      "sha256": "62ed5070e8d99561b45c03c74e6f91833a9a6ce8ebbaf4fa3ff5cb3560a17f39",
+      "type": "editorial card; not product UI"
+    },
+    "closing_card": {
+      "seconds": 5,
+      "sha256": "645def5aad8d88d911b93ffdf847ff8683d01aeeedd204ab4d0b3cfacefdc238",
+      "type": "editorial card; not product UI"
+    }
+  },
+  "user_story": {
+    "problem": "A reunião está chegando. Por onde retomar?",
+    "requested_change": "Recuperar os combinados e as dúvidas sem reler todo o histórico.",
+    "benefit": "Contexto e perguntas à mão.",
+    "outcome": "Uma pauta para retomar a conversa e um pedido para repetir a rotina."
+  },
+  "demonstrated": [
+    "Pauta com compromisso do consultor, critérios ainda ausentes, mudança de cidade pendente e preferência confirmada",
+    "Consulta de duas memórias e uma tarefa, sem leitura das notas brutas",
+    "Otimize meu processo adapta rotina de um consultor hipotético",
+    "Skill de pauta existente reaproveitada e pedido reutilizável entregue",
+    "Teste sintético consulta memória e tarefa novamente"
+  ],
+  "not_demonstrated": [
+    "Criação ou instalação de uma Skill nova",
+    "Agendamento",
+    "Melhoria de produtividade medida em rotina humana real",
+    "Envio de WhatsApp"
+  ],
+  "coverage": {
+    "memories": 2,
+    "tasks": 1,
+    "raw_source_read": false,
+    "lists_paginated_to_end": true,
+    "scenario": "DEMO Lia Histórias; consultor hipotético; prioridade escolhida: evitar dúvidas esquecidas"
+  }
+}
