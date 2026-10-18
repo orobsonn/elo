@@ -84,3 +84,7 @@ Versão ativa `fa8c0a95-b3e7-4529-8e6e-521946abe863`, código `4a3945b`, tráfeg
 ## Atualização posterior — recuperação e clientes
 
 O [restore completo isolado](restore-worker-isolado-1710.md) executou o roteiro inteiro em Worker/D1/KV temporários, com limpeza ao final; a instalação pessoal não foi restaurada. [Perfil de uso medido](../operacao/perfil-de-uso.md). A [retomada no Work](work-retomada-1710.md) confirmou leitura manual atual dos dados fictícios, mantendo agendamento e mecanismos específicos de renovação/revogação como pendências.
+
+## Revisão sob carga sintética e migração 0006
+
+[Ensaio isolado com 30.002 fontes](revisao-carga-1710.md): paginação completa equivalente e conclusão protegida, com redução de leituras medida na combinação índices + optimize. Migração aditiva 0006 aplicada à D1 pessoal sem optimize; dois índices e seis smokes publicados conferidos. 150 testes Worker/D1 e 22 scripts passaram. Worker não foi republicado. Isso não comprova revisão integral por Skill no cliente, agendamento, paridade móvel ou piloto humano; issues #1–#4 permanecem abertas.

@@ -5,6 +5,7 @@ import reviewVersions from "../migrations/0002_review_versions.sql?raw";
 import identityLinks from "../migrations/0003_identity.sql?raw";
 import identitySources from "../migrations/0004_source_identity.sql?raw";
 import sourceApplication from "../migrations/0005_source_application.sql?raw";
+import reviewScopeIndexes from "../migrations/0006_review_scope_indexes.sql?raw";
 beforeAll(async () => {
   await applyD1Migrations(env.DB, [
     {
@@ -41,6 +42,10 @@ beforeAll(async () => {
         .split(/;\s*(?:\n|$)/)
         .map((s) => s.trim())
         .filter(Boolean),
+    },
+    {
+      name: "0006",
+      queries: reviewScopeIndexes.split(/;\s*(?:\n|$)/).map(s => s.trim()).filter(Boolean),
     },
   ]);
 });
