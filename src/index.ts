@@ -49,7 +49,9 @@ export default {
           key,
           (input as { instanceId?: unknown }).instanceId,
         );
-        return Response.json(await ingest(env.DB, input, generation));
+        return Response.json(
+          await ingest(env.DB, input, generation, env.ENCRYPTION_KEY),
+        );
       }
       if (url.pathname === "/" && request.method === "GET") return welcome();
       if (

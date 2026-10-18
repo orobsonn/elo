@@ -29,7 +29,12 @@ export async function getConnection(env: AppEnv) {
     ),
   };
 }
-async function api(c: Connection, path: string, init: RequestInit = {}) {
+async function api(
+  c: Connection,
+  path: string,
+  init: RequestInit = {},
+  maxBytes = 32768,
+): Promise<unknown> {
   let r: Response;
   try {
     r = await fetch(
@@ -57,17 +62,17 @@ async function api(c: Connection, path: string, init: RequestInit = {}) {
       502,
     );
   try {
-    return JSON.parse(await body(r, 32768)) as Record<string, unknown>;
+    return JSON.parse(await body(r, maxBytes));
   } catch {
     throw new SafeError("provedor_resposta_invalida", 502);
   }
 }
 export async function connectionStatus(c: Connection) {
-  const r = await api(c, "status");
+  const r = (await api(c, "status")) as Record<string, unknown>;
   return { connected: r.connected === true };
 }
 export async function deviceIdentity(c: Connection) {
-  const r = await api(c, "device");
+  const r = (await api(c, "device")) as Record<string, unknown>;
   if (typeof r.phone !== "string" || !/^\d{8,16}$/.test(r.phone))
     throw new SafeError("identidade_do_aparelho_nao_verificada", 503);
   return r.phone;
@@ -77,13 +82,36 @@ export async function sendText(c: Connection, phone: string, text: string) {
     throw new SafeError("numero_desconectado", 503);
   if (!c.device_identity || (await deviceIdentity(c)) !== c.device_identity)
     throw new SafeError("numero_remetente_alterado_reconfigure", 409);
-  const r = await api(c, "send-text", {
+  const r = (await api(c, "send-text", {
     method: "POST",
     body: JSON.stringify({ phone, message: text }),
-  });
+  })) as Record<string, unknown>;
   if (typeof r.messageId !== "string" || r.messageId.length > 200)
     throw new SafeError("provedor_resposta_incerta", 502);
   return { messageId: r.messageId };
+}
+export async function contactPage(c: Connection, page: number) {
+  const response = await api(
+    c,
+    `contacts?page=${page}&pageSize=100`,
+    {},
+    262144,
+  );
+  const parsed = z
+    .array(
+      z.object({
+        phone: z.string().max(100),
+        name: z.string().max(256).nullable().optional(),
+        short: z.string().max(256).nullable().optional(),
+        vname: z.string().max(256).nullable().optional(),
+        isGroup: z.boolean().optional(),
+      }),
+    )
+    .max(100)
+    .safeParse(response);
+  if (!parsed.success)
+    throw new SafeError("agenda_provedor_resposta_invalida", 502);
+  return parsed.data;
 }
 export async function configureConnection(env: AppEnv, input: unknown) {
   const p = connectionSchema

@@ -1,43 +1,75 @@
-import { id, now, sql, SafeError } from "./core";
+import { id, now, sql, SafeError, addressFingerprint } from "./core";
 import type { AppEnv } from "./env";
-export async function deleteContact(db: D1Database, contactId: string) {
+export async function deleteContact(
+  db: D1Database,
+  contactId: string,
+  encryptionKey: string,
+) {
   const t = now();
-  const changed = await db.batch([
-    sql(
-      db,
-      "INSERT OR IGNORE INTO tombstones(provider_key,deleted_at) SELECT provider_key,? FROM messages WHERE contact_id=?",
-      t,
-      contactId,
-    ),
-    sql(
-      db,
-      "UPDATE contacts SET deleted=1,generation=generation+1,address=NULL,alias='Contato excluído',relationship='provisional',cadence_days=NULL,snooze_until=NULL WHERE id=? AND NOT EXISTS(SELECT 1 FROM contact_associations WHERE provisional_id=?)",
-      contactId,
-      contactId,
-    ),
-    sql(
-      db,
-      "UPDATE actions SET status=CASE WHEN status IN ('prepared','awaiting_approval','authorized') THEN 'cancelled' ELSE status END,content='',address='',alias='Contato excluído' WHERE contact_id=?",
-      contactId,
-    ),
-    sql(
-      db,
-      "DELETE FROM source_dependencies WHERE source_id IN (SELECT id FROM sources WHERE contact_id=?) OR context_source_id IN (SELECT id FROM sources WHERE contact_id=?)",
-      contactId,
-      contactId,
-    ),
-    sql(db, "DELETE FROM memory WHERE contact_id=?", contactId),
-    sql(db, "DELETE FROM tasks WHERE contact_id=?", contactId),
-    sql(db, "DELETE FROM special_dates WHERE contact_id=?", contactId),
-    sql(db, "DELETE FROM interactions WHERE contact_id=?", contactId),
-    sql(
-      db,
-      "UPDATE sources SET content=NULL,deleted=1,version=version+1,extract_state='done',lease=NULL WHERE contact_id=?",
-      contactId,
-    ),
-  ]);
+  const contact = await sql(
+    db,
+    "SELECT address,generation FROM contacts WHERE id=? AND deleted=0",
+    contactId,
+  ).first<{ address: string | null; generation: number }>();
+  const fingerprint = contact?.address
+    ? await addressFingerprint(contact.address, encryptionKey)
+    : null;
+  const changed = await db
+    .batch([
+      sql(
+        db,
+        "SELECT json(CASE WHEN ? IS NULL OR EXISTS(SELECT 1 FROM contacts WHERE id=? AND deleted=0 AND generation=? AND address IS ?) THEN 'true' ELSE 'contato alterado' END)",
+        contact?.generation ?? null,
+        contactId,
+        contact?.generation ?? null,
+        contact?.address ?? null,
+      ),
+      sql(
+        db,
+        "INSERT OR IGNORE INTO tombstones(provider_key,deleted_at) SELECT provider_key,? FROM messages WHERE contact_id=?",
+        t,
+        contactId,
+      ),
+      sql(
+        db,
+        "INSERT OR IGNORE INTO forgotten_addresses(fingerprint,forgotten_at) SELECT ?,? WHERE ? IS NOT NULL",
+        fingerprint,
+        t,
+        fingerprint,
+      ),
+      sql(db, "DELETE FROM contact_directory WHERE contact_id=?", contactId),
+      sql(
+        db,
+        "UPDATE contacts SET deleted=1,generation=generation+1,address=NULL,alias='Contato excluído',relationship='provisional',cadence_days=NULL,snooze_until=NULL WHERE id=? AND NOT EXISTS(SELECT 1 FROM contact_associations WHERE provisional_id=?)",
+        contactId,
+        contactId,
+      ),
+      sql(
+        db,
+        "UPDATE actions SET status=CASE WHEN status IN ('prepared','awaiting_approval','authorized') THEN 'cancelled' ELSE status END,content='',address='',alias='Contato excluído' WHERE contact_id=?",
+        contactId,
+      ),
+      sql(
+        db,
+        "DELETE FROM source_dependencies WHERE source_id IN (SELECT id FROM sources WHERE contact_id=?) OR context_source_id IN (SELECT id FROM sources WHERE contact_id=?)",
+        contactId,
+        contactId,
+      ),
+      sql(db, "DELETE FROM memory WHERE contact_id=?", contactId),
+      sql(db, "DELETE FROM tasks WHERE contact_id=?", contactId),
+      sql(db, "DELETE FROM special_dates WHERE contact_id=?", contactId),
+      sql(db, "DELETE FROM interactions WHERE contact_id=?", contactId),
+      sql(
+        db,
+        "UPDATE sources SET content=NULL,deleted=1,version=version+1,extract_state='done',lease=NULL WHERE contact_id=?",
+        contactId,
+      ),
+    ])
+    .catch(() => {
+      throw new SafeError("contato_alterado_repita_exclusao", 409);
+    });
   if (
-    !changed[1].meta.changes &&
+    !changed[4].meta.changes &&
     (await sql(
       db,
       "SELECT 1 FROM contact_associations WHERE provisional_id=?",
@@ -54,6 +86,8 @@ export async function deleteContact(db: D1Database, contactId: string) {
 export async function exportData(env: AppEnv) {
   const tables = [
     "contacts",
+    "contact_directory",
+    "forgotten_addresses",
     "sources",
     "source_dependencies",
     "messages",

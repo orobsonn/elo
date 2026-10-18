@@ -19,6 +19,23 @@ export async function hash(value: string) {
     .map((x) => x.toString(16).padStart(2, "0"))
     .join("");
 }
+export async function addressFingerprint(address: string, key: string) {
+  const secret = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(key),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const bytes = new Uint8Array(
+    await crypto.subtle.sign(
+      "HMAC",
+      secret,
+      new TextEncoder().encode("elo:forgotten-address:" + address),
+    ),
+  );
+  return Array.from(bytes, (x) => x.toString(16).padStart(2, "0")).join("");
+}
 export async function equal(a: string, b: string) {
   const aa = new TextEncoder().encode(await hash(a)),
     bb = new TextEncoder().encode(await hash(b));

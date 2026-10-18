@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { DAY, SafeError, hash, id, now, sql } from "./core";
+import { DAY, SafeError, hash, id, now, sql, addressFingerprint } from "./core";
+import { normalizeName, escapeLike } from "./directory";
 const eventSchema = z.object({
   type: z.string().max(64),
   phone: z.string().max(100).optional(),
@@ -38,6 +39,7 @@ export async function ingest(
   db: D1Database,
   input: unknown,
   generation: number,
+  encryptionKey?: string,
 ) {
   const parsed = eventSchema.safeParse(input);
   if (!parsed.success) throw new SafeError("evento_invalido");
@@ -98,6 +100,18 @@ export async function ingest(
   if (address && !/^\d{8,20}(?:@lid)?$/.test(address))
     throw new SafeError("endereco_do_evento_invalido");
   if (!e.messageId || !address) throw new SafeError("evento_incompleto");
+  const fingerprint = encryptionKey
+    ? await addressFingerprint(address!, encryptionKey)
+    : null;
+  if (
+    fingerprint &&
+    (await sql(
+      db,
+      "SELECT 1 FROM forgotten_addresses WHERE fingerprint=?",
+      fingerprint,
+    ).first())
+  )
+    return { ignored: "forgotten_contact" };
   const key = await hash(`${generation}:${e.messageId}`);
   if (e.deleted || e.isDeleted) {
     await db.batch([
@@ -123,16 +137,27 @@ export async function ingest(
     db,
     "SELECT m.source_id,m.contact_id,m.direction,c.address FROM messages m JOIN contacts c ON c.id=m.contact_id WHERE m.provider_key=?",
     key,
-  ).first<{ source_id: string; contact_id: string; direction: string; address: string }>();
+  ).first<{
+    source_id: string;
+    contact_id: string;
+    direction: string;
+    address: string;
+  }>();
   const fillMutation = mutation;
   async function fillMissingText(record: NonNullable<typeof existing>) {
-    if (record.address !== address) throw new SafeError("identidade_do_evento_diverge",409);
-    if (e.fromMe !== undefined && record.direction !== (e.fromMe ? "out" : "in"))
-      throw new SafeError("direcao_do_evento_diverge",409);
+    if (record.address !== address)
+      throw new SafeError("identidade_do_evento_diverge", 409);
+    if (
+      e.fromMe !== undefined &&
+      record.direction !== (e.fromMe ? "out" : "in")
+    )
+      throw new SafeError("direcao_do_evento_diverge", 409);
     // Transaction-local claim makes a losing replay a no-op.
     const claim = id("hydrate");
     const recovered = await db.batch([
-      sql(db, `UPDATE sources SET content=?,version=version+1,extract_state='pending',attempts=0,next_attempt=0,lease=?,lease_until=NULL,safe_error=NULL
+      sql(
+        db,
+        `UPDATE sources SET content=?,version=version+1,extract_state='pending',attempts=0,next_attempt=0,lease=?,lease_until=NULL,safe_error=NULL
         WHERE id=? AND contact_id=? AND content IS NULL AND deleted=0
         AND expires_at>CAST((julianday('now')-2440587.5)*86400000 AS INTEGER)
         AND occurred_at>CAST((julianday('now')-2440587.5)*86400000 AS INTEGER)-2592000000
@@ -140,17 +165,44 @@ export async function ingest(
         AND EXISTS(SELECT 1 FROM contacts WHERE id=sources.contact_id AND deleted=0 AND address=?)
         AND EXISTS(SELECT 1 FROM messages WHERE source_id=sources.id AND kind='unsupported_media' AND mutation_at<=?)
         AND EXISTS(SELECT 1 FROM settings WHERE id=1 AND (connection_generation=0 OR connection_generation=?))`,
-        e.text!.message, claim, record.source_id, record.contact_id, key, address, fillMutation, generation),
-      sql(db, "UPDATE messages SET kind='text',mutation_at=MAX(mutation_at,?) WHERE source_id=? AND EXISTS(SELECT 1 FROM sources WHERE id=messages.source_id AND lease=?)", fillMutation, record.source_id, claim),
-      sql(db, "UPDATE memory SET needs_review=1 WHERE source_id=? AND EXISTS(SELECT 1 FROM sources WHERE id=memory.source_id AND lease=?)", record.source_id, claim),
-      sql(db, "UPDATE sources SET lease=NULL WHERE id=? AND lease=?", record.source_id, claim),
+        e.text!.message,
+        claim,
+        record.source_id,
+        record.contact_id,
+        key,
+        address,
+        fillMutation,
+        generation,
+      ),
+      sql(
+        db,
+        "UPDATE messages SET kind='text',mutation_at=MAX(mutation_at,?) WHERE source_id=? AND EXISTS(SELECT 1 FROM sources WHERE id=messages.source_id AND lease=?)",
+        fillMutation,
+        record.source_id,
+        claim,
+      ),
+      sql(
+        db,
+        "UPDATE memory SET needs_review=1 WHERE source_id=? AND EXISTS(SELECT 1 FROM sources WHERE id=memory.source_id AND lease=?)",
+        record.source_id,
+        claim,
+      ),
+      sql(
+        db,
+        "UPDATE sources SET lease=NULL WHERE id=? AND lease=?",
+        record.source_id,
+        claim,
+      ),
     ]);
     return { persisted: true, duplicate: !recovered[0].meta.changes };
   }
   if (existing) {
     if (existing.address !== address)
       throw new SafeError("identidade_do_evento_diverge", 409);
-    if (e.fromMe !== undefined && existing.direction !== (e.fromMe ? "out" : "in"))
+    if (
+      e.fromMe !== undefined &&
+      existing.direction !== (e.fromMe ? "out" : "in")
+    )
       throw new SafeError("direcao_do_evento_diverge", 409);
     if (!e.isEdit && !e.isEdited && e.text?.message)
       return fillMissingText(existing);
@@ -208,11 +260,12 @@ export async function ingest(
   const inserted = await db.batch([
     sql(
       db,
-      "INSERT OR IGNORE INTO contacts(id,alias,address,created_at) SELECT ?,'Contato provisório',?,? WHERE NOT EXISTS(SELECT 1 FROM tombstones WHERE provider_key=?)",
+      "INSERT OR IGNORE INTO contacts(id,alias,address,created_at) SELECT ?,'Contato provisório',?,? WHERE NOT EXISTS(SELECT 1 FROM tombstones WHERE provider_key=?) AND NOT EXISTS(SELECT 1 FROM forgotten_addresses WHERE fingerprint=?)",
       ct,
       address,
       t,
       key,
+      fingerprint,
     ),
     sql(
       db,
@@ -249,8 +302,10 @@ export async function ingest(
   // Both initial callbacks can observe no row. If this insert lost, re-read
   // the winner once and apply the same guarded fill instead of losing text.
   if (!inserted[2].meta.changes && text && !e.isEdit && !e.isEdited) {
-    const winner = await sql(db,
-      "SELECT m.source_id,m.contact_id,m.direction,c.address FROM messages m JOIN contacts c ON c.id=m.contact_id JOIN sources s ON s.id=m.source_id WHERE m.provider_key=? AND c.deleted=0 AND s.deleted=0 AND NOT EXISTS(SELECT 1 FROM tombstones WHERE provider_key=m.provider_key)", key,
+    const winner = await sql(
+      db,
+      "SELECT m.source_id,m.contact_id,m.direction,c.address FROM messages m JOIN contacts c ON c.id=m.contact_id JOIN sources s ON s.id=m.source_id WHERE m.provider_key=? AND c.deleted=0 AND s.deleted=0 AND NOT EXISTS(SELECT 1 FROM tombstones WHERE provider_key=m.provider_key)",
+      key,
     ).first<NonNullable<typeof existing>>();
     if (winner) return fillMissingText(winner);
   }
@@ -263,9 +318,10 @@ export async function listContacts(
   const limit = Math.min(p.limit ?? 25, 50);
   const results = await sql(
     db,
-    "SELECT id,alias,relationship,cadence_days,snooze_until FROM contacts WHERE deleted=0 AND id>? AND alias LIKE ? ORDER BY id LIMIT ?",
+    "SELECT id,alias,relationship,cadence_days,snooze_until FROM contacts WHERE deleted=0 AND id>? AND (alias LIKE ? ESCAPE '\\' OR EXISTS(SELECT 1 FROM contact_directory d JOIN settings s ON s.id=1 WHERE d.contact_id=contacts.id AND d.connection_generation=s.connection_generation AND d.search_name LIKE ? ESCAPE '\\')) ORDER BY id LIMIT ?",
     p.cursor ?? "",
-    `%${p.query ?? ""}%`,
+    `%${escapeLike(p.query ?? "")}%`,
+    `%${escapeLike(normalizeName(p.query ?? ""))}%`,
     limit + 1,
   ).all<{
     id: string;
@@ -275,6 +331,10 @@ export async function listContacts(
     snooze_until: string | null;
   }>();
   return {
+    directory: await sql(
+      db,
+      "SELECT completed_at,connection_generation=(SELECT connection_generation FROM settings WHERE id=1) current_connection FROM directory_state WHERE id=1",
+    ).first(),
     items: results.results.slice(0, limit),
     next_cursor:
       results.results.length > limit ? results.results[limit - 1].id : null,

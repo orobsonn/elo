@@ -20,6 +20,7 @@ import * as memory from "./memory";
 import { extractionDailyLimit } from "./extraction";
 import { deleteContact } from "./operations";
 import { associateContact, associateContactSchema } from "./identity";
+import { syncContacts, syncSchema } from "./directory";
 const internalId = z
   .string()
   .max(80)
@@ -108,6 +109,13 @@ export function toolset(env: AppEnv) {
     z.object({ query: z.string().max(80).optional(), ...page }).strict(),
     true,
     (p) => listContacts(env.DB, p),
+  );
+  add(
+    "contacts_sync",
+    "Mapeia contatos salvos no WhatsApp sem precisar de mensagem prévia. Uma página por chamada; continue next_cursor até complete antes de afirmar ausência/unicidade. Não envia, não importa histórico. Nomes/telefones ficam restritos.",
+    syncSchema,
+    false,
+    (p) => syncContacts(env, p),
   );
   add(
     "contact_create",
@@ -209,7 +217,7 @@ export function toolset(env: AppEnv) {
       })
       .strict(),
     false,
-    (p) => deleteContact(env.DB, p.contact_id),
+    (p) => deleteContact(env.DB, p.contact_id, env.ENCRYPTION_KEY),
   );
   // Memory module exports its strict schemas; one write path for Skills and extraction.
   for (const [name, description, schema, fn, read] of memory.toolDefinitions(

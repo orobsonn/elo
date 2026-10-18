@@ -16,7 +16,9 @@ Na **v0.2.0**, a extração agrupa mensagens por contato e usa cota padrão de 2
 - Z-API: captura individual normalizada, callbacks com autenticação própria e texto aprovado com consumo atômico. Sem instância, indica `whatsapp_nao_configurado`; não simula envio.
 - Histórico bruto até 30 dias da data original; expurgo técnico independente da IA. Memória concisa pode permanecer. Texto livre pode conter dados pessoais.
 - Extração DeepSeek V4 Flash configurável na Workers AI, com limites de entrada/saída, três tentativas e orçamento diário. Plano Paid/créditos e demais custos são separados.
-- [Skills](skills/): approve, revisão diária, pós-reunião e Otimize meu processo. Agendamento pertence a Work/Cowork. [Matriz de clientes e aceites humanos](docs/operacao/clientes-e-agendamento.md).
+- [Skills](skills/): configurar Elo (mapear agenda), approve, revisão diária, pós-reunião e Otimize meu processo. Agendamento pertence a Work/Cowork. [Matriz de clientes e aceites humanos](docs/operacao/clientes-e-agendamento.md).
+
+Para encontrar alguém sem conversa prévia, a Skill `configurar-elo` mapeia a agenda via `contacts_sync`; a busca aceita o nome e retorna referência interna, sem número. [Fluxo e limites](docs/implementacao/agenda-whatsapp.md). [Demonstrações](docs/demonstracoes/README.md).
 
 ## Desenvolvimento
 
