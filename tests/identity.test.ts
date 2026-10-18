@@ -1,3 +1,4 @@
+import type { AppEnv } from "../src/env";
 import { env } from "cloudflare:test";
 import { expect, it } from "vitest";
 import { associateContact } from "../src/identity";
@@ -340,7 +341,7 @@ it("associação concorrente com exclusão não ressuscita ficha nem conteúdo a
   const { source, target, sid } = await fixture();
   await Promise.allSettled([
     link(source, target),
-    deleteContact(env.DB, target),
+    deleteContact(env.DB, target, (env as AppEnv).ENCRYPTION_KEY),
   ]);
   expect(
     await sql(
@@ -363,7 +364,7 @@ it("exclusão da origem concorrente ou anterior não transfere conteúdo já apa
   const { source, target, sid } = await fixture();
   const [association] = await Promise.allSettled([
     link(source, target),
-    deleteContact(env.DB, source),
+    deleteContact(env.DB, source, (env as AppEnv).ENCRYPTION_KEY),
   ]);
   const current = await sql(
     env.DB,
@@ -417,7 +418,7 @@ it("não associa ficha excluída nem promove remetente que já tem relacionament
     "UPDATE contacts SET relationship='provisional' WHERE id=?",
     source,
   ).run();
-  await deleteContact(env.DB, target);
+  await deleteContact(env.DB, target, (env as AppEnv).ENCRYPTION_KEY);
   await expect(link(source, target)).rejects.toMatchObject({
     code: "associacao_indisponivel_ou_alterada",
   });
@@ -552,7 +553,9 @@ it("reextração após associação preserva tarefa já concluída e prazo revis
 it("excluir ID provisório aposentado exige selecionar ficha atual sem apagar destino silenciosamente", async () => {
   const { source, target, sid } = await fixture();
   await link(source, target);
-  await expect(deleteContact(env.DB, source)).rejects.toMatchObject({
+  await expect(
+    deleteContact(env.DB, source, (env as AppEnv).ENCRYPTION_KEY),
+  ).rejects.toMatchObject({
     code: "contato_ja_associado_selecione_ficha_atual",
   });
   expect(

@@ -452,7 +452,7 @@ it("expires context text without invalidating concise facts and forgets dependen
     m.context_sources.some((x) => x.source_id === f.ids[1] && !x.available),
   ).toBe(true);
   const { deleteContact } = await import("../src/operations");
-  await deleteContact(env.DB, f.c);
+  await deleteContact(env.DB, f.c, (env as AppEnv).ENCRYPTION_KEY);
   expect(
     await sql(env.DB, "SELECT COUNT(*) n FROM source_dependencies").first(),
   ).toMatchObject({ n: 0 });

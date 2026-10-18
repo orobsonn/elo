@@ -150,7 +150,11 @@ it("preparo concorrente com exclusão não recria texto/endereço apagados", asy
         return async (statements: D1PreparedStatement[]) => {
           if (!intercepted) {
             intercepted = true;
-            await deleteContact(target, "ct_mario");
+            await deleteContact(
+              target,
+              "ct_mario",
+              (env as AppEnv).ENCRYPTION_KEY,
+            );
           }
           return target.batch(statements);
         };

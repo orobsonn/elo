@@ -21,7 +21,7 @@ it("exclusão explícita não ressuscita por replay e export não inclui auth/co
   const c = await sql(env.DB, "SELECT id FROM contacts").first<{
     id: string;
   }>();
-  await deleteContact(env.DB, c!.id);
+  await deleteContact(env.DB, c!.id, (env as AppEnv).ENCRYPTION_KEY);
   await ingest(env.DB, event, 1);
   expect((await listMessages(env.DB, {})).items).toHaveLength(0);
   const response = await exportData(env as AppEnv);
