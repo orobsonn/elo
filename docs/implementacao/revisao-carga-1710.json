@@ -1502,5 +1502,17 @@
     "First page still scans historical seq range",
     "Pending-edit backlog can increase cost",
     "Indexes add storage and write maintenance"
-  ]
+  ],
+  "production": {
+    "migration": "0006_review_scope_indexes.sql",
+    "applied": true,
+    "commands": 3,
+    "duration_ms": 0.78,
+    "indexes_verified": true,
+    "optimize_executed": false,
+    "smokes_passed": 6,
+    "worker_version": "fa8c0a95-b3e7-4529-8e6e-521946abe863",
+    "worker_commit": "4a3945bc7642774c582c2b8b66bb2563970736cb",
+    "worker_redeployed": false
+  }
 }

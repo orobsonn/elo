@@ -23,7 +23,7 @@ Migração 0006 acrescenta índice por recebimento e índice parcial de ediçõe
 
 150 testes Worker/D1 e 22 testes dos scripts passaram; TypeScript, build e revisão adversarial passaram. Permanecem avisos conhecidos das dependências/AI binding, sem uso de IA neste ensaio.
 
-A migração ainda será aplicada à D1 pessoal após CI. Não há mudança de código do Worker nesta entrega.
+Após os dois checks CI passarem no commit cb71bf9, a migração 0006 foi aplicada à D1 pessoal por Wrangler: sucesso, três comandos em 0,78 ms. Releitura confirmou as duas definições de índices e o registro da migração. Não foi executado optimize na instalação pessoal. Os seis smokes publicados passaram; Worker permanece na versão fa8c0a95-b3e7-4529-8e6e-521946abe863, código 4a3945b. Não há mudança de código do Worker nesta entrega.
 
 ## Limites
 
