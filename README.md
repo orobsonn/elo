@@ -6,6 +6,8 @@ Memória de relacionamento e WhatsApp assistido no Claude/ChatGPT, com infraestr
 
 **Instalação pessoal:** [abrir Elo](https://elo.robsonlins.workers.dev) · MCP: `https://elo.robsonlins.workers.dev/mcp`. [Evidências da publicação](docs/implementacao/validacao-publicada.md).
 
+**Já conectado?** [Use no dia a dia](docs/operacao/primeiro-uso.md#no-dia-a-dia): registrar reunião, consultar memória/tarefas, preparar pauta, revisar o dia e preparar mensagem para aprovação. As pendências de homologação não exigem refazer a instalação.
+
 ## V0
 
 - MCP tipado com contatos por ID/alias, histórico paginado, memória rastreável, conflitos pendentes, tarefas, datas e revisão diária com cobertura de versões.

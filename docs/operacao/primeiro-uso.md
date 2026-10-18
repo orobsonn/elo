@@ -12,6 +12,20 @@ A página [Configurar WhatsApp](https://elo.robsonlins.workers.dev/setup) é o p
 
 [Resultados e limitações dos testes no ChatGPT](../implementacao/homologacao-chatgpt.md). O Claude pessoal também foi conectado e as quatro Skills foram instaladas/exercitadas, com revisão diária parcial; veja [a evidência específica do Claude](../implementacao/homologacao-skills-claude.md). Celular e rotina agendada continuam com aceites próprios pendentes; conexão no computador não os comprova.
 
+## No dia a dia
+
+Abra uma conversa com Elo no ChatGPT ou Claude já conectado e peça o que precisa. Exemplos:
+
+- **Depois da reunião:** “Use a Skill pós-reunião do Elo para registrar estas anotações de [contato]: […]. Separe os combinados, as dúvidas e os próximos passos.”
+- **Antes da reunião:** “Consulte a memória e as tarefas de [contato] no Elo e prepare uma pauta curta, destacando o que preciso perguntar.”
+- **Revisar o dia:** “Use a revisão diária do Elo para hoje. Mostre prioridades, prazos, pendências e o que não conseguiu avaliar.”
+- **Enviar uma mensagem:** “Prepare pelo Elo uma mensagem para [contato] com este texto: […]. Mostre a proposta e aguarde minha aprovação.” Confira a pessoa e o texto antes de aprovar no próximo turno.
+- **Adaptar sua rotina:** “Use Otimize meu processo para melhorar minha rotina de [atividade].”
+
+Se houver mais de um contato com o mesmo nome, escolha a ficha indicada pelo Elo. Corrija fatos ou tarefas no próprio chat quando necessário. Áudios e imagens sem texto utilizável aparecem como não avaliados; isso não impede consultar as demais informações disponíveis.
+
+A revisão manual já pode ser usada. O agendamento automático no Work/Cowork ainda não tem comprovação completa nesta instalação; não conte com um brief automático até essa etapa ser validada. Não é preciso refazer a configuração para usar as funções já conectadas.
+
 ## O que você precisa fazer
 
 1. Abra o ponto de entrada fornecido com sua instalação, preferencialmente no computador. Autorize a IA instaladora na **sua conta Cloudflare** e confira o nome da conta antes de prosseguir. Ela deve executar a configuração; você não precisa estudar OAuth, criar políticas ou copiar IDs técnicos.
