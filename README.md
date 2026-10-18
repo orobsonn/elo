@@ -10,6 +10,8 @@ Memória de relacionamento e WhatsApp assistido no Claude/ChatGPT, com infraestr
 
 ## V0
 
+Na **v0.2.0**, a extração agrupa mensagens por contato e usa cota padrão de 200 chamadas por dia. [Funcionamento e testes](docs/implementacao/blocos-extracao-1810.md).
+
 - MCP tipado com contatos por ID/alias, histórico paginado, memória rastreável, conflitos pendentes, tarefas, datas e revisão diária com cobertura de versões.
 - Z-API: captura individual normalizada, callbacks com autenticação própria e texto aprovado com consumo atômico. Sem instância, indica `whatsapp_nao_configurado`; não simula envio.
 - Histórico bruto até 30 dias da data original; expurgo técnico independente da IA. Memória concisa pode permanecer. Texto livre pode conter dados pessoais.

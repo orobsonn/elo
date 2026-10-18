@@ -1,0 +1,121 @@
+{
+  "model": "@cf/deepseek-ai/deepseek-v4-flash-0731",
+  "synthetic_only": true,
+  "rounds": [
+    {
+      "round": 1,
+      "ms": 4970,
+      "usage": {
+        "prompt_tokens": 1486,
+        "completion_tokens": 336,
+        "total_tokens": 1822,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "neurons": 89.8458251953125
+      },
+      "output": {
+        "complete": true,
+        "contact_id": "ct_synthetic_block",
+        "facts": [
+          {
+            "certainty": "explicit",
+            "evidence": "Sim, às 15h está bom.",
+            "field": "agreements",
+            "reason": "Contato confirmou horário para conversa amanhã à tarde.",
+            "source_id": "src_synthetic_1",
+            "value": "Concordou em conversar amanhã às 15h."
+          },
+          {
+            "certainty": "explicit",
+            "evidence": "Quero aprender violão.",
+            "field": "goals",
+            "reason": "Contato expressou desejo de aprender violão.",
+            "source_id": "src_synthetic_2",
+            "value": "Quer aprender a tocar violão."
+          },
+          {
+            "certainty": "uncertain",
+            "evidence": "Talvez eu me mude, mas não decidi.",
+            "field": "context",
+            "reason": "Contato menciona possível mudança, mas sem decisão.",
+            "source_id": "src_synthetic_5",
+            "value": "Considera a possibilidade de se mudar, mas ainda não decidiu."
+          }
+        ],
+        "source_ids": [
+          "src_synthetic_0",
+          "src_synthetic_1",
+          "src_synthetic_2",
+          "src_synthetic_3",
+          "src_synthetic_4",
+          "src_synthetic_5"
+        ],
+        "tasks": []
+      },
+      "finding": "Omitted explicit consultant task; strengthened authorship/task instruction"
+    },
+    {
+      "round": 2,
+      "ms": 5471,
+      "usage": {
+        "prompt_tokens": 1548,
+        "completion_tokens": 412,
+        "total_tokens": 1960,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "neurons": 101.44581604003906
+      },
+      "output": {
+        "complete": true,
+        "contact_id": "ct_synthetic_block",
+        "facts": [
+          {
+            "certainty": "explicit",
+            "evidence": "Sim, às 15h está bom.",
+            "field": "next_steps",
+            "reason": "Contato confirmou horário para conversa amanhã às 15h.",
+            "source_id": "src_synthetic_1",
+            "value": "Conversa marcada para amanhã às 15h."
+          },
+          {
+            "certainty": "explicit",
+            "evidence": "Quero aprender violão.",
+            "field": "goals",
+            "reason": "Contato expressou desejo de aprender violão.",
+            "source_id": "src_synthetic_2",
+            "value": "Quer aprender violão."
+          },
+          {
+            "certainty": "uncertain",
+            "evidence": "Talvez eu me mude, mas não decidi.",
+            "field": "context",
+            "reason": "Possibilidade de mudança não confirmada.",
+            "source_id": "src_synthetic_5",
+            "value": "Considera mudar de residência, mas ainda não decidiu."
+          }
+        ],
+        "source_ids": [
+          "src_synthetic_0",
+          "src_synthetic_1",
+          "src_synthetic_2",
+          "src_synthetic_3",
+          "src_synthetic_4",
+          "src_synthetic_5"
+        ],
+        "tasks": [
+          {
+            "due_date": null,
+            "evidence": "Vou te enviar duas opções de curso.",
+            "reason": "Consultor prometeu enviar opções de curso ao contato.",
+            "responsible": "consultor",
+            "source_id": "src_synthetic_3",
+            "subject": "Enviar duas opções de curso"
+          }
+        ]
+      },
+      "finding": "Consultant task extracted; uncertain move remains uncertain"
+    }
+  ]
+}

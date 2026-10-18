@@ -27,7 +27,7 @@ Projeções ilustrativas usando **a mesma média observada**, sem prever altera�
 | 500 | US$0,35811 |
 | 1.500 | US$1,07432 |
 
-Não significa orçamento máximo. O código limita a extração auxiliar a 50 tentativas/dia UTC, 3 tentativas por fonte e 3 fontes por ciclo técnico de 10 minutos. Retries consomem esse limite. Portanto 50 mensagens novas por dia não são garantia de processamento diário se houver retries; acima do teto, a fila espera. A captura continua independente da inferência, respeitando a retenção de 30 dias. Não foi aumentado o teto nem contratado recurso pago para esta medição.
+Na versão medida acima, o código limitava a extração auxiliar a 50 tentativas/dia UTC, 3 tentativas por fonte e 3 fontes por ciclo técnico de 10 minutos. Retries consomem esse limite. Portanto 50 mensagens novas por dia não são garantia de processamento diário se houver retries; acima do teto, a fila espera. A captura continua independente da inferência, respeitando a retenção de 30 dias. Não foi aumentado o teto nem contratado recurso pago para esta medição.
 
 Na amostra auxiliar havia 2 fontes pendentes com texto e zero em processamento, ambas recebidas poucos minutos antes do ciclo seguinte; às 15h41, as mesmas duas estavam `done`, com uma tentativa cada, após o ciclo técnico seguinte. Isso comprova andamento desses jobs publicados, sem validar a semântica da extração nem agendamento Work/Cowork; não é prova de ausência de fila ao longo do dia.
 
@@ -46,3 +46,7 @@ A [cobrança D1](https://developers.cloudflare.com/d1/platform/pricing/) depende
 Workers, inferência, Z-API e os clientes de IA têm cobranças distintas. Plano Free no Claude permitiu Skills manuais, mas a conta exibiu upgrade para Cowork; nenhum plano foi comprado. O preço contratado da Z-API e a fatura dos clientes não foram consultados. US$5 não é teto da stack.
 
 Este perfil avança #ac-46.1 com medidas atuais e premissas explícitas. Permanecem pendentes a carga representativa por carteira, crescimento prolongado, latência de ponta a ponta e custo real de fatura; não anunciar capacidade mensal ou gratuidade universal a partir dele.
+
+## Atualização 18/10: extração por conversa
+
+O padrão atual passa a200 chamadas/dia UTC, por bloco do mesmo contato: até 20 mensagens/12 mil caracteres/janela de ingresso de 2h. Até3 blocos por ciclo de10 min. A cota é configurável entre 1 e 1.000; valores inválidos usam 200. O número não é garantia de4mil mensagens/dia: blocos incompletos, tamanho e retries reduzem a capacidade. O teto e a retenção permanecem independentes; fila prolongada pode expirar sem extração. Os dados de custo acima são históricos da extração individual e não são benchmark do novo modo. [Ensaio do modelo e limites](../implementacao/blocos-modelo-1810.json).

@@ -1,0 +1,53 @@
+{
+  "engine": "SQLite local, schema completo",
+  "plans": [
+    {
+      "statement": "UPDATE memory SET needs_review=1,context_revision=context_revision+1 WHERE id IN (SELECT m.id FROM source_dependencies d JOIN memory m ON m.source_id=d.source_id AND m.source_version=d.source_version WHERE d.context_source_id='sim-context' AND (d.context_source_version!=2 OR 0=1));",
+      "plan": [
+        "SEARCH memory USING COVERING INDEX sqlite_autoindex_memory_1 (id=?)",
+        "LIST SUBQUERY 1",
+        "SEARCH d USING INDEX source_dependencies_reverse (context_source_id=?)",
+        "SEARCH m USING INDEX memory_source_version (source_id=? AND source_version=?)",
+        "CREATE BLOOM FILTER"
+      ]
+    },
+    {
+      "statement": "UPDATE tasks SET needs_review=1,context_revision=context_revision+1 WHERE id IN (SELECT id FROM tasks WHERE source_id='sim-context' UNION SELECT t.id FROM source_dependencies d JOIN tasks t ON t.source_id=d.source_id AND t.source_version=d.source_version WHERE d.context_source_id='sim-context' AND (d.context_source_version!=2 OR 0=1));",
+      "plan": [
+        "SEARCH tasks USING COVERING INDEX sqlite_autoindex_tasks_1 (id=?)",
+        "LIST SUBQUERY 2",
+        "COMPOUND QUERY",
+        "LEFT-MOST SUBQUERY",
+        "SEARCH tasks USING INDEX tasks_source_version (source_id=?)",
+        "UNION USING TEMP B-TREE",
+        "SEARCH d USING INDEX source_dependencies_reverse (context_source_id=?)",
+        "SEARCH t USING INDEX tasks_source_version (source_id=? AND source_version=?)",
+        "CREATE BLOOM FILTER"
+      ]
+    },
+    {
+      "statement": "UPDATE memory SET needs_review=1,context_revision=context_revision+1 WHERE id IN (SELECT m.id FROM source_dependencies d JOIN memory m ON m.source_id=d.source_id AND m.source_version=d.source_version WHERE d.context_source_id='sim-context');",
+      "plan": [
+        "SEARCH memory USING COVERING INDEX sqlite_autoindex_memory_1 (id=?)",
+        "LIST SUBQUERY 1",
+        "SEARCH d USING INDEX source_dependencies_reverse (context_source_id=?)",
+        "SEARCH m USING INDEX memory_source_version (source_id=? AND source_version=?)",
+        "CREATE BLOOM FILTER"
+      ]
+    },
+    {
+      "statement": "UPDATE tasks SET needs_review=1,context_revision=context_revision+1 WHERE id IN (SELECT id FROM tasks WHERE source_id='sim-context' UNION SELECT t.id FROM source_dependencies d JOIN tasks t ON t.source_id=d.source_id AND t.source_version=d.source_version WHERE d.context_source_id='sim-context');",
+      "plan": [
+        "SEARCH tasks USING COVERING INDEX sqlite_autoindex_tasks_1 (id=?)",
+        "LIST SUBQUERY 2",
+        "COMPOUND QUERY",
+        "LEFT-MOST SUBQUERY",
+        "SEARCH tasks USING INDEX tasks_source_version (source_id=?)",
+        "UNION USING TEMP B-TREE",
+        "SEARCH d USING INDEX source_dependencies_reverse (context_source_id=?)",
+        "SEARCH t USING INDEX tasks_source_version (source_id=? AND source_version=?)",
+        "CREATE BLOOM FILTER"
+      ]
+    }
+  ]
+}

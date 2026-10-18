@@ -29,6 +29,8 @@ function runtime(run: (model: string, input: any) => Promise<any>) {
   return {
     ...env,
     AI_ENABLED: "true",
+    // Legacy budget scenarios exercise an explicitly configured lower ceiling.
+    EXTRACTION_CALLS_DAILY: "50",
     AI_MODEL: "@cf/deepseek-ai/deepseek-v4-flash-0731",
     AI: { run },
   } as unknown as AppEnv;
