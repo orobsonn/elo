@@ -102,6 +102,7 @@ Guardar os MP4 finais, SRT e proveniência nesta pasta. Capturas brutas, manifes
 
 | Vídeos | Estado |
 |---|---|
-| Série por jornada e apresentação geral | Roteiros preparados; gravações e revisão dos arquivos finais pendentes |
+| 03 — memória e pós-reunião | MP4 narrado, legendas e proveniência entregues e conferidos |
+| 01, 02, 04, 05, 06, 07 e apresentação geral 08 | Roteiros preparados; vídeos finais pendentes de novas capturas após desbloquear o Mac |
 
 O vídeo geral deve terminar com os limites comprovados da versão filmada. Recebimento, aceitação pelo provedor, entrega e leitura são estados distintos. Uma gravação de preparo/cancelamento não comprova envio; um vídeo de revisão manual não comprova agendamento. A apresentação é material para avaliação do Ronald e do Lucas, sem envio automático ao grupo.
