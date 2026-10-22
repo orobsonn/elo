@@ -4,6 +4,8 @@ Mudanças relevantes no formato Keep a Changelog.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-22
+
 ### Added
 - Instalação assistida com pedido curto, escolhas explicadas e guia visual da Z-API capturado no painel autenticado, sem valores privados.
 - Apresentação opcional “Vamos usar seu Elo” e primeiro uso guiado em `configurar-elo`, com consentimento separado para agenda/demonstração e instruções de retomada.
