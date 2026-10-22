@@ -25,9 +25,9 @@ O plano do cliente e as permissões de organização precisam ser conferidos na 
 
 As pastas em `skills/` são o fonte das instruções, não uma alegação de instalação automática no Claude/ChatGPT. Entregue ao instalador/IA este pedido:
 
-> Instale ou adapte approve, revisao-diaria, pos-reuniao e otimize-meu-processo do pacote Elo no mecanismo de Skills disponível nesta conta. Preserve limites de aprovação e cobertura. Conecte o MCP com login Access e confirme ferramentas e Skills selecionáveis. Se faltar permissão ou recurso, indique a etapa pendente sem substituir por promessa ou me pedir para programar.
+> Instale ou adapte as cinco Skills configurar-elo, approve, revisao-diaria, pos-reuniao e otimize-meu-processo do pacote Elo no mecanismo disponível nesta conta. Preserve limites de aprovação e cobertura. Conecte o MCP com login Access e confirme ferramentas e Skills selecionáveis. Inclua a pasta references de configurar-elo no pacote. Ao final, ofereça “Vamos usar seu Elo” com essa Skill: explicação curta e primeiro uso opcional, sem sincronizar agenda ou gravar demonstração sem autorização. Se faltar permissão ou recurso, indique a etapa pendente sem substituir por promessa ou me pedir para programar.
 
-Para ChatGPT, a documentação recomenda plugins para distribuição reutilizável de Skills [6]. Para Claude, o upload dos quatro ZIPs e o carregamento persistente foram exercitados no Free em 17/10; use o mecanismo efetivamente habilitado na conta. Uma instrução colada no chat pode servir para testar comportamento, mas não comprova instalação persistente.
+Para ChatGPT, a documentação recomenda plugins para distribuição reutilizável de Skills [6]. No Claude, a evidência de 17/10 cobriu os quatro ZIPs de base; a quinta Skill `configurar-elo` com a nova pasta `references` ainda exige instalação/carregamento e ensaio no cliente-alvo. Use o mecanismo efetivamente habilitado na conta. Uma instrução colada no chat pode servir para testar comportamento, mas não comprova instalação persistente.
 
 ## Agendar no Work/Cowork
 

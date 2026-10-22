@@ -1,60 +1,59 @@
-# Primeiro uso do Elo
+# Comece a usar seu Elo
 
-Sua instalação pessoal está em **https://elo.robsonlins.workers.dev**. Para conectar um cliente, o endereço MCP é **https://elo.robsonlins.workers.dev/mcp**. Entre com o Cloudflare Access; não há senha estática do Elo.
+**Você continua no Claude ou ChatGPT.** O Elo acrescenta memória dos contatos, combinados e próximos passos. O backend fica na sua conta Cloudflare. Se conectar o WhatsApp e autorizar a captura, você também poderá consultar as conversas disponíveis e preparar retornos para revisar. Não aparece um novo Claude dentro do WhatsApp.
 
-Este guia acompanha a instalação assistida. Não comprova uma instalação concluída. A URL publicada, o ponto de entrada do instalador e a versão efetiva devem vir da evidência de deploy da própria instalação; não há link fictício de botão neste guia. Use os [ensaios de aceite](ensaios.md) e a [matriz de clientes](clientes-e-agendamento.md).
+Ainda não instalou? Copie [o pedido curto para a IA instaladora](../prompts/instalar-elo.md). Ela segue o [roteiro de instalação assistida](instalacao-assistida.md), executa a parte técnica e chama você nas intervenções inevitáveis. Já instalou? Não precisa refazer a configuração.
 
-## Nesta instalação do Robson
+## Seu primeiro pedido
 
-O [plugin pessoal Elo no ChatGPT](https://chatgpt.com/plugins/plugin_asdk_app_6ad36d6a59f881919b3de4f512858abf) já está conectado e contém as quatro Skills de base, além da rotina de pauta criada no ensaio. Abra o plugin na mesma conta, inicie uma conversa com Elo e peça “registre esta reunião”, “faça minha revisão diária” ou “otimize meu processo”. Se pedir reconexão, faça o login Access com o e-mail autorizado e aceite o consentimento. O agente cuida da configuração técnica; não cole senhas ou códigos no chat.
+No cliente de IA com o **conector Elo habilitado nesta conversa**, escreva:
 
-A página [Configurar WhatsApp](https://elo.robsonlins.workers.dev/setup) é o ponto de entrada para conexão Z-API e webhook. Não é necessário refazer o cadastro MCP para usar o Elo já conectado. Esse link de plugin é particular desta conta; outra instalação precisa do seu próprio provisionamento e autorização.
+> Use configurar-elo e me mostre como usar o Elo. Confira o que está funcionando, explique o que eu instalei e me conduza em um primeiro uso, uma etapa por vez. Não importe minha agenda nem grave uma demonstração sem combinar comigo.
 
-[Resultados e limitações dos testes no ChatGPT](../implementacao/homologacao-chatgpt.md). O Claude pessoal também foi conectado e as quatro Skills foram instaladas/exercitadas, com revisão diária parcial; veja [a evidência específica do Claude](../implementacao/homologacao-skills-claude.md). Celular e rotina agendada continuam com aceites próprios pendentes; conexão no computador não os comprova.
+A IA explica em um minuto, mostra o estado real e oferece preparar uma reunião, registrar uma reunião ou revisar retornos. Você pode pular e retomar depois com o mesmo pedido. Se não achar um campo, diga “não achei; me guie uma etapa por vez”.
 
-## No dia a dia
+Sem Z-API, comece registrando anotações autorizadas ou um exemplo fictício. A IA mostra o que pretende gravar e aguarda sua autorização antes da primeira escrita de demonstração. Depois consulta a memória para você perceber o resultado. Dados fictícios também ficam salvos; limpeza é uma escolha separada.
 
-Abra uma conversa com Elo no ChatGPT ou Claude já conectado e peça o que precisa. Exemplos:
+## Três pedidos para amanhã
 
-- **Depois da reunião:** “Use a Skill pós-reunião do Elo para registrar estas anotações de [contato]: […]. Separe os combinados, as dúvidas e os próximos passos.”
-- **Antes da reunião:** “Consulte a memória e as tarefas de [contato] no Elo e prepare uma pauta curta, destacando o que preciso perguntar.”
-- **Revisar o dia:** “Use a revisão diária do Elo para hoje. Mostre prioridades, prazos, pendências e o que não conseguiu avaliar.”
-- **Enviar uma mensagem:** “Prepare pelo Elo uma mensagem para [contato] com este texto: […]. Mostre a proposta e aguarde minha aprovação.” Confira a pessoa e o texto antes de aprovar no próximo turno.
-- **Adaptar sua rotina:** “Use Otimize meu processo para melhorar minha rotina de [atividade].”
+| Situação | Escreva no cliente de IA |
+|---|---|
+| Antes de uma reunião | “Consulte no Elo a memória e as tarefas de [contato] e prepare minha pauta. Mostre o que falta saber.” |
+| Depois da reunião | “Use pós-reunião para registrar no Elo estas anotações de [contato], da reunião de [data]: [notas].” |
+| Organizar os retornos | “Use revisão diária para mostrar quem precisa de retorno nas minhas conversas disponíveis. Diga qual período conseguiu avaliar.” |
 
-Se houver mais de um contato com o mesmo nome, escolha a ficha indicada pelo Elo. Corrija fatos ou tarefas no próprio chat quando necessário. Áudios e imagens sem texto utilizável aparecem como não avaliados; isso não impede consultar as demais informações disponíveis.
+**Skills** são instruções reutilizáveis para essas rotinas. As cinco do pacote são `configurar-elo`, `pos-reuniao`, `revisao-diaria`, `approve` e `otimize-meu-processo`. Peça pelo nome; a IA deve conferir que estão instaladas/carregadas. **Projetos** organizam chats e arquivos no seu cliente de IA; não são o banco do Elo, nem garantem que o conector esteja habilitado em qualquer conversa. Arquivos exportados não provam que uma Skill está instalada.
 
-A revisão manual já pode ser usada. O agendamento automático no Work/Cowork ainda não tem comprovação completa nesta instalação; não conte com um brief automático até essa etapa ser validada. Não é preciso refazer a configuração para usar as funções já conectadas.
+Para adaptar uma rotina sua, peça “Use Otimize meu processo para melhorar minha rotina de [atividade]”. [Compatibilidade, instalação das Skills e limites por cliente](clientes-e-agendamento.md).
 
-## O que você precisa fazer
+## E minha planilha?
 
-1. Abra o ponto de entrada fornecido com sua instalação, preferencialmente no computador. Autorize a IA instaladora na **sua conta Cloudflare** e confira o nome da conta antes de prosseguir. Ela deve executar a configuração; você não precisa estudar OAuth, criar políticas ou copiar IDs técnicos.
-2. Faça o login e os consentimentos solicitados. Segredos entram em campos protegidos ou no gerenciador de segredos do instalador, nunca no chat ou em capturas de tela. Se a IA não tiver permissão para executar uma etapa, a instalação deve dizer exatamente qual autorização falta e retomar depois dela.
-3. Peça para conectar o Elo no Claude ou ChatGPT escolhido e instalar as quatro Skills deste pacote. Faça o login Cloudflare Access quando o cliente abrir a autorização. Teste consulta e memória fictícias antes de conectar WhatsApp.
-4. Quando tiver contratado sua própria instância Z-API, insira as credenciais pela superfície protegida de configuração, autorize a conexão do número controlado e siga o pareamento. A instância ainda não contratada deve aparecer como **WhatsApp não configurado**. Não compre automaticamente por seguir este guia.
-5. Peça à Skill `configurar-elo` para mapear a agenda do WhatsApp. Ela percorre as páginas de `contacts_sync` e permite buscar por nome com `contacts_list`, mesmo sem conversa prévia. Se houver homônimos, identifique o alias correto antes de preparar mensagem. Isso não importa histórico anterior nem autoriza envio.
-6. Somente com autorização específica para o número de teste, faça receber um texto sintético, consulte-o por ID interno, prepare outro com a Skill approve, confira destinatário/texto, aprove no chat e consulte o resultado. Aceito pelo provedor não significa entregue.
+Você pode continuar analisando arquivos no seu cliente de IA pelo fluxo habitual, respeitando permissões e evitando dados desnecessários. O Elo não importa, sincroniza ou envia a planilha. Ele pode ajudar a consultar o contexto de um contato e registrar os combinados autorizados que saírem da análise.
 
-Uso diário: peça “faça minha revisão diária”, “registre esta reunião” ou “otimize meu processo”. A revisão mostra cobertura e pendências. Enviar exige uma revisão concreta no chat. Não é necessário terminal no uso diário; o dono confirmou uma consulta sintética no ChatGPT/iPhone; revisão e aprovação no celular ainda precisam de ensaio. [Recorte da confirmação](../implementacao/mobile-chatgpt-1710.md).
+Exemplo: “Analise esta planilha para [objetivo]. Depois me mostre quais conclusões e próximos passos vale registrar no Elo para [contato]”. Arquivo/chat e memória do Elo são separados; apagar de um lado não apaga do outro.
 
-## O que a instalação deve executar por você
+## Quando quiser conectar o WhatsApp
 
-Este é o contrato do instalador/IA, não uma lista de tarefas técnicas para o aluno. Se alguma parte não estiver implementada ou falhar, registrar **instalação incompleta**, mantendo o diagnóstico por etapa.
+Peça à IA para seguir o [guia visual Z-API](zapi.md). Entre na tela `/setup` da **sua instalação**, faça login Access e preencha as credenciais nos campos protegidos. Client-Token fica em Segurança da conta Z-API, fora da página da instância. A IA deve explicar e conduzir os campos de recebimento antes de ativá-los. Não cole credenciais ou o endereço privado de webhook no chat.
 
-- Identificar conta e recursos existentes do Elo para retomar sem recriar/apagar dados; provisionar somente recursos deste projeto.
-- Configurar Cloudflare Access for SaaS/OIDC, acesso restrito ao dono, callbacks e segredos/bindings. Integrar o login à autorização MCP e vincular identidade validada ao dono autorizado. A referência oficial é [Secure MCP servers](https://developers.cloudflare.com/cloudflare-one/access-controls/ai-controls/secure-mcp-servers/). Esse caminho documentado não prova que a conta e os dois clientes já passaram no Elo.
-- Usar a URL publicada do próprio Elo. Não exigir compra de domínio por analogia com Access de aplicações web quando OIDC em workers.dev atender. Não trocar autenticação por cookie de navegador, cabeçalho fixo ou exceção pública para facilitar o teste.
-- Testar descoberta e fluxo de autorização, identidade indevida, expiração/renovação e revogação; conferir que origem/preview não contornam autenticação. Webhook tem autenticação própria e não abre as tools.
-- Configurar a conexão do cliente pelo recurso disponível naquela conta. Login e consentimento humano continuam necessários. Falta de permissão organizacional deve aparecer como bloqueio concreto.
-- Instalar/adaptar o pacote de Skills no mecanismo suportado pelo cliente e comprovar que está selecionável. Apenas baixar os arquivos não conclui a instalação.
-- Exibir diagnóstico seguro por etapa com versão, conexão, última recepção e erro seguro, sem mensagens, nomes completos, telefones, tokens ou URLs privadas.
+Captura e agenda são escolhas separadas. Ativar callbacks pode iniciar o armazenamento de conversas novas. Mapear a agenda guarda contatos no backend e só acontece quando você autorizar essa finalidade. Não importa conversas antigas nem transforma todos os contatos em clientes. Se houver homônimos, identifique a pessoa certa; a IA não deve escolher o primeiro.
 
-## Quando pode chamar de concluído
+Para enviar, peça “Prepare pelo Elo uma mensagem para [contato] com este texto: [...] e me mostre antes”. **Confira destinatário e texto e aprove em outra mensagem.** Habilitar envios não aprova uma mensagem; pausar envios não pausa captura. Envio V0 é só texto individual, sem grupos/anexos. Aceito pelo provedor não comprova entrega.
 
-Autenticação e leitura/escrita sintéticas podem ser verificadas sem Z-API. A instalação completa só termina depois de autenticação, recebimento real autorizado, consulta por ID interno, envio aprovado a destino controlado e consulta do estado. Enquanto a Z-API não existir, registrar essa dependência sem simular eventos reais. Os testes com cliente, celular e pessoa leiga são aceites próprios, não consequências de testes do servidor.
+## Como saber o que terminou
 
-## Custos e privacidade
+A IA deve separar **base publicada**, **cliente conectado**, **Skills disponíveis**, **WhatsApp validado** e **primeiro uso feito ou pulado**. Credenciais salvas ou um evento antigo não garantem conexão atual/cobertura completa. Sem WhatsApp, a entrega pode ser “base e cliente funcionando; WhatsApp pendente”, desde que os primeiros itens tenham sido exercitados.
 
-Antes de habilitar recurso pago, a instalação deve mostrar a cobrança e pedir a autorização que faltar. Plano da IA, Cloudflare/Workers/D1/Access, inferência e Z-API são custos separados; US$5 não é teto da solução. O uso do DeepSeek exige Paid/créditos conforme o caminho de inferência escolhido, com elegibilidade confirmada na conta. O [perfil de consumo observado](perfil-de-uso.md) separa medidas e projeções; não representa o custo completo da conta nem dispensa mostrar a cobrança antes de ativar recursos.
+Instalação completa exige autenticação, Skills, recebimento real autorizado persistido, consulta, envio aprovado a contato controlado e consulta do resultado. [Ensaios de aceite](ensaios.md). Uso no celular e rotina automática pedem suas próprias provas; não contam como validados pelo computador. Não espere brief agendado sem uma execução real confirmada.
 
-Texto de conversa pode identificar pessoas. O Elo restringe identificadores estruturados de entrega ao backend, mas não promete anonimização universal. O histórico bruto ativo dura até 30 dias; memória concisa e pendências têm vida distinta. Exclusão de uma camada não apaga automaticamente backups, Z-API ou histórico do chat de IA.
+## Custos, privacidade e ajuda
+
+Cloudflare, cliente de IA, inferência e Z-API têm cobranças próprias. Confira condições atuais antes de autorizar compras/ativações; não há teto total garantido. [Perfil de uso observado](perfil-de-uso.md).
+
+Texto livre pode identificar pessoas. Histórico bruto ativo fica até 30 dias; memória concisa e pendências têm vida distinta. Backups, Z-API e chats/arquivos da IA têm regras próprias. [Recuperação e revogação](recuperacao.md).
+
+## Referência da instalação pessoal do mantenedor
+
+Somente para essa instalação: [abrir Elo](https://elo.robsonlins.workers.dev), MCP `https://elo.robsonlins.workers.dev/mcp`, [configuração WhatsApp](https://elo.robsonlins.workers.dev/setup) e [plugin pessoal ChatGPT](https://chatgpt.com/plugins/plugin_asdk_app_6ad36d6a59f881919b3de4f512858abf). Outra pessoa precisa dos próprios endereços e autorização; não usar estes como alvo de instalação.
+
+Evidências anteriores, com seus recortes: [ChatGPT](../implementacao/homologacao-chatgpt.md), [Skills Claude](../implementacao/homologacao-skills-claude.md), [celular](../implementacao/mobile-chatgpt-1710.md). Não provam que outra conta já está configurada.

@@ -8,7 +8,43 @@ import {
 } from "../src/actions";
 import { seal, sql } from "../src/core";
 import type { AppEnv } from "../src/env";
+import { configureConnection, getConnection } from "../src/zapi";
 const e = env as AppEnv;
+it("re-saving connection pauses sends, changes webhook and rejects the old approval even after re-enabling", async () => {
+  const a = await prepareAction(e, {
+    contact_id: "ct_mario", text: "Aprovação antiga",
+  });
+  const previous = await getConnection(e);
+  vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+    const url = String(input instanceof Request ? input.url : input);
+    new Request(url, init);
+    if (url.endsWith("/status")) return Response.json({ connected: true });
+    if (url.endsWith("/device")) return Response.json({ phone: "5511999990001" });
+    throw new Error("Unexpected provider call");
+  }));
+  try {
+    const result = await configureConnection(e, {
+      instance_id: "synthetic",
+      instance_token: "synthetic-token",
+      client_token: "synthetic-client",
+    });
+    const current = await getConnection(e);
+    expect(result.connected).toBe(true);
+    expect(current.sends_paused).toBe(1);
+    expect(current.connection_generation).toBe(previous.connection_generation + 1);
+    expect(current.credentials.webhook_key).not.toBe(
+      previous.credentials.webhook_key,
+    );
+    await sql(e.DB, "UPDATE settings SET sends_paused=0 WHERE id=1").run();
+    const send = vi.fn(async () => ({ messageId: "should-not-send" }));
+    await expect(executeAction(
+      e, { action_id: a.id, approved_hash: a.content_hash }, send,
+    )).rejects.toThrow();
+    expect(send).not.toHaveBeenCalled();
+  } finally {
+    vi.unstubAllGlobals();
+  }
+});
 beforeEach(async () => {
   await sql(
     e.DB,

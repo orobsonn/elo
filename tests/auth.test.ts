@@ -17,6 +17,8 @@ import {
   accessEndpoints,
 } from "../src/auth";
 import type { AppEnv } from "../src/env";
+import { seal } from "../src/core";
+import { setup, welcome } from "../src/setup";
 
 const appEnv = env as AppEnv;
 let pair: Awaited<ReturnType<typeof generateKeyPair>>;
@@ -28,6 +30,57 @@ const ctx = {
 const base = "https://elo.test";
 const now = () => Math.floor(Date.now() / 1000);
 const callback = `${base}/callback`;
+
+it("guides an unconfigured owner to the right credential pages without claiming public connection state", async () => {
+  const logged = await finish(await start());
+  const response = await setup(
+    new Request(`${base}/setup`, {
+      headers: { Cookie: logged.headers.get("Set-Cookie")!.split(";")[0] },
+    }),
+    { ...appEnv, BUILD_COMMIT: "a".repeat(40) },
+  );
+  const html = await response.text();
+  expect(html).toContain('aria-describedby="client-help"');
+  expect(html).toContain("Segurança → Token de segurança da conta");
+  expect(html).toContain("Instâncias Web");
+  expect(html).toContain("zapi.md");
+  expect(html).toContain(`/blob/${"a".repeat(40)}/docs/operacao/zapi.md`);
+  expect(html).toContain("me mostre como usar o Elo");
+  expect(html).not.toContain("value=\"synthetic-secret\"");
+  expect(await welcome().text()).not.toContain("WhatsApp ainda não configurado");
+});
+
+it("separates saved credentials, observed reception and send pause while escaping the private webhook", async () => {
+  const logged = await finish(await start());
+  await appEnv.DB.prepare(
+    "UPDATE settings SET connection_cipher=?,sends_paused=1,last_received=? WHERE id=1",
+  ).bind(
+    await seal({
+      instance_id: "synthetic-instance",
+      instance_token: "private-instance-token",
+      client_token: "private-client-token",
+      webhook_key: '<img src=x onerror="alert(1)">',
+    }, appEnv.ENCRYPTION_KEY),
+    Date.now(),
+  ).run();
+  const response = await setup(
+    new Request(`${base}/setup`, {
+      headers: { Cookie: logged.headers.get("Set-Cookie")!.split(";")[0] },
+    }),
+    appEnv,
+  );
+  const html = await response.text();
+  expect(html).toContain("Estado atual da conexão não monitorado nesta tela");
+  expect(html).toContain("Recebimento já observado");
+  expect(html).toContain("Habilitar envios não ativa o recebimento");
+  expect(html).toContain("&#60;img src=x onerror=&#34;alert(1)&#34;&#62;");
+  expect(html).not.toContain('<img src=x');
+  expect(html).not.toContain("private-client-token");
+  expect(html).not.toContain("private-instance-token");
+  expect(html).toMatch(/name="csrf" value="[^"]+"/);
+  expect(response.headers.get("Content-Security-Policy")).toContain("form-action 'self'");
+  expect(response.headers.get("Cache-Control")).toBe("no-store");
+});
 
 beforeAll(async () => {
   pair = await generateKeyPair("RS256", { extractable: true });

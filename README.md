@@ -2,7 +2,9 @@
 
 Memória de relacionamento e WhatsApp assistido no Claude/ChatGPT, com infraestrutura individual Cloudflare.
 
-[Comece pelo guia de primeiro uso](docs/operacao/primeiro-uso.md). Login padrão Cloudflare Access integrado ao OAuth MCP. A configuração Z-API é a única tela própria; uso diário e approve individual acontecem no chat.
+[Quero instalar: copie este pedido para a IA](docs/prompts/instalar-elo.md) · [Já instalei: entenda e faça seu primeiro uso](docs/operacao/primeiro-uso.md) · [Guia visual Z-API](docs/operacao/zapi.md).
+
+A IA segue o [roteiro canônico de instalação](docs/operacao/instalacao-assistida.md), explica as escolhas e termina oferecendo **Vamos usar seu Elo**: apresentação curta, estado real e primeiro resultado guiado. A pessoa pode pular e retomar com “Use configurar-elo e me mostre como usar o Elo”. Login padrão Cloudflare Access integrado ao OAuth MCP. A configuração Z-API é a única tela própria; uso diário e approve individual acontecem no chat.
 
 **Instalação pessoal:** [abrir Elo](https://elo.robsonlins.workers.dev) · MCP: `https://elo.robsonlins.workers.dev/mcp`. [Evidências da publicação](docs/implementacao/validacao-publicada.md).
 
