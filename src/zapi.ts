@@ -132,7 +132,7 @@ export async function configureConnection(env: AppEnv, input: unknown) {
     webhook: `${env.PUBLIC_ORIGIN}/webhooks/zapi/${c.webhook_key}`,
     sends_paused: true,
     next: state.connected
-      ? "Configure os callbacks e habilite envios após o teste controlado."
+      ? "Configure o recebimento na Z-API e faça o teste com um contato controlado. Os envios continuam pausados até sua escolha."
       : "Pareie o número na Z-API e salve novamente para verificar o remetente.",
   };
 }

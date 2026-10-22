@@ -5,6 +5,9 @@ Mudanças relevantes no formato Keep a Changelog.
 ## [Unreleased]
 
 ### Added
+- Instalação assistida com pedido curto, escolhas explicadas e guia visual da Z-API capturado no painel autenticado, sem valores privados.
+- Apresentação opcional “Vamos usar seu Elo” e primeiro uso guiado em `configurar-elo`, com consentimento separado para agenda/demonstração e instruções de retomada.
+- Ajuda contextual nos campos Z-API e distinção entre credenciais salvas, recebimento observado e permissão para enviar na tela de configuração.
 - Agenda WhatsApp paginada via Z-API e busca de contatos sem mensagens anteriores, com nome restrito ao backend e IDs/aliases no MCP.
 - Skill `configurar-elo` e atualização de `approve` para mapear contatos antes de preparar mensagens.
 - Bloqueio privado de recadastro após exclusão, validação do aparelho e proteção contra troca concorrente de conexão.
