@@ -3,7 +3,7 @@
   "scope": "USER",
   "expected_release_id": "pluginrel_6ad4dbd3d7988191b2414e187ec6ee7b",
   "installed_version": "1.0.4",
-  "prepared_version": "1.0.5",
+  "prepared_version": "1.1.0",
   "retained_paths": [
     ".app.json",
     "skills/elo-preparar-pauta/SKILL.md",
@@ -11,5 +11,5 @@
     "skills/pos-reuniao/SKILL.md",
     "skills/revisao-diaria/SKILL.md"
   ],
-  "publication": "pending_owner_approval"
+  "publication": "authorized_pending_publication"
 }

@@ -117,3 +117,18 @@ test('identity upgrade revokes legacy pending hashes and preserves uncertain att
     assert.equal(db.prepare("SELECT state FROM action_events WHERE action_id='act_awaiting_approval' ORDER BY id DESC LIMIT 1").get()?.state,'cancelled');
   } finally {db.close();}
 });
+
+test('send intent upgrade revokes pending legacy actions and keeps attempted sends conservative',()=>{
+  const db=new DatabaseSync(':memory:');
+  try{
+    for(const name of readdirSync(new URL('../migrations/',import.meta.url)).filter(n=>n.endsWith('.sql')&&n<'0010_send_intent.sql').sort())db.exec(readFileSync(new URL('../migrations/'+name,import.meta.url),'utf8'));
+    db.exec("INSERT INTO contacts(id,alias,created_at) VALUES('ct_demo','Lia',1)");
+    for(const state of ['prepared','awaiting_approval','executing','uncertain'])db.prepare("INSERT INTO actions(id,contact_id,alias,content,content_hash,address,address_version,connection_generation,epoch,status,prepared_at,expires_at,request_fingerprint) VALUES(?,'ct_demo','Lia','Texto','legacy','synthetic-address',1,1,'old',?,1,9999999999999,?)").run('act_'+state,state,'request_'+state);
+    db.exec(readFileSync(new URL('../migrations/0010_send_intent.sql',import.meta.url),'utf8'));
+    for(const state of ['prepared','awaiting_approval','executing','uncertain']){
+      const row=db.prepare('SELECT status,review_required FROM actions WHERE id=?').get('act_'+state);
+      assert.equal(row.review_required,1);assert.equal(row.status,['prepared','awaiting_approval'].includes(state)?'cancelled':state);
+    }
+    assert.match(db.prepare("SELECT sql FROM sqlite_master WHERE name='actions_open_request'").get().sql,/'prepared'/);
+  }finally{db.close();}
+});

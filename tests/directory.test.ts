@@ -660,6 +660,7 @@ it.each(["executing", "uncertain"])(
       "SELECT id FROM contacts WHERE address='5511999990001'",
     ).first<any>())!;
     const a = await prepareAction(env, {
+      intent: "send_now",
       contact_id: contact.id,
       text: "Em voo",
     });
@@ -957,13 +958,55 @@ it("does not recreate a LID record retired by concurrent exact reconciliation", 
     ).first<any>())!.n,
   ).toBe(1);
 });
-it("attaches a technical provisional duplicate to an existing classified client with exact proof",async()=>{
-  await setup([{phone:'5511999990001',short:'Lia'}]);await sync();
-  const client=(await sql(env.DB,'SELECT id FROM contacts').first<any>())!;
-  await toolset(env).get('contact_update')!.call({contact_id:client.id,relationship:'client',alias:'Lia trilhas'});
-  await ingest(env.DB,{type:'ReceivedCallback',phone:'9999999990001@lid',messageId:'client-lid-only',momment:Date.now(),text:{message:'Histórico'}},1,env.ENCRYPTION_KEY);
-  await ingest(env.DB,{type:'ReceivedCallback',phone:'5511999990001',chatLid:'9999999990001@lid',messageId:'client-pair',momment:Date.now(),text:{message:'Atual'}},1,env.ENCRYPTION_KEY);
-  const cards=(await toolset(env).get('contacts_list')!.call({}) as any).items;
-  expect(cards).toHaveLength(1);expect(cards[0]).toMatchObject({id:client.id,alias:'Lia trilhas',relationship:'client'});
-  expect((await toolset(env).get('messages_list')!.call({contact_id:client.id}) as any).items).toHaveLength(2);
+it("attaches a technical provisional duplicate to an existing classified client with exact proof", async () => {
+  await setup([{ phone: "5511999990001", short: "Lia" }]);
+  await sync();
+  const client = (await sql(env.DB, "SELECT id FROM contacts").first<any>())!;
+  await toolset(env)
+    .get("contact_update")!
+    .call({
+      contact_id: client.id,
+      relationship: "client",
+      alias: "Lia trilhas",
+    });
+  await ingest(
+    env.DB,
+    {
+      type: "ReceivedCallback",
+      phone: "9999999990001@lid",
+      messageId: "client-lid-only",
+      momment: Date.now(),
+      text: { message: "Histórico" },
+    },
+    1,
+    env.ENCRYPTION_KEY,
+  );
+  await ingest(
+    env.DB,
+    {
+      type: "ReceivedCallback",
+      phone: "5511999990001",
+      chatLid: "9999999990001@lid",
+      messageId: "client-pair",
+      momment: Date.now(),
+      text: { message: "Atual" },
+    },
+    1,
+    env.ENCRYPTION_KEY,
+  );
+  const cards = ((await toolset(env).get("contacts_list")!.call({})) as any)
+    .items;
+  expect(cards).toHaveLength(1);
+  expect(cards[0]).toMatchObject({
+    id: client.id,
+    alias: "Lia trilhas",
+    relationship: "client",
+  });
+  expect(
+    (
+      (await toolset(env)
+        .get("messages_list")!
+        .call({ contact_id: client.id })) as any
+    ).items,
+  ).toHaveLength(2);
 });

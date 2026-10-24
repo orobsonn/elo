@@ -7,7 +7,7 @@ PRD de referência: [v1.1](../prd/elo-v1.md). Produto fechado para planejamento;
 | Entrega | Resultado | Depende de | Requisitos sob responsabilidade |
 |---|---|---|---|
 | [E1 / #1](https://github.com/orobsonn/elo/issues/1) | Instalar a base individual e consultar conversas WhatsApp por IDs internos | — | R01, R02, R03, R04, R05, R07, R08, R11, R12, R13, R14, R15, R16, R17, R18, R19, R20, R41, R44, R47 |
-| [E2 / #2](https://github.com/orobsonn/elo/issues/2) | Preparar e enviar texto WhatsApp após approve pela Skill no chat | #1 | R31, R32, R33, R34, R35, R36, R38, R40 |
+| [E2 / #2](https://github.com/orobsonn/elo/issues/2) | Redigir e enviar texto WhatsApp a pedido do dono; prévia com approve quando solicitada | #1 | R31, R32, R33, R34, R35, R36, R38, R40 |
 | [E3 / #3](https://github.com/orobsonn/elo/issues/3) | Consolidar memória e pendências a partir do histórico de até 30 dias | #1 | R21, R22, R23, R24, R25, R26, R27, R28, R29, R30, R45, R49 |
 | [E4 / #4](https://github.com/orobsonn/elo/issues/4) | Entregar Skills e concluir instalação guiada em Claude e ChatGPT | #1, #2, #3 | R06, R09, R10, R42, R43, R46, R48, R50, R51 |
 

@@ -4,6 +4,16 @@ Mudanças relevantes no formato Keep a Changelog.
 
 ## [Unreleased]
 
+### Added
+- Pedido de envio autoriza a IA a redigir e enviar direto; prévia/revisão passa a ser uma escolha explícita do dono por ação.
+- MCP exige intent de envio ou prévia, anuncia a versão do produto e informa o próximo passo canônico da ação.
+
+### Fixed
+- Correlação privada LID/telefone com prova explícita, recuperação do histórico legado, nomes da agenda, paginação por execução e preservação de homônimos/aliases manuais (#33).
+- Deduplicação do preparo e do envio, inclusive corridas de aceite, prova de identidade, exclusão e resultados incertos (#33).
+- Prévia persistida não pode ser rebaixada por repetição; aprovação de uma ação não vale para outra; ações legadas pendentes são revogadas sem repetir tentativas incertas.
+
+
 ## [0.3.0] - 2026-10-22
 
 ### Added

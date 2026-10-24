@@ -9,6 +9,7 @@ import reviewScopeIndexes from "../migrations/0006_review_scope_indexes.sql?raw"
 import conversationBlocks from "../migrations/0007_conversation_blocks.sql?raw";
 import directoryMigration from "../migrations/0008_contact_directory.sql?raw";
 import identityDirectory from "../migrations/0009_identity_and_directory_runs.sql?raw";
+import sendIntent from "../migrations/0010_send_intent.sql?raw";
 beforeAll(async () => {
   await applyD1Migrations(env.DB, [
     {
@@ -70,6 +71,13 @@ beforeAll(async () => {
     {
       name: "0009",
       queries: identityDirectory
+        .split(/;\s*(?:\n|$)/)
+        .map((s) => s.trim())
+        .filter(Boolean),
+    },
+    {
+      name: "0010",
+      queries: sendIntent
         .split(/;\s*(?:\n|$)/)
         .map((s) => s.trim())
         .filter(Boolean),

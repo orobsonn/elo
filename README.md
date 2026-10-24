@@ -4,18 +4,18 @@ Memória de relacionamento e WhatsApp assistido no Claude/ChatGPT, com infraestr
 
 [Quero instalar: copie este pedido para a IA](docs/prompts/instalar-elo.md) · [Já instalei: entenda e faça seu primeiro uso](docs/operacao/primeiro-uso.md) · [Guia visual Z-API](docs/operacao/zapi.md).
 
-A IA segue o [roteiro canônico de instalação](docs/operacao/instalacao-assistida.md), explica as escolhas e termina oferecendo **Vamos usar seu Elo**: apresentação curta, estado real e primeiro resultado guiado. A pessoa pode pular e retomar com “Use configurar-elo e me mostre como usar o Elo”. Login padrão Cloudflare Access integrado ao OAuth MCP. A configuração Z-API é a única tela própria; uso diário e approve individual acontecem no chat.
+A IA segue o [roteiro canônico de instalação](docs/operacao/instalacao-assistida.md), explica as escolhas e termina oferecendo **Vamos usar seu Elo**: apresentação curta, estado real e primeiro resultado guiado. A pessoa pode pular e retomar com “Use configurar-elo e me mostre como usar o Elo”. Login padrão Cloudflare Access integrado ao OAuth MCP. A configuração Z-API é a única tela própria; uso diário e pedido individual de envio acontecem no chat. Pediu para enviar, a IA redige e envia; para revisar antes, peça uma prévia.
 
 **Instalação pessoal:** [abrir Elo](https://elo.robsonlins.workers.dev) · MCP: `https://elo.robsonlins.workers.dev/mcp`. [Evidências da publicação](docs/implementacao/validacao-publicada.md).
 
-**Já conectado?** [Use no dia a dia](docs/operacao/primeiro-uso.md#no-dia-a-dia): registrar reunião, consultar memória/tarefas, preparar pauta, revisar o dia e preparar mensagem para aprovação. As pendências de homologação não exigem refazer a instalação.
+**Já conectado?** [Use no dia a dia](docs/operacao/primeiro-uso.md#no-dia-a-dia): registrar reunião, consultar memória/tarefas, preparar pauta, revisar o dia e pedir uma mensagem e enviá-la direto, ou solicitar prévia para revisão. As pendências de homologação não exigem refazer a instalação.
 
 ## V0
 
 Na **v0.2.0**, a extração agrupa mensagens por contato e usa cota padrão de 200 chamadas por dia. [Funcionamento e testes](docs/implementacao/blocos-extracao-1810.md).
 
 - MCP tipado com contatos por ID/alias, histórico paginado, memória rastreável, conflitos pendentes, tarefas, datas e revisão diária com cobertura de versões.
-- Z-API: captura individual normalizada, callbacks com autenticação própria e texto aprovado com consumo atômico. Sem instância, indica `whatsapp_nao_configurado`; não simula envio.
+- Z-API: captura individual normalizada, callbacks com autenticação própria e texto solicitado pelo dono com consumo atômico. Sem instância, indica `whatsapp_nao_configurado`; não simula envio.
 - Histórico bruto até 30 dias da data original; expurgo técnico independente da IA. Memória concisa pode permanecer. Texto livre pode conter dados pessoais.
 - Extração DeepSeek V4 Flash configurável na Workers AI, com limites de entrada/saída, três tentativas e orçamento diário. Plano Paid/créditos e demais custos são separados.
 - [Skills](skills/): configurar Elo (mapear agenda), approve, revisão diária, pós-reunião e Otimize meu processo. Agendamento pertence a Work/Cowork. [Matriz de clientes e aceites humanos](docs/operacao/clientes-e-agendamento.md).

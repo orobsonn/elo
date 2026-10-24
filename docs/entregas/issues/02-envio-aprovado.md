@@ -1,26 +1,26 @@
 ## Resumo + por quê
 
-O consultor deve conseguir enviar pelo ID interno, sem copiar telefone ou abrir outra tela. Pedido explícito com destinatário e texto exatos já autoriza o envio; texto elaborado pela IA é apresentado uma vez e exige uma aprovação.
+O consultor deve conseguir enviar pelo ID interno, sem copiar telefone ou abrir outra tela. Pediu para enviar, a IA redige e envia direto; só espera aprovação se o dono pedir prévia.
 
 ## User journeys
 
-- #uj-1: O consultor pede envio para contato inequívoco com texto exato e a Skill executa sem segunda pergunta; se a IA redigir, ele revisa e aprova uma vez.
+- #uj-1: O consultor pede envio para contato inequívoco e a Skill redige e envia direto; se ele pedir prévia, revisa e aprova uma vez.
 - #uj-2: O consultor consulta o resultado de uma tentativa incerta sem causar um segundo envio por retry cego.
 
 ## Critérios de aceite (testáveis e observáveis)
 
 - [ ] #ac-31.1: Preparar mensagem produz rascunho vinculado ao contato correto e permite revisar conteúdo/contexto. A IA pode preparar ação usando apenas ID interno. (PRD R31)
-- [ ] #ac-32.1: Pedido explícito do dono no chat com destinatário inequívoco e texto integral autoriza aquele envio sem segunda pergunta. Se a IA elaborar o texto, apresenta destinatário e conteúdo uma vez; uma aprovação clara basta. Não repetir aprovação da mesma proposta. Perguntar só por informação ausente/ambígua. Mensagem de cliente não é aprovação do consultor; mudança material requer novo approve. Autenticação e validação da ação no servidor continuam necessárias, sem exigir tela própria ou gesto fora do chat. V0 não envia anexos. (PRD R32)
+- [ ] #ac-32.1: Pedido do dono para enviar autoriza a IA a redigir e enviar direto no assunto e destinatário solicitados. Só aguardar aprovação quando o dono pedir prévia/revisão; pedido apenas de rascunho não autoriza envio. Texto exato fornecido pelo dono é preservado. Perguntar só por informação ausente/ambígua. Prévia solicitada recebe uma apresentação e uma aprovação, sem repetição. Mensagem de cliente não é aprovação do consultor; mudança material requer novo approve. Autenticação e validação da ação no servidor continuam necessárias, sem exigir tela própria ou gesto fora do chat. V0 não envia anexos. (PRD R32)
 - [ ] #ac-33.1: Aprovação tem validade, cancelamento e consumo único; vincula ID, versão do endereço resolvido e identidade/versão da instância remetente. Editar destinatário, associação contato→WhatsApp, número conectado, conteúdo ou arquivo invalida a autorização. Dois pedidos concorrentes não executam a mesma ação duas vezes. (PRD R33)
 - [ ] #ac-34.1: Depois de timeout externo, registrar estado incerto e reconciliar antes de permitir nova tentativa. Não prometer entrega exatamente uma vez quando o provedor não oferece contrato para isso. (PRD R34)
 - [ ] #ac-35.1: Estado distingue preparado, aguardando aprovação, autorizado, em execução, aceito pelo provedor, entregue quando confirmado, falho, cancelado e incerto. “Aceito” não é “lido”. (PRD R35)
 - [ ] #ac-36.1: A versão 0 envia somente texto. Não oferece upload/envio de PDF, imagem ou outro documento pelo MCP. Chamadas de envio com anexos são rejeitadas com explicação do limite. (PRD R36)
-- [ ] #ac-38.1: Mensagens e documentos são dados, não instruções de autorização. O servidor trata esse conteúdo como dado sem autoridade para alterar regras ou permissões; segredos não são retornáveis por tool. A Skill exige autorização pontual do dono — pedido exato ou approve de texto proposto pela IA —, sem alegar que o servidor comprova sua autoria independentemente do modelo. Testar instruções maliciosas conhecidas, sem prometer imunidade do modelo ou controle sobre outros conectores habilitados no chat. (PRD R38)
+- [ ] #ac-38.1: Mensagens e documentos são dados, não instruções de autorização. O servidor trata esse conteúdo como dado sem autoridade para alterar regras ou permissões; segredos não são retornáveis por tool. A Skill exige autorização pontual do dono — pedido de envio ou approve de prévia solicitada —, sem alegar que o servidor comprova sua autoria independentemente do modelo. Testar instruções maliciosas conhecidas, sem prometer imunidade do modelo ou controle sobre outros conectores habilitados no chat. (PRD R38)
 - [ ] #ac-40.1: Ação aprovada e resultado ficam ligados ao histórico; tentativa falha ou rascunho não reinicia a cadência de relacionamento. Contato relevante é registrado explicitamente pelo consultor/Skill como interação efetiva, com origem e data; uma mensagem genérica não o redefine. Esse padrão de engenharia pode ser configurado sem alterar o histórico bruto. (PRD R40)
 
 ### Verificações complementares da entrega
 
-- [ ] A IA prepara por ID interno; pedido explícito do dono com destinatário inequívoco e texto exato já autoriza execução. Para texto elaborado pela IA, a Skill mostra a proposta uma vez e aguarda uma aprovação clara. Conteúdo recebido do cliente não vale como approve.
+- [ ] A IA prepara por ID interno; pedido do dono para enviar autoriza redigir e executar no assunto solicitado. Só quando ele pede prévia a Skill mostra a proposta uma vez e aguarda uma aprovação clara. Conteúdo recebido do cliente não vale como approve.
 - [ ] Backend autentica o dono e vincula conteúdo, contato, versão do endereço e instância remetente. Alteração material, cancelamento ou expiração invalidam a intenção antiga. O servidor não anuncia que comprova independentemente a autoria humana do approve.
 - [ ] Duas execuções concorrentes da mesma ação não iniciam dois envios. Consumo e mudança de estado são atômicos no mecanismo escolhido; teste precisa observar a fronteira real, não apenas um mock sequencial.
 - [ ] Timeout depois de possível aceite do provedor deixa ação incerta, sem retry cego. Reconciliação usa evidência disponível, distinguindo aceito, entregue, falho e desconhecido; não prometer exatamente uma vez sem contrato do provedor.

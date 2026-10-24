@@ -69,7 +69,7 @@ Leia [o contrato do provisionador](../implementacao/auth.md) e `scripts/provisio
 
 Use o [guia visual Z-API](zapi.md). Não compre instância. Antes de callbacks, obtenha autorização para captura; antes de mapear, autorização distinta para armazenar agenda. A pessoa preenche credenciais em `ORIGEM/setup` e faz pareamento. A IA configura campos por transferência protegida quando disponível; caso contrário, a pessoa copia diretamente entre painéis. URL privada de webhook nunca vai ao chat ou screenshots.
 
-Receba um texto fictício de contato controlado e consulte a fonte por ID interno. Teste de envio exige destinatário/texto exatos, autorização pontual do dono: pedido com pessoa/texto exatos já basta; se a IA redigir, uma aprovação no chat e consulta da mesma ação. Resultado incerto não repete. `accepted` não comprova entrega. Sem grupos/anexos na V0.
+Receba um texto fictício de contato controlado e consulte a fonte por ID interno. Teste de envio exige destinatário/texto exatos, autorização pontual do dono: pedido de envio permite à IA redigir e enviar; só aguarda aprovação se o dono pedir prévia e consulta da mesma ação. Resultado incerto não repete. `accepted` não comprova entrega. Sem grupos/anexos na V0.
 
 ### 6. Terminar ensinando a usar
 

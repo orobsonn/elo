@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "dev-6ad36d6a59f881919b3de4f512858abf",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Memória de relacionamento na minha Cloudflare. WhatsApp individual de texto somente após aprovação explícita no chat.",
   "author": {
     "name": "App developer"

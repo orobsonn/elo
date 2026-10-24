@@ -1,7 +1,7 @@
 import { env } from "cloudflare:test";
 import { it, expect, beforeEach, vi } from "vitest";
 import {
-  prepareAction,
+  prepareAction as rawPrepareAction,
   executeAction,
   cancelAction,
   getAction,
@@ -10,6 +10,9 @@ import { seal, sql } from "../src/core";
 import type { AppEnv } from "../src/env";
 import { configureConnection, getConnection } from "../src/zapi";
 const e = env as AppEnv;
+// Existing fixtures represent explicit send requests. Production input must name intent.
+const prepareAction = (env: AppEnv, input: Record<string, unknown>) =>
+  rawPrepareAction(env, { intent: "send_now", ...input });
 it("re-saving connection pauses sends, changes webhook and rejects the old approval even after re-enabling", async () => {
   const a = await prepareAction(e, {
     contact_id: "ct_mario",
@@ -343,5 +346,194 @@ it("does not clone an action accepted after duplicate preparation preflight", as
   expect(
     (await sql(e.DB, "SELECT count(*) n FROM actions").first<any>())!.n,
   ).toBe(1);
+  expect(send).toHaveBeenCalledTimes(1);
+});
+
+it("prepares AI-written text for immediate execution on the owner's send request", async () => {
+  const action = await prepareAction(e, {
+    contact_id: "ct_mario",
+    text: "Redação da IA para o pedido de envio",
+  });
+  expect(action.status).toBe("prepared");
+  expect(action.review_required).toBe(false);
+  expect(action.next_step).toBe("execute");
+  const send = vi.fn(async () => ({ messageId: "synthetic-direct" }));
+  expect(
+    (
+      await executeAction(
+        e,
+        { action_id: action.id, approved_hash: action.content_hash },
+        send,
+      )
+    ).status,
+  ).toBe("accepted");
+  expect(send).toHaveBeenCalledTimes(1);
+});
+it("holds an explicitly requested preview until one review confirmation", async () => {
+  const action = await prepareAction(e, {
+    contact_id: "ct_mario",
+    text: "Prévia da IA",
+    intent: "preview",
+  });
+  expect(action.review_required).toBe(true);
+  expect(action.next_step).toBe("await_review");
+  const send = vi.fn(async () => ({ messageId: "synthetic-reviewed" }));
+  await expect(
+    executeAction(
+      e,
+      { action_id: action.id, approved_hash: action.content_hash },
+      send,
+    ),
+  ).rejects.toThrow();
+  expect(send).not.toHaveBeenCalled();
+  expect(
+    (
+      await executeAction(
+        e,
+        {
+          action_id: action.id,
+          approved_hash: action.content_hash,
+          review_confirmed: true,
+        },
+        send,
+      )
+    ).status,
+  ).toBe("accepted");
+  await expect(
+    executeAction(
+      e,
+      {
+        action_id: action.id,
+        approved_hash: action.content_hash,
+        review_confirmed: true,
+      },
+      send,
+    ),
+  ).rejects.toThrow();
+  expect(send).toHaveBeenCalledTimes(1);
+});
+it("does not downgrade a preview by preparing the same content with the default mode", async () => {
+  const preview = await prepareAction(e, {
+    contact_id: "ct_mario",
+    text: "Só após minha revisão",
+    intent: "preview",
+  });
+  const again = await prepareAction(e, {
+    contact_id: "ct_mario",
+    text: "Só após minha revisão",
+  });
+  expect(again.id).toBe(preview.id);
+  expect(again.review_required).toBe(true);
+  expect(again.next_step).toBe("await_review");
+});
+it("can put a prepared request on hold without allowing a stale direct execution", async () => {
+  const ready = await prepareAction(e, {
+    contact_id: "ct_mario",
+    text: "Espere minha revisão",
+  });
+  const held = await prepareAction(e, {
+    contact_id: "ct_mario",
+    text: "Espere minha revisão",
+    intent: "preview",
+  });
+  expect(held.id).toBe(ready.id);
+  expect(held.review_required).toBe(true);
+  expect(held.content_hash).not.toBe(ready.content_hash);
+  const send = vi.fn(async () => ({ messageId: "unused" }));
+  await expect(
+    executeAction(
+      e,
+      { action_id: ready.id, approved_hash: ready.content_hash },
+      send,
+    ),
+  ).rejects.toThrow();
+  expect(send).not.toHaveBeenCalled();
+});
+it("keeps an uncertain attempt even if the caller changes review mode", async () => {
+  const ready = await prepareAction(e, {
+    contact_id: "ct_mario",
+    text: "Incerto",
+  });
+  const send = vi.fn(async () => {
+    throw new Error("timeout");
+  });
+  await executeAction(
+    e,
+    { action_id: ready.id, approved_hash: ready.content_hash },
+    send,
+  );
+  const again = await prepareAction(e, {
+    contact_id: "ct_mario",
+    text: "Incerto",
+    intent: "preview",
+  });
+  expect(again.id).toBe(ready.id);
+  expect(again.next_step).toBe("check_result");
+  await expect(
+    executeAction(
+      e,
+      {
+        action_id: again.id,
+        approved_hash: again.content_hash,
+        review_confirmed: true,
+      },
+      send,
+    ),
+  ).rejects.toThrow();
+  expect(send).toHaveBeenCalledTimes(1);
+});
+
+it("refuses a prepare call without an explicit intent", async () => {
+  await expect(
+    rawPrepareAction(e, {
+      contact_id: "ct_mario",
+      text: "Sem pedido de envio",
+    }),
+  ).rejects.toThrow();
+});
+it("concurrent send and preview preparations share one action and retain review", async () => {
+  const [direct, preview] = await Promise.all([
+    prepareAction(e, {
+      contact_id: "ct_mario",
+      text: "Concorrente",
+      intent: "send_now",
+    }),
+    prepareAction(e, {
+      contact_id: "ct_mario",
+      text: "Concorrente",
+      intent: "preview",
+    }),
+  ]);
+  expect(direct.id).toBe(preview.id);
+  const current = await getAction(e.DB, direct.id);
+  expect(current.review_required).toBe(true);
+  expect(current.next_step).toBe("await_review");
+});
+it("does not bypass an uncertain attempt by redrafting different text for the same contact", async () => {
+  const a = await prepareAction(e, {
+    contact_id: "ct_mario",
+    text: "Versão inicial",
+  });
+  const send = vi.fn(async () => {
+    throw new Error("timeout");
+  });
+  await executeAction(
+    e,
+    { action_id: a.id, approved_hash: a.content_hash },
+    send,
+  );
+  const redrafted = await prepareAction(e, {
+    contact_id: "ct_mario",
+    text: "Texto reescrito após timeout",
+  });
+  expect(redrafted.id).toBe(a.id);
+  expect(redrafted.next_step).toBe("check_result");
+  await expect(
+    executeAction(
+      e,
+      { action_id: redrafted.id, approved_hash: redrafted.content_hash },
+      send,
+    ),
+  ).rejects.toThrow();
   expect(send).toHaveBeenCalledTimes(1);
 });

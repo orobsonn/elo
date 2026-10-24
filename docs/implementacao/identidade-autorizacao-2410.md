@@ -1,6 +1,6 @@
 # Identidade e autorização — correções de 24/10/2026
 
-Estado: implementação local, publicação pendente. Base `5055fd7` / v0.3.0. Não acessamos a instalação do Alan, não lemos credenciais nem dados do projeto irmão e não enviamos mensagens reais. Alan é fonte de evidência para um produto destinado a consultores em geral.
+Registro do PR #33 (integrado). A regra de autorização aqui descrita foi substituída pela [política v0.4.0](envio-por-pedido-v040.md); evidências deste PR permanecem históricas. Base `5055fd7` / v0.3.0. Não acessamos a instalação do Alan, não lemos credenciais nem dados do projeto irmão e não enviamos mensagens reais. Alan é fonte de evidência para um produto destinado a consultores em geral.
 
 ## Plano e critérios
 
