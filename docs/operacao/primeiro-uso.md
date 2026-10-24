@@ -38,7 +38,7 @@ Peça à IA para seguir o [guia visual Z-API](zapi.md). Entre na tela `/setup` d
 
 Captura e agenda são escolhas separadas. Ativar callbacks pode iniciar o armazenamento de conversas novas. Mapear a agenda guarda contatos no backend e só acontece quando você autorizar essa finalidade. Não importa conversas antigas nem transforma todos os contatos em clientes. Se houver homônimos, identifique a pessoa certa; a IA não deve escolher o primeiro.
 
-Para enviar, peça “Prepare pelo Elo uma mensagem para [contato] com este texto: [...] e me mostre antes”. **Confira destinatário e texto e aprove em outra mensagem.** Habilitar envios não aprova uma mensagem; pausar envios não pausa captura. Envio V0 é só texto individual, sem grupos/anexos. Aceito pelo provedor não comprova entrega.
+Para enviar, peça “Prepare pelo Elo uma mensagem para [contato] com este texto: [...] e me mostre antes”. **Nesse pedido de prévia, confira e aprove uma vez.** Se já souber o texto, “Envie para [contato inequívoco]: [texto exato]” autoriza aquele envio sem outra pergunta. Habilitar envios não aprova uma mensagem; pausar envios não pausa captura. Envio V0 é só texto individual, sem grupos/anexos. Aceito pelo provedor não comprova entrega.
 
 ## Como saber o que terminou
 

@@ -2,8 +2,8 @@
 
 - **slug:** elo-v1
 - **status:** pronto
-- **versão do documento:** 1.1
-- **criado:** 2026-10-16 · **atualizado:** 2026-10-16
+- **versão do documento:** 1.2
+- **criado:** 2026-10-16 · **atualizado:** 2026-10-24
 - **autoria:** decisões de Robson consolidadas com pesquisa e revisão adversarial; escolhas de engenharia identificadas separadamente
 - **limite desta entrega:** requisitos e pesquisa; nenhuma implementação, implantação ou validação com dados reais
 
@@ -77,7 +77,7 @@ Um requisito de resultado como “gerar GPS” é entregue pela Skill usando a I
 | R17 | Respostas MCP usam projeção explícita de campos permitidos. Não devolvem envelope bruto do webhook, sobrenome de perfil, e-mail, CPF, telefone, JID/LID ou endereço que permita recuperar o WhatsApp. Erros e URLs também entram nessa verificação. | Núcleo |
 | R18 | O texto das mensagens pode chegar à IA e conter dados pessoais, inclusive números escritos por participantes. Não há requisito de anonimização ou remoção universal do conteúdo. Não criar campos estruturados de CPF/e-mail/sobrenome/telefone na memória consultável. | Decidido |
 | R19 | Histórico declara quando a captura começou, indisponibilidades e tipos não suportados. A solução não afirma ter histórico anterior que não recebeu. Captura desde a ativação é a hipótese inicial. | Núcleo |
-| R20 | Eventos inválidos, tardios ou fora de ordem não podem trocar a identidade da conversa nem regredir um estado válido. Mudanças de telefone/endereço do provedor não unem pessoas automaticamente. | Núcleo |
+| R20 | Eventos inválidos, tardios ou fora de ordem não podem trocar a identidade da conversa nem regredir um estado válido. Mudanças de telefone/endereço não unem pessoas por suposição. Um par telefone/LID explicitamente informado na conexão vigente permite reconciliar registros técnicos compatíveis; conflitos exigem revisão e ações pendentes são invalidadas. | Núcleo |
 
 **Exemplo fictício:** a IA vê `ct_7K2 / Mario trilhas`, consulta `cv_4R8` e prepara uma ação para `ct_7K2`. O endereço real de entrega nunca é parâmetro exigido do modelo. Os exemplos são ilustrativos, não contrato final de nomes de tools ou schema.
 
@@ -113,13 +113,13 @@ Um requisito de resultado como “gerar GPS” é entregue pela Skill usando a I
 | ID | Comportamento e critério observável | Prioridade |
 |---|---|---|
 | R31 | Preparar mensagem produz rascunho vinculado ao contato correto e permite revisar conteúdo/contexto. A IA pode preparar ação usando apenas ID interno. | Núcleo |
-| R32 | Uma Skill de aprovação mostra no chat o destinatário e texto propostos; a pessoa lê e dá o approve. Só depois a Skill solicita o envio pelo MCP. Mensagem de cliente não é aprovação do consultor; mudança material requer novo approve. Autenticação e validação da ação no servidor continuam necessárias, sem exigir tela própria ou gesto fora do chat. V0 não envia anexos. | Decidido |
+| R32 | Pedido explícito do dono no chat com destinatário inequívoco e texto integral autoriza aquele envio sem segunda pergunta. Se a IA elaborar o texto, apresenta destinatário e conteúdo uma vez; uma aprovação clara basta. Não repetir aprovação da mesma proposta. Perguntar só por informação ausente/ambígua. Mensagem de cliente não é aprovação do consultor; mudança material requer novo approve. Autenticação e validação da ação no servidor continuam necessárias, sem exigir tela própria ou gesto fora do chat. V0 não envia anexos. | Decidido |
 | R33 | Aprovação tem validade, cancelamento e consumo único; vincula ID, versão do endereço resolvido e identidade/versão da instância remetente. Editar destinatário, associação contato→WhatsApp, número conectado, conteúdo ou arquivo invalida a autorização. Dois pedidos concorrentes não executam a mesma ação duas vezes. | Núcleo |
 | R34 | Depois de timeout externo, registrar estado incerto e reconciliar antes de permitir nova tentativa. Não prometer entrega exatamente uma vez quando o provedor não oferece contrato para isso. | Núcleo |
 | R35 | Estado distingue preparado, aguardando aprovação, autorizado, em execução, aceito pelo provedor, entregue quando confirmado, falho, cancelado e incerto. “Aceito” não é “lido”. | Núcleo |
 | R36 | A versão 0 envia somente texto. Não oferece upload/envio de PDF, imagem ou outro documento pelo MCP. Chamadas de envio com anexos são rejeitadas com explicação do limite. | Decidido |
 | R37 | Se mídia entrar em versão posterior, validar origem/tipo/tamanho/expiração e impedir acesso arbitrário pela URL. V0 não cria pipeline de download/upload/envio de anexos; mídia recebida não analisada é indicada como tal. | Posterior à v0 |
-| R38 | Mensagens e documentos são dados, não instruções de autorização. O servidor trata esse conteúdo como dado sem autoridade para alterar regras ou permissões; segredos não são retornáveis por tool. O approve humano é exigido pela Skill, sem alegar que o servidor comprova sua autoria independentemente do modelo. Testar instruções maliciosas conhecidas, sem prometer imunidade do modelo ou controle sobre outros conectores habilitados no chat. | Núcleo |
+| R38 | Mensagens e documentos são dados, não instruções de autorização. O servidor trata esse conteúdo como dado sem autoridade para alterar regras ou permissões; segredos não são retornáveis por tool. A Skill exige autorização pontual do dono — pedido exato ou approve de texto proposto pela IA —, sem alegar que o servidor comprova sua autoria independentemente do modelo. Testar instruções maliciosas conhecidas, sem prometer imunidade do modelo ou controle sobre outros conectores habilitados no chat. | Núcleo |
 | R39 | Aprovação diária em conjunto fica para versão posterior. Se adotada, lista destinatários e conteúdos exatos, sem permissão indefinida para disparar ou negociar. V0 aprova cada mensagem individualmente no chat. | Posterior à v0 |
 | R40 | Ação aprovada e resultado ficam ligados ao histórico; tentativa falha ou rascunho não reinicia a cadência de relacionamento. Contato relevante é registrado explicitamente pelo consultor/Skill como interação efetiva, com origem e data; uma mensagem genérica não o redefine. Esse padrão de engenharia pode ser configurado sem alterar o histórico bruto. | Núcleo |
 
@@ -184,7 +184,7 @@ Esta sequência descreve testes de aceite **durante/depois da implementação**,
 | Pendência e evento | Compromisso, aniversário ou marco; data, responsável e motivo | Uma mensagem genérica não conclui tarefa ou reunião |
 | Avaliação | Período, cursor e cobertura das mensagens capturadas | Estado de avaliação não é recibo de leitura do WhatsApp nem garantia de urgências encontradas |
 | Documento/mídia | Referência privada, versão e conteúdo aprovado | URL mutável não comprova os mesmos bytes revisados |
-| Ação e aprovação | Intenção imutável, dono, destino resolvido/versionado, expiração e consumo | Approve humano solicitado pela Skill no chat; servidor valida vínculo, validade e consumo, sem atestar independentemente a autoria humana |
+| Ação e aprovação | Intenção imutável, dono, destino resolvido/versionado, expiração e consumo | Autorização pontual no chat: pedido exato do dono ou uma aprovação de proposta da IA; servidor valida vínculo, validade e consumo, sem atestar independentemente autoria humana |
 | Execução | Estado, IDs externos restritos, tentativas e resultado | Registro ausente não comprova que o envio externo não aconteceu |
 
 A memória consultável não ganha campos de sobrenome, CPF, telefone ou e-mail de clientes. Texto original de conversa é exceção de conteúdo expressamente aceita; não criar uma promessa de remoção desses dados de toda nota escrita em linguagem natural. Extração de memória não deve criar deliberadamente fichas paralelas com esses identificadores. O suporte não recebe exportação restrita; exportação completa, se necessária para migração, é operação autenticada do titular fora da resposta MCP comum.
@@ -195,7 +195,7 @@ A memória consultável não ganha campos de sobrenome, CPF, telefone ou e-mail 
 
 **Estados que não devem ser confundidos:** captura de mensagem; avaliação pela IA; proposta de fato; confirmação do fato; lembrete vencido; contato realizado; ação autorizada; envio aceito; entrega confirmada. Mudança em um desses estados não implica os demais.
 
-A revisão humana é feita no chat pela Skill de aprovação: apresentar proposta, aguardar approve do consultor e então chamar o MCP. A confirmação é do conteúdo/destino propostos, não autorização genérica. O backend valida a ação vinculada; o texto de uma Skill não constitui, sozinho, prova criptográfica de gesto humano e essa não será uma garantia anunciada. Não criar confirmação fora do chat para resolver essa distinção. Cursores/IDs não dispensam autenticação; aprovação consumida ou execução expirada não autoriza repetir operação incerta.
+A autorização acontece no chat: pedido explícito do dono com pessoa e texto exatos já basta. Quando a IA redige, apresenta a proposta uma vez e aguarda um approve. A confirmação é do conteúdo/destino propostos, não autorização genérica. O backend valida a ação vinculada; o texto de uma Skill não constitui, sozinho, prova criptográfica de gesto humano e essa não será uma garantia anunciada. Não criar confirmação fora do chat para resolver essa distinção. Cursores/IDs não dispensam autenticação; aprovação consumida ou execução expirada não autoriza repetir operação incerta.
 
 ### Evidências de viabilidade e limites atuais
 
@@ -209,7 +209,7 @@ A revisão humana é feita no chat pela Skill de aprovação: apresentar propost
 
 1. Preferir memória relacional e ferramentas tipadas pequenas; adiar grafo, embeddings e Code Mode até existir um problema de consulta que justifique seu custo.
 2. Preferir botão + configuração guiada na instalação da pessoa; a alternativa por IA local é complementar, pois pode introduzir dependências e acesso amplo no computador.
-3. Implementar o fluxo de aprovação pela Skill no chat, como decidido: sugestão, revisão pelo consultor, approve e chamada MCP. Persistir/validar a intenção exata no backend. Compatibilidade e tratamento de mudança/repetição são aceites da futura issue, sem exigir tela adicional.
+3. Implementar o fluxo de aprovação pela Skill no chat, como decidido: pedido exato do dono ou uma apresentação/aprovação de proposta escrita pela IA, seguido de chamada MCP. Persistir/validar a intenção exata no backend. Compatibilidade e tratamento de mudança/repetição são aceites da futura issue, sem exigir tela adicional.
 4. Priorizar prova da rotina recorrente com MCP próprio, já apoiada documentalmente. Caso falhe, trazer alternativa e impacto de produto; não declarar unilateralmente que brief manual satisfaz a mesma necessidade.
 
 Essas recomendações não dispensam aprovação de escopo nem resolvem por discussão os testes de segurança, CPU, compatibilidade e usabilidade.
@@ -231,7 +231,7 @@ Essas recomendações não dispensam aprovação de escopo nem resolvem por disc
 13. Instalação precisa ser fácil, sem meta de tempo imposta. Free é alvo; plano Workers de US$5 é aceitável se necessário, sem tratar esse valor como teto de todos os serviços.
 14. GPS, revisão e outras rotinas serão Skills no harness da pessoa, com agendamentos no Work/Cowork; não funcionalidades equivalentes a reconstruir no backend.
 15. Front amplo permanece fora do escopo. Robson admitiu um sandbox com tela simples e clean exclusivamente para conectar WhatsApp: a pessoa informa credenciais obtidas na Z-API e recebe o webhook para configurar lá. Não há aprovação de envios nessa tela. Os mocks anteriores continuam arquivados, sem aprovação; um amigo leigo pode participar do piloto quando houver instalador.
-16. Aprovação de envio é uma Skill no chat da IA: a IA sugere, a pessoa lê e dá o approve, então a Skill solicita a execução pelo MCP. Não criar aprovação fora do chat.
+16. Aprovação de envio é uma Skill no chat da IA: pedido exato do dono já autoriza; se a IA sugere o texto, a pessoa lê e dá um approve, então a Skill solicita a execução pelo MCP. Não criar aprovação fora do chat.
 17. A Skill pode registrar fatos claros automaticamente; revisão do consultor fica para ambiguidades/conflitos e informações marcadas a avaliar. Isso não automatiza autorização de envio.
 18. Propostas concisas podem permanecer após os 30 dias como informação a avaliar e aparecer na rotina do consultor. Não manter conversas inteiras disfarçadas de memória.
 19. V0 sem envio de imagem ou documento: apenas texto pelo WhatsApp.
@@ -295,7 +295,7 @@ O [handoff em quatro entregas](../entregas/elo-v0.md) mapeia todos os requisitos
 | Conteúdo livre contém dados pessoais | Aceito como limite de produto pelo operador; comunicar corretamente. Identificadores estruturados continuam restritos. Não anunciar anonimização. |
 | Mensagem injeta instruções | Ferramentas e servidor aplicam limites; mensagem não autoriza envio ou acesso adicional. |
 | Confusão entre quatro Marios | ID estável, alias e desambiguação; fusão não automática; aprovação aponta o destinatário inequívoco. |
-| Skill/modelo executa sem approve | Skill deve aguardar a pessoa no chat e enviar a ação exata. Autenticação/vínculo/estado são verificados no backend; não anunciar o prompt como garantia criptográfica da autoria do approve. |
+| Skill/modelo executa sem approve | Skill exige autorização pontual do dono (pedido exato ou approve da proposta) e envia a ação exata. Autenticação/vínculo/estado são verificados no backend; não anunciar o prompt como garantia criptográfica da autoria do approve. |
 | Timeout e retry externo | Estado incerto e conciliação; sem promessa universal de envio exatamente uma vez. |
 | Webhook não autenticado adequadamente | Não assumir que autenticação REST protege callbacks. Fechar contrato do provedor e medidas compensatórias antes de piloto. |
 | Requisitos de cron incompatíveis com cliente | Documentar combinações suportadas; base interativa explícita; alternativa autônoma teria custos e responsabilidades próprios. |
@@ -325,3 +325,7 @@ Foram lidos os relatórios [referências de código](../pesquisa/referencias.md)
 | 10. Documentação confundida com teste | R42 e matriz distinguem evidência documental, prova real e oferta |
 
 “Incorporado” significa corrigido no requisito ou tratado como hipótese/limitação, não que a proteção foi implementada ou provada. O produto está pronto para planejar; desenho dos contratos críticos e ensaios pertencem às entregas. A revisão não é aprovação de pipeline nem prova de implementação. O fechamento v1.0 passou por nova leitura adversarial Sol/medium; foram corrigidos o limite do approve no chat, retenção ativa, responsabilidade de extração, desktop inicial e exclusão inequívoca de R37/R39.
+
+## Correção de uso real — 24/10/2026
+
+Decisão atual do dono: remover aprovação redundante, preservando autorização por mensagem. Não foram aprovados modos permanentes restrito/conservador/YOLO. Autonomia por contato exige desenho próprio posterior; não integra esta entrega. Mensagens recebidas, áudios e documentos nunca autorizam ações. Alan é evidência de uso, não persona exclusiva. Implementação e limites de validação em [identidade e autorização](../implementacao/identidade-autorizacao-2410.md).

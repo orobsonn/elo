@@ -1,6 +1,8 @@
 import { z } from "zod";
+import { observePair } from "./contact-addresses";
 import type { AppEnv } from "./env";
 import {
+  hash,
   id,
   now,
   SafeError,
@@ -10,14 +12,20 @@ import {
   sql,
   addressFingerprint,
 } from "./core";
-import { getConnection, deviceIdentity, contactPage } from "./zapi";
+import {
+  getConnection,
+  deviceIdentity,
+  contactPage,
+  contactIdentityPairs,
+} from "./zapi";
 
 export const syncSchema = z
   .object({ cursor: z.string().max(2000).nullable().optional() })
   .strict();
 const cursorSchema = z
   .object({
-    page: z.number().int().min(2).max(1000),
+    run: z.string(),
+    page: z.number().int().min(1).max(1000),
     generation: z.number().int(),
     data: z.number().int(),
     expires: z.number().int(),
@@ -49,6 +57,7 @@ export async function syncContacts(env: AppEnv, input: unknown) {
     env.DB,
     "SELECT data_generation FROM settings WHERE id=1",
   ).first<{ data_generation: number }>();
+  let run = id("dsync");
   let page = 1,
     expires = t + 3600000;
   if (p.cursor) {
@@ -64,9 +73,28 @@ export async function syncContacts(env: AppEnv, input: unknown) {
       saved.data !== settings!.data_generation
     )
       throw new SafeError("agenda_alterada_reinicie", 409);
+    run = saved.run;
     page = saved.page;
     expires = saved.expires;
   }
+  if (!p.cursor) {
+    await sql(
+      env.DB,
+      "UPDATE directory_state SET completed_at=NULL,connection_generation=?,data_generation=?,run_id=?,next_page=1 WHERE id=1",
+      c.connection_generation,
+      settings!.data_generation,
+      run,
+    ).run();
+  }
+  const active = await sql(
+    env.DB,
+    "SELECT 1 FROM directory_state WHERE id=1 AND run_id=? AND next_page=? AND connection_generation=? AND data_generation=?",
+    run,
+    page,
+    c.connection_generation,
+    settings!.data_generation,
+  ).first();
+  if (!active) throw new SafeError("agenda_alterada_reinicie", 409);
   if (
     !c.credentials.device_identity ||
     (await deviceIdentity(c.credentials)) !== c.credentials.device_identity
@@ -82,68 +110,126 @@ export async function syncContacts(env: AppEnv, input: unknown) {
   const rows = await contactPage(c.credentials, page);
   if ((await deviceIdentity(c.credentials)) !== c.credentials.device_identity)
     throw new SafeError("numero_remetente_alterado_reconfigure", 409);
+  let mappingLimited = false;
+  const unresolved = await sql(
+    env.DB,
+    `SELECT 1 FROM contacts c WHERE c.deleted=0 AND c.address LIKE '%@lid'
+    AND NOT EXISTS(SELECT 1 FROM contact_identity_pairs p WHERE p.connection_generation=? AND p.lid=c.address) LIMIT 1`,
+    c.connection_generation,
+  ).first();
+  if (unresolved) {
+    const phones = [
+      ...new Set(
+        rows
+          .filter(
+            (r) =>
+              /^\d{8,16}$/.test(r.phone) &&
+              r.phone !== c.credentials.device_identity &&
+              !r.isGroup,
+          )
+          .map((r) => r.phone),
+      ),
+    ];
+    const pairs = await contactIdentityPairs(c.credentials, phones);
+    if ((await deviceIdentity(c.credentials)) !== c.credentials.device_identity)
+      throw new SafeError("numero_remetente_alterado_reconfigure", 409);
+    const lids = pairs.map((p) => p.lid);
+    const known = lids.length
+      ? (
+          await sql(
+            env.DB,
+            `SELECT address FROM contacts c WHERE deleted=0 AND address IN (SELECT value FROM json_each(?)) AND NOT EXISTS(SELECT 1 FROM contact_identity_pairs p WHERE p.connection_generation=? AND p.lid=c.address)`,
+            JSON.stringify(lids),
+            c.connection_generation,
+          ).all<{ address: string }>()
+        ).results
+      : [];
+    const addresses = new Set(known.map((r) => r.address));
+    const repairs = pairs.filter((p) => addresses.has(p.lid));
+    mappingLimited = repairs.length > 1;
+    for (const pair of repairs.slice(0, 1)) {
+      await observePair(
+        env.DB,
+        pair.phone,
+        pair.lid,
+        c.connection_generation,
+        await hash(`${c.connection_generation}:directory:${run}:${pair.phone}`),
+        env.ENCRYPTION_KEY,
+      );
+    }
+  }
   const assert = () =>
     sql(
       env.DB,
-      "SELECT json(CASE WHEN EXISTS(SELECT 1 FROM settings WHERE id=1 AND connection_generation=? AND data_generation=?) THEN 'true' ELSE 'agenda alterada' END)",
+      "SELECT json(CASE WHEN EXISTS(SELECT 1 FROM settings WHERE id=1 AND connection_generation=? AND data_generation=?) AND EXISTS(SELECT 1 FROM directory_state WHERE id=1 AND run_id=? AND next_page=?) THEN 'true' ELSE 'agenda alterada' END)",
       c.connection_generation,
       settings!.data_generation,
+      run,
+      page,
     );
-  const statements = [assert()];
-  let eligible = 0;
+  const preparedRows = [];
   const seen = new Set<string>();
   for (const row of rows) {
     const phone = row.phone;
     if (
-      typeof phone !== "string" ||
       !/^\d{8,16}$/.test(phone) ||
       phone === c.credentials.device_identity ||
-      row.isGroup === true ||
+      row.isGroup ||
       seen.has(phone)
     )
       continue;
     seen.add(phone);
-    eligible++;
-    const fingerprint = await addressFingerprint(phone, env.ENCRYPTION_KEY),
-      alias = aliasFor(row.short);
-    const name = normalizeName(
-      [row.name, row.short, row.vname]
-        .filter((x): x is string => typeof x === "string")
-        .join(" ")
-        .slice(0, 768),
-    );
-    statements.push(
-      sql(
-        env.DB,
-        "INSERT OR IGNORE INTO contacts(id,alias,address,created_at) SELECT ?,?,?,? WHERE NOT EXISTS(SELECT 1 FROM forgotten_addresses WHERE fingerprint=?)",
-        id("ct"),
-        alias,
-        phone,
-        t,
-        fingerprint,
+    preparedRows.push({
+      phone,
+      id: id("ct"),
+      alias: aliasFor(row.short),
+      fingerprint: await addressFingerprint(phone, env.ENCRYPTION_KEY),
+      name: normalizeName(
+        [row.name, row.short, row.vname]
+          .filter((x): x is string => typeof x === "string")
+          .join(" ")
+          .slice(0, 768),
       ),
-    );
-    statements.push(
-      sql(
-        env.DB,
-        "UPDATE contacts SET alias=? WHERE address=? AND deleted=0 AND alias='Contato provisório'",
-        alias,
-        phone,
-      ),
-    );
-    statements.push(
-      sql(
-        env.DB,
-        "INSERT INTO contact_directory(contact_id,search_name,connection_generation,synced_at) SELECT id,?,?,? FROM contacts WHERE address=? AND deleted=0 AND NOT EXISTS(SELECT 1 FROM forgotten_addresses WHERE fingerprint=?) ON CONFLICT(contact_id) DO UPDATE SET search_name=excluded.search_name,connection_generation=excluded.connection_generation,synced_at=excluded.synced_at",
-        name,
-        c.connection_generation,
-        t,
-        phone,
-        fingerprint,
-      ),
-    );
+    });
   }
-  const complete = rows.length < 100;
+  const eligible = preparedRows.length;
+  const payload = JSON.stringify(preparedRows);
+  // Recompute the canonical address INSIDE the write transaction. A concurrent
+  // identity merge cannot make this page re-create a retired technical record.
+  const directoryRows = `WITH input AS (SELECT json_extract(value,'$.id') id,json_extract(value,'$.phone') phone,json_extract(value,'$.alias') alias,json_extract(value,'$.name') name FROM json_each(?) WHERE NOT EXISTS(SELECT 1 FROM forgotten_addresses f WHERE f.fingerprint=json_extract(value,'$.fingerprint'))),
+    resolved AS (SELECT input.*,COALESCE((SELECT c.address FROM contacts c LEFT JOIN contact_identity_pairs p ON p.connection_generation=? AND p.phone=input.phone WHERE c.deleted=0 AND (c.address=input.phone OR c.address=p.lid) LIMIT 1),input.phone) address FROM input)`;
+  const statements = [
+    assert(),
+    sql(
+      env.DB,
+      `SELECT json(CASE WHEN NOT EXISTS(SELECT 1 FROM json_each(?) j JOIN contact_identity_pairs p ON p.phone=json_extract(j.value,'$.phone') AND p.connection_generation=? WHERE (SELECT count(*) FROM contacts c WHERE deleted=0 AND c.address IN (p.phone,p.lid))>1) THEN 'true' ELSE 'identity conflict' END)`,
+      payload,
+      c.connection_generation,
+    ),
+    sql(
+      env.DB,
+      `${directoryRows} INSERT OR IGNORE INTO contacts(id,alias,address,created_at,alias_origin) SELECT id,alias,address,?,'provider' FROM resolved`,
+      payload,
+      c.connection_generation,
+      t,
+    ),
+    sql(
+      env.DB,
+      `${directoryRows} UPDATE contacts SET alias=(SELECT r.alias FROM resolved r WHERE r.address=contacts.address),alias_origin='provider' WHERE deleted=0 AND alias_origin IN ('system','provider') AND EXISTS(SELECT 1 FROM resolved r WHERE r.address=contacts.address)`,
+      payload,
+      c.connection_generation,
+    ),
+    sql(
+      env.DB,
+      `${directoryRows} INSERT INTO contact_directory(contact_id,search_name,connection_generation,synced_at) SELECT c.id,r.name,?,? FROM contacts c JOIN resolved r ON r.address=c.address WHERE c.deleted=0 ON CONFLICT(contact_id) DO UPDATE SET search_name=excluded.search_name,connection_generation=excluded.connection_generation,synced_at=excluded.synced_at`,
+      payload,
+      c.connection_generation,
+      c.connection_generation,
+      t,
+    ),
+  ];
+  const complete = rows.length < 100 && !mappingLimited;
+  const nextPage = mappingLimited ? page : page + 1;
   if (complete)
     statements.push(
       sql(
@@ -154,6 +240,15 @@ export async function syncContacts(env: AppEnv, input: unknown) {
       ),
     );
   statements.push(assert());
+  statements.push(
+    sql(
+      env.DB,
+      "UPDATE directory_state SET next_page=? WHERE id=1 AND run_id=? AND next_page=?",
+      complete ? null : nextPage,
+      run,
+      page,
+    ),
+  );
   try {
     await env.DB.batch(statements);
   } catch {
@@ -161,6 +256,7 @@ export async function syncContacts(env: AppEnv, input: unknown) {
   }
   return {
     processed: rows.length,
+    identity_mapping_pending: mappingLimited,
     eligible,
     complete,
     next_cursor: complete
@@ -168,7 +264,8 @@ export async function syncContacts(env: AppEnv, input: unknown) {
       : page < 1000
         ? await seal(
             {
-              page: page + 1,
+              run,
+              page: nextPage,
               generation: c.connection_generation,
               data: settings!.data_generation,
               expires,

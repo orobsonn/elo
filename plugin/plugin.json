@@ -1,0 +1,23 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "dev-6ad36d6a59f881919b3de4f512858abf",
+  "version": "1.0.5",
+  "description": "Memória de relacionamento na minha Cloudflare. WhatsApp individual de texto somente após aprovação explícita no chat.",
+  "author": {
+    "name": "App developer"
+  },
+  "extensions": {
+    "com.openai": {
+      "apps": "./.app.json",
+      "interface": {
+        "capabilities": [],
+        "category": "Other",
+        "defaultPrompt": null,
+        "developerName": "App developer",
+        "displayName": "Elo",
+        "longDescription": "Memória de relacionamento na minha Cloudflare. WhatsApp individual de texto somente após aprovação explícita no chat.",
+        "shortDescription": "Memória de relacionamento na minha Cloudflare. WhatsApp individual de texto somente após aprovação explícita no chat."
+      }
+    }
+  }
+}

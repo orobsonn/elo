@@ -6,7 +6,7 @@ Etapa final de adoção no próprio cliente de IA. Não é uma tela, entrevista 
 
 Adapte à conta sem prometer estado não observado:
 
-> Você continua conversando aqui no Claude ou ChatGPT. O Elo acrescenta uma memória dos seus contatos, combinados e próximos passos, guardada na sua Cloudflare. Se o WhatsApp estiver conectado e a captura autorizada funcionando, você pode consultar as conversas disponíveis e preparar retornos. Não aparece um novo Claude dentro do WhatsApp. Cada envio continua exigindo sua revisão e aprovação.
+> Você continua conversando aqui no Claude ou ChatGPT. O Elo acrescenta uma memória dos seus contatos, combinados e próximos passos, guardada na sua Cloudflare. Se o WhatsApp estiver conectado e a captura autorizada funcionando, você pode consultar as conversas disponíveis e preparar retornos. Não aparece um novo Claude dentro do WhatsApp. Você autoriza cada envio: um pedido com pessoa e texto exatos já basta; se a IA redigir, você revisa e aprova uma vez.
 >
 > Skills são rotinas prontas, como registrar uma reunião ou revisar o dia: basta pedir em português. Projetos organizam conversas e arquivos no cliente de IA; não substituem a memória do Elo nem significam que o conector/Skill está habilitado em todo chat. Seus chats e arquivos continuam sujeitos às regras desse cliente; usar Elo não os torna locais no computador.
 
@@ -32,7 +32,7 @@ Pergunte: **“Quer preparar uma reunião, registrar o que ficou combinado ou de
 
 No ensaio fictício, o valor perceptível é: **registrar → perguntar de novo → ver o combinado recuperado**. Dados fictícios também ficam no banco real da instalação. Ao terminar, oferecer limpeza separada e obter autorização para excluir; não apagar material real nem executar `contact_delete` silenciosamente. Interrupção: guardar a referência da origem para retomar sem duplicação.
 
-Pedido de mapear agenda segue consentimento e paginação de `SKILL.md`. Pedido de envio segue `approve`, com destinatário/texto exatos e aprovação em outro turno. Apresentação pulada não bloqueia uso interativo. Não agendar rotina automaticamente.
+Pedido de mapear agenda segue consentimento e paginação de `SKILL.md`. Pedido de envio segue `approve`, com destinatário/texto exatos e autorização pontual; pedido exato já basta e texto elaborado pela IA precisa de uma aprovação. Apresentação pulada não bloqueia uso interativo. Não agendar rotina automaticamente.
 
 ## 4. Feche com três pedidos prontos
 

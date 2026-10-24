@@ -14,6 +14,21 @@ export async function deleteContact(
   const fingerprint = contact?.address
     ? await addressFingerprint(contact.address, encryptionKey)
     : null;
+  const pairs = contact?.address
+    ? (
+        await sql(
+          db,
+          "SELECT phone,lid FROM contact_identity_pairs WHERE phone=? OR lid=?",
+          contact.address,
+          contact.address,
+        ).all<{ phone: string; lid: string }>()
+      ).results
+    : [];
+  const fingerprints = await Promise.all(
+    [...new Set(pairs.flatMap((p) => [p.phone, p.lid]))].map((x) =>
+      addressFingerprint(x, encryptionKey),
+    ),
+  );
   const changed = await db
     .batch([
       sql(
@@ -64,6 +79,20 @@ export async function deleteContact(
         "UPDATE sources SET content=NULL,deleted=1,version=version+1,extract_state='done',lease=NULL WHERE contact_id=?",
         contactId,
       ),
+      ...fingerprints.map((f) =>
+        sql(
+          db,
+          "INSERT OR IGNORE INTO forgotten_addresses(fingerprint,forgotten_at) VALUES(?,?)",
+          f,
+          t,
+        ),
+      ),
+      sql(
+        db,
+        "DELETE FROM contact_identity_pairs WHERE phone=? OR lid=?",
+        contact?.address ?? null,
+        contact?.address ?? null,
+      ),
     ])
     .catch(() => {
       throw new SafeError("contato_alterado_repita_exclusao", 409);
@@ -87,6 +116,8 @@ export async function exportData(env: AppEnv) {
   const tables = [
     "contacts",
     "contact_directory",
+    "contact_identity_pairs",
+    "identity_observations",
     "forgotten_addresses",
     "sources",
     "source_dependencies",
