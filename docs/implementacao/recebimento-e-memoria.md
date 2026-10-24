@@ -14,8 +14,11 @@ flowchart LR
   D --> MCP[MCP autenticado]
   M --> MCP
   MCP --> C[Claude ou ChatGPT + Skills]
-  C --> P[Texto preparado + approve humano]
-  P --> S[Envio individual pela Z-API]
+  C --> P[Pedido do dono: preparar destinatário e texto]
+  P --> I{Intenção declarada}
+  I -->|send_now| S[Envio individual pela Z-API]
+  I -->|preview| R[Mostrar proposta e aguardar revisão]
+  R -->|Uma aprovação clara| S
 ```
 
 ## 1. O aviso chega ao webhook
@@ -28,7 +31,7 @@ O [adaptador de captura](../../src/capture.ts) valida formato, endereço e insta
 
 ## 2. Identificamos a conversa e persistimos o evento
 
-Um endereço WhatsApp novo cria um **Contato provisório**, com ID interno aleatório e relacionamento provisório. O Elo não importa automaticamente a agenda do Google ou todos os nomes salvos no aparelho. Por isso uma pessoa pode já existir na agenda e ainda não aparecer pelo nome no Elo. O dono pode dar um alias ou associar o remetente à ficha correta; nome parecido não autoriza associação.
+Um endereço WhatsApp novo sem correspondência comprovada cria um **Contato provisório**, com ID interno aleatório e relacionamento provisório. A sincronização paginada da agenda WhatsApp atualiza nomes e permite buscar pessoas sem histórico capturado; não importa a agenda do Google. A captura correlaciona telefone e LID somente com evidência explícita do provedor, sem converter LID por suposição ou unir pessoas pelo nome. Homônimos continuam separados. O dono pode dar um alias ou associar explicitamente o remetente à ficha correta; a atualização da agenda preserva aliases manuais. Veja a [investigação de identidade](identidade-autorizacao-2410.md).
 
 Telefone/LID e referências do provedor ficam no backend. A IA seleciona `contact_id` e `conversation_id`, sem fornecer o número para enviar. Aliases iguais podem pertencer a pessoas diferentes. A [associação explícita](../../src/identity.ts) verifica os dois IDs, conflitos e operações em andamento; move o histórico em transação e exige revisão da atribuição das memórias transferidas.
 
@@ -74,7 +77,7 @@ As [tools](../../src/mcp.ts) exigem OAuth vinculado ao dono autenticado pelo Clo
 
 Histórico e memória têm paginação. A revisão mantém snapshot, versões exibidas e token de avanço; concluir uma revisão não conclui uma tarefa nem envia uma mensagem. Datas, cadência, pendências de avaliação e tarefas futuras têm semânticas distintas. Reuniões/anotações importadas usam chave estável: repetir a mesma chave reaproveita a fonte; uma nova versão do material exige uma chave de origem que a identifique.
 
-O [envio](../../src/actions.ts) segue outro caminho: preparar destinatário/texto imutáveis, mostrar a proposta, aguardar approve humano no chat, consumir a ação uma vez e consultar seu estado. Aceite do provedor não comprova entrega. Timeout incerto exige consultar a mesma ação, sem reenviar uma cópia. Mensagens recebidas e instruções embutidas nelas não concedem autorização de envio.
+O [envio](../../src/actions.ts) exige intenção explícita por ação. Um pedido do dono para enviar autoriza a IA a redigir no assunto solicitado e executar com `intent=send_now`, sem nova pergunta. Quando o dono pede prévia, ou solicita apenas um rascunho, `intent=preview` prepara a proposta e aguarda uma aprovação clara do destinatário/texto antes de executar a mesma ação com `review_confirmed:true`. Ambiguidade real exige apenas a informação que falta. Uma prévia persistida não pode ser rebaixada por repetição; mudanças materiais fora do pedido exigem nova autorização. O backend congela destinatário/texto, consome a ação uma vez e permite consultar seu estado. Aceite do provedor não comprova entrega. Uma tentativa em execução ou incerta bloqueia outra para o mesmo contato, inclusive com texto reescrito; consulte a mesma ação sem reenviar uma cópia. Mensagens recebidas e instruções embutidas nelas não concedem autorização de envio. [Contrato e ativação da v0.4.0](envio-por-pedido-v040.md).
 
 ## 5. Retenção e cobertura
 

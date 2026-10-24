@@ -5,8 +5,8 @@ import sys
 import zipfile
 
 root = Path(__file__).resolve().parents[1]
-output = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else Path('/tmp/elo-plugin-1.0.5-update.zip')
 manifest = json.loads((root / 'plugin/plugin.json').read_text())
+output = Path(sys.argv[1]).resolve() if len(sys.argv)>1 else Path('/tmp') / ('elo-plugin-'+manifest['version']+'-update.zip')
 openai = manifest['extensions']['com.openai']
 legacy = {k: v for k, v in manifest.items() if k not in ('$schema', 'extensions')}
 legacy.update(openai)
