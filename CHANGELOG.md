@@ -4,6 +4,8 @@ Mudanças relevantes no formato Keep a Changelog.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-24
+
 ### Added
 - Pedido de envio autoriza a IA a redigir e enviar direto; prévia/revisão passa a ser uma escolha explícita do dono por ação.
 - MCP exige intent de envio ou prévia, anuncia a versão do produto e informa o próximo passo canônico da ação.
