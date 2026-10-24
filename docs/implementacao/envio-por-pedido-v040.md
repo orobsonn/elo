@@ -39,3 +39,12 @@ Rollback de Worker não reverte D1. A atualização invalida pendências antigas
 - 229 testes da aplicação (15 arquivos) e 24 testes do instalador/recuperação passaram; TypeScript e build seco passaram.
 - Ensaio independente da Skill com 13 situações sintéticas: envio solicitado, prévia, rascunho, homônimos, conteúdo recebido hostil, mudança material, expiração e resultado incerto. Não equivale a teste no cliente real.
 - Revisão independente do código final confirmou consumo único, prévia monotônica, invalidação de vínculos e bloqueio de cópias incertas. Exigiu corrigir o documento técnico ativo e concluir o bump da versão na PR dedicada de release antes de tag/deploy.
+
+## Publicação e ativação observadas em 24/10/2026
+
+- PRs #34 e #35 integradas com CI verde; tag/release latest v0.4.0 aponta para `80c57780ccc6ed14498867086cd0768d8ab77582`. A release inclui ZIP de Skills genéricas, sem bindings pessoais.
+- Na instalação pessoal autorizada, backup/bookmark de D1 foi conferido e migrations 0009/0010 aplicadas. Nenhuma migration ficou pendente. Envios já estavam pausados (`sends_paused=1`) e permaneceram pausados; Z-API não foi reconectada.
+- Worker `223af324-2d01-4465-b216-ffc6c29cbf16` passou quatro verificações de preview (saúde/D1, commit e versão exatos, MCP negado fora da origem oficial), foi promovido a 100% e passou seis smokes de produção: home, saúde/D1, MCP sem autenticação, bearer inválido, webhook protegido e descoberta OAuth/PKCE. Nenhum envio real pelo Elo integrou esses testes.
+- Plugin pessoal **1.1.0**, release `pluginrel_6adcbda83c748191881cc115cfec0912`, publicado por atualização guardada. Releitura confirmou Skills e referência idênticas ao repositório; App binding e quatro Skills retidas permaneceram byte a byte iguais. Apresentação e conexão foram preservadas.
+- O catálogo carregado nesta conversa ainda era antigo. Uma chamada de diagnóstico autenticada devolveu `UNAUTHORIZED`, solicitando reautenticação da conexão. Publicação do plugin e do backend não prova recarga do cliente: é necessário reconectar Elo e redescobrir ferramentas numa sessão nova. O schema novo rejeita omissão de intent.
+- A instalação do Alan não foi acessada ou atualizada por esta entrega. Busca pelo nome com histórico correto, prova privada LID/telefone, agenda completa e teste controlado de envio ainda precisam ser observados lá. O teste sintético não estabelece a causa do incidente dele.
