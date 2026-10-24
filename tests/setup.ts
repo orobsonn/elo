@@ -8,6 +8,7 @@ import sourceApplication from "../migrations/0005_source_application.sql?raw";
 import reviewScopeIndexes from "../migrations/0006_review_scope_indexes.sql?raw";
 import conversationBlocks from "../migrations/0007_conversation_blocks.sql?raw";
 import directoryMigration from "../migrations/0008_contact_directory.sql?raw";
+import identityDirectory from "../migrations/0009_identity_and_directory_runs.sql?raw";
 beforeAll(async () => {
   await applyD1Migrations(env.DB, [
     {
@@ -66,12 +67,21 @@ beforeAll(async () => {
         .map((s) => s.trim())
         .filter(Boolean),
     },
+    {
+      name: "0009",
+      queries: identityDirectory
+        .split(/;\s*(?:\n|$)/)
+        .map((s) => s.trim())
+        .filter(Boolean),
+    },
   ]);
 });
 // This Vitest plugin shares D1 within a file. Explicit reset prevents prior test rows
 // from satisfying a later assertion or concealing an out-of-order failure.
 beforeEach(async () => {
   const tables = [
+    "identity_observations",
+    "contact_identity_pairs",
     "contact_directory",
     "forgotten_addresses",
     "directory_usage",
@@ -96,7 +106,7 @@ beforeEach(async () => {
   await env.DB.batch([
     ...tables.map((t) => env.DB.prepare(`DELETE FROM ${t}`)),
     env.DB.prepare(
-      "UPDATE directory_state SET completed_at=NULL,connection_generation=NULL WHERE id=1",
+      "UPDATE directory_state SET completed_at=NULL,connection_generation=NULL,run_id=NULL,next_page=NULL,data_generation=NULL WHERE id=1",
     ),
     env.DB.prepare(
       "UPDATE settings SET sends_paused=1,connection_generation=0,connection_cipher=NULL,last_received=NULL,last_error=NULL,data_generation=1 WHERE id=1",

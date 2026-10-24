@@ -1,6 +1,13 @@
 import { z } from "zod";
 import { DAY, SafeError, hash, id, now, sql, addressFingerprint } from "./core";
 import { normalizeName, escapeLike } from "./directory";
+import {
+  isPhone,
+  isLid,
+  observePair,
+  resolveAddress,
+  observationStatements,
+} from "./contact-addresses";
 const eventSchema = z.object({
   type: z.string().max(64),
   phone: z.string().max(100).optional(),
@@ -52,8 +59,8 @@ export async function ingest(
     throw new SafeError("data_nao_confiavel");
   const settings = await sql(
     db,
-    "SELECT connection_generation FROM settings WHERE id=1",
-  ).first<{ connection_generation: number }>();
+    "SELECT connection_generation,data_generation FROM settings WHERE id=1",
+  ).first<{ connection_generation: number; data_generation: number }>();
   // Generation 0 is the unconfigured local repository; HTTP ingress checks configuration separately.
   if (
     settings?.connection_generation !== 0 &&
@@ -96,12 +103,12 @@ export async function ingest(
     return { persisted: true };
   }
   if (e.type !== "ReceivedCallback") return { ignored: "unsupported_event" };
-  const address = e.chatLid ?? e.phone;
-  if (address && !/^\d{8,20}(?:@lid)?$/.test(address))
+  const rawAddress = e.chatLid ?? e.phone;
+  if (rawAddress && !/^\d{8,20}(?:@lid)?$/.test(rawAddress))
     throw new SafeError("endereco_do_evento_invalido");
-  if (!e.messageId || !address) throw new SafeError("evento_incompleto");
+  if (!e.messageId || !rawAddress) throw new SafeError("evento_incompleto");
   const fingerprint = encryptionKey
-    ? await addressFingerprint(address!, encryptionKey)
+    ? await addressFingerprint(rawAddress, encryptionKey)
     : null;
   if (
     fingerprint &&
@@ -133,6 +140,53 @@ export async function ingest(
     await sql(db, "SELECT 1 FROM tombstones WHERE provider_key=?", key).first()
   )
     return { ignored: "deleted" };
+  const original = await sql(
+    db,
+    "SELECT c.address FROM messages m JOIN contacts c ON c.id=m.contact_id WHERE m.provider_key=?",
+    key,
+  ).first<{ address: string }>();
+  if (e.phone && !isPhone(e.phone) && !isLid(e.phone))
+    throw new SafeError("endereco_do_evento_invalido");
+  if (e.chatLid && e.phone && isLid(e.phone) && e.phone !== e.chatLid)
+    throw new SafeError("identidade_do_evento_diverge", 409);
+  // A replay cannot attach a new pair to an unrelated message's identity.
+  if (original) {
+    const resolved = await resolveAddress(db, rawAddress, generation);
+    if (
+      original.address !== resolved.address &&
+      original.address !== e.phone &&
+      original.address !== e.chatLid
+    )
+      throw new SafeError("identidade_do_evento_diverge", 409);
+  }
+  if (e.chatLid && e.phone && isPhone(e.phone) && mutation > t - 30 * DAY) {
+    const linked = await observePair(
+      db,
+      e.phone,
+      e.chatLid,
+      generation,
+      key,
+      encryptionKey,
+    );
+    if (linked.forgotten) return { ignored: "forgotten_contact" };
+  }
+  const { address, pair, guard } = await resolveAddress(
+    db,
+    rawAddress,
+    generation,
+  );
+  if (pair && encryptionKey) {
+    for (const value of [pair.phone, pair.lid]) {
+      if (
+        await sql(
+          db,
+          "SELECT 1 FROM forgotten_addresses WHERE fingerprint=?",
+          await addressFingerprint(value, encryptionKey),
+        ).first()
+      )
+        return { ignored: "forgotten_contact" };
+    }
+  }
   const existing = await sql(
     db,
     "SELECT m.source_id,m.contact_id,m.direction,c.address FROM messages m JOIN contacts c ON c.id=m.contact_id WHERE m.provider_key=?",
@@ -257,10 +311,26 @@ export async function ingest(
     message = id("msg");
   const text = e.text?.message ?? null;
   const kind = text === null ? "unsupported_media" : "text";
-  const inserted = await db.batch([
+  const observationWrites = [
     sql(
       db,
-      "INSERT OR IGNORE INTO contacts(id,alias,address,created_at) SELECT ?,'Contato provisório',?,? WHERE NOT EXISTS(SELECT 1 FROM tombstones WHERE provider_key=?) AND NOT EXISTS(SELECT 1 FROM forgotten_addresses WHERE fingerprint=?)",
+      "SELECT json(CASE WHEN EXISTS(SELECT 1 FROM settings WHERE id=1 AND (connection_generation=0 OR connection_generation=?) AND data_generation=?) THEN 'true' ELSE 'connection changed' END)",
+      generation,
+      settings!.data_generation,
+    ),
+    guard,
+    ...(await observationStatements(
+      db,
+      key,
+      pair ? [pair.phone, pair.lid] : [rawAddress],
+      generation,
+    )),
+  ];
+  const inserted = await db.batch([
+    ...observationWrites,
+    sql(
+      db,
+      "INSERT OR IGNORE INTO contacts(id,alias,address,created_at,alias_origin) SELECT ?,'Contato provisório',?,?,'system' WHERE NOT EXISTS(SELECT 1 FROM tombstones WHERE provider_key=?) AND NOT EXISTS(SELECT 1 FROM forgotten_addresses WHERE fingerprint=?)",
       ct,
       address,
       t,
@@ -301,7 +371,12 @@ export async function ingest(
   ]);
   // Both initial callbacks can observe no row. If this insert lost, re-read
   // the winner once and apply the same guarded fill instead of losing text.
-  if (!inserted[2].meta.changes && text && !e.isEdit && !e.isEdited) {
+  if (
+    !inserted[observationWrites.length + 2].meta.changes &&
+    text &&
+    !e.isEdit &&
+    !e.isEdited
+  ) {
     const winner = await sql(
       db,
       "SELECT m.source_id,m.contact_id,m.direction,c.address FROM messages m JOIN contacts c ON c.id=m.contact_id JOIN sources s ON s.id=m.source_id WHERE m.provider_key=? AND c.deleted=0 AND s.deleted=0 AND NOT EXISTS(SELECT 1 FROM tombstones WHERE provider_key=m.provider_key)",

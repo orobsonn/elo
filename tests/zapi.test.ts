@@ -56,3 +56,41 @@ it("refuses redirects without forwarding the client credential", async () => {
   });
   expect(network).toHaveBeenCalledTimes(1);
 });
+// Provider mapping must be internally consistent before any contact can be reconciled.
+it("rejects duplicate LIDs in a bulk mapping response", async () => {
+  const { contactIdentityPairs } = await import("../src/zapi");
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async () =>
+      Response.json([
+        {
+          exists: true,
+          inputPhone: "5511999990001",
+          outputPhone: "5511999990001",
+          lid: "9999999990001@lid",
+        },
+        {
+          exists: true,
+          inputPhone: "5511999990002",
+          outputPhone: "5511999990002",
+          lid: "9999999990001@lid",
+        },
+      ]),
+    ),
+  );
+  try {
+    await expect(
+      contactIdentityPairs(
+        {
+          instance_id: "synthetic",
+          instance_token: "synthetic-token",
+          client_token: "synthetic-client",
+          webhook_key: "synthetic-webhook-abcdefghijklmnopqrstuvwxyz",
+        },
+        ["5511999990001", "5511999990002"],
+      ),
+    ).rejects.toMatchObject({ code: "identidade_agenda_resposta_invalida" });
+  } finally {
+    vi.unstubAllGlobals();
+  }
+});

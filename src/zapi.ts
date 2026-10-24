@@ -148,3 +148,51 @@ export async function webhookAuthorized(
     throw new SafeError("callback_instancia_diverge", 403);
   return c.connection_generation;
 }
+
+// One bounded batch per directory page, only to repair unresolved LID history.
+// No lookup is performed before sending, and no conversion is inferred locally.
+export async function contactIdentityPairs(c: Connection, phones: string[]) {
+  if (!phones.length) return [];
+  const response = await api(
+    c,
+    "phone-exists-batch",
+    { method: "POST", body: JSON.stringify({ phones }) },
+    65536,
+  );
+  const parsed = z
+    .array(
+      z.object({
+        exists: z.boolean(),
+        inputPhone: z.string().max(100),
+        outputPhone: z.string().max(100).nullable().optional(),
+        lid: z.string().max(100).nullable().optional(),
+      }),
+    )
+    .max(100)
+    .safeParse(response);
+  if (!parsed.success)
+    throw new SafeError("identidade_agenda_resposta_invalida", 502);
+  const requested = new Set(phones),
+    seen = new Set<string>(),
+    lids = new Set<string>();
+  for (const row of parsed.data) {
+    if (!requested.has(row.inputPhone) || seen.has(row.inputPhone))
+      throw new SafeError("identidade_agenda_resposta_invalida", 502);
+    seen.add(row.inputPhone);
+    if (row.lid && row.exists) {
+      if (lids.has(row.lid))
+        throw new SafeError("identidade_agenda_resposta_invalida", 502);
+      lids.add(row.lid);
+    }
+    if (
+      row.exists &&
+      (row.outputPhone !== row.inputPhone ||
+        !row.lid ||
+        !/^\d{8,20}@lid$/.test(row.lid))
+    )
+      throw new SafeError("identidade_agenda_resposta_invalida", 502);
+  }
+  return parsed.data
+    .filter((r) => r.exists)
+    .map((r) => ({ phone: r.inputPhone, lid: r.lid! }));
+}

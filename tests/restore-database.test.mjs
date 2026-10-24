@@ -103,3 +103,17 @@ test("migration failure stops recovery before data cleanup and reopening", () =>
     false,
   );
 });
+
+test('identity upgrade revokes legacy pending hashes and preserves uncertain attempts',()=>{
+  const db=new DatabaseSync(':memory:');
+  try {
+    const names=readdirSync(new URL('../migrations/',import.meta.url)).filter(n=>n.endsWith('.sql')).sort();
+    for(const name of names.filter(n=>n<'0009_identity_and_directory_runs.sql')) db.exec(readFileSync(new URL('../migrations/'+name,import.meta.url),'utf8'));
+    db.exec("INSERT INTO contacts(id,alias,created_at) VALUES('ct_demo','Lia',1)");
+    for(const status of ['awaiting_approval','uncertain']) db.prepare("INSERT INTO actions(id,contact_id,alias,content,content_hash,address,address_version,connection_generation,epoch,status,prepared_at,expires_at) VALUES(?,'ct_demo','Lia','Texto','legacy-hash','synthetic-address',1,1,'old',?,1,9999999999999)").run('act_'+status,status);
+    db.exec(readFileSync(new URL('../migrations/0009_identity_and_directory_runs.sql',import.meta.url),'utf8'));
+    assert.equal(db.prepare("SELECT status FROM actions WHERE id='act_awaiting_approval'").get().status,'cancelled');
+    assert.equal(db.prepare("SELECT status FROM actions WHERE id='act_uncertain'").get().status,'uncertain');
+    assert.equal(db.prepare("SELECT state FROM action_events WHERE action_id='act_awaiting_approval' ORDER BY id DESC LIMIT 1").get()?.state,'cancelled');
+  } finally {db.close();}
+});

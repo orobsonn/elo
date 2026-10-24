@@ -56,7 +56,7 @@ Este guia não usa o MCP da Z-API: o conector da pessoa é o **MCP do Elo**, com
 
 1. Combine com um contato de teste uma mensagem fictícia e autorize esse teste.
 2. No Claude/ChatGPT com Elo conectado, peça: “Confira se o Elo recebeu a mensagem de teste e consulte o conteúdo disponível”. A IA verifica a persistência; só ver texto no WhatsApp não comprova captura no Elo.
-3. Se quiser testar envio, escolha **Habilitar envios aprovados** no Elo, prepare a pessoa/texto exatos no chat e aprove em outra mensagem. Consulte o resultado da mesma ação. Aceito não é entregue; resultado incerto não deve ser repetido.
+3. Se quiser testar envio, escolha **Habilitar envios aprovados** no Elo, peça o envio para pessoa inequívoca com texto exato no chat; se a IA redigir, confira a proposta e aprove uma vez. Consulte o resultado da mesma ação. Aceito não é entregue; resultado incerto não deve ser repetido.
 
 **Habilitar envios não ativa recebimento. Pausar envios não pausa captura.** A opção Revogar conexão no Elo remove a conexão usada por ele; pareamento e dados na Z-API são administrados no provedor. Não precisa habilitar envios para apenas consultar memória.
 
