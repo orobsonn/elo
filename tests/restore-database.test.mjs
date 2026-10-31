@@ -145,3 +145,16 @@ test('directory receipt upgrade invalidates old paging state and preserves conta
     assert.equal(db.prepare('SELECT sends_paused FROM settings WHERE id=1').get().sends_paused,1);
   }finally{db.close();}
 });
+
+test('restore preserves fingerprint evidence while reconfiguration discards only the previous connection evidence',()=>{
+  const db=new DatabaseSync(':memory:');
+  try{
+    for(const name of readdirSync(new URL('../migrations/',import.meta.url)).filter(n=>n.endsWith('.sql')).sort())db.exec(readFileSync(new URL('../migrations/'+name,import.meta.url),'utf8'));
+    db.exec("UPDATE settings SET connection_generation=1; INSERT INTO directory_identity_fingerprints VALUES(1,'synthetic_phone_fp','synthetic_lid_fp'); INSERT INTO forgotten_addresses VALUES('synthetic_deleted_fp',1)");
+    restoreDatabase(args=>{if(args[1]==='execute')db.exec(args[5]);},'elo-recovery','synthetic-bookmark',true);
+    assert.equal(db.prepare('SELECT count(*) n FROM directory_identity_fingerprints').get().n,1);
+    db.exec('UPDATE settings SET connection_generation=2');
+    assert.equal(db.prepare('SELECT count(*) n FROM directory_identity_fingerprints').get().n,0);
+    assert.equal(db.prepare('SELECT count(*) n FROM forgotten_addresses').get().n,1);
+  }finally{db.close();}
+});

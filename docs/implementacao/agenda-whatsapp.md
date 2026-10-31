@@ -1,5 +1,7 @@
 # Agenda do WhatsApp sem histórico
 
+Este documento preserva a prova de 18/10. O fluxo atual incorpora a [recuperação e custo da v0.4.1](agenda-custo-retomada-v041.md) e os [reparos limitados da v0.4.2](reparos-lid-v042.md). Evidência histórica não é homologação automática das versões posteriores.
+
 Pedido de 18/10/2026: localizar alguém por nome e preparar uma mensagem, mesmo sem conversa capturada no Elo. Z-API documenta `GET /contacts?page=…&pageSize=…`, com resposta em array: https://developer.z-api.io/contacts/get-contacts.
 
 ## Fluxo entregue
@@ -13,9 +15,10 @@ Homônimos continuam separados e exigem escolha por alias reconhecível/ID. Quan
 ## Limites e persistência
 
 - Uma página de até 100 registros por chamada; até 256 KiB de resposta, timeout e redirecionamentos recusados. Só endereços individuais numéricos; ignora próprio número, grupos e LIDs em vez de inventar conversão.
-- Até 300 páginas por instalação/dia UTC; falhas depois da reserva consomem cota. Cursor criptografado dura uma hora e é ligado às gerações de conexão e dados. Reinício é idempotente pelo endereço; não zera consumo.
-- Confere identidade do aparelho antes/depois da leitura. As gravações têm assertivas de geração numa única transação D1. Alteração concorrente aborta a página inteira.
-- A paginação Z-API não oferece snapshot imutável comprovado. Lista cheia exige página seguinte; `complete` é término observado do percurso. Contatos ausentes não são apagados. `directory_state.completed_at` é a última conclusão, não comprovação da tentativa em curso nem garantia de completude externa.
+- Até 300 chamadas de agenda por instalação/dia UTC, incluindo páginas repetidas; falhas depois da reserva consomem cota. Cursor criptografado dura uma hora e é ligado à execução, passo, gerações de conexão/dados e epoch. Reinício não zera consumo. Repetir o último cursor confirmado recupera o recibo sem nova importação/cota.
+- Até cinco reparos LID sequenciais por chamada, somente com pares comprovados pelo provedor. A página se repete quando há mais reparos. Não há conversão de LID nem associação por nome.
+- Confere identidade do aparelho antes/depois da leitura. Nomes, resposta e avanço da página são gravados numa transação com assertivas de geração. Cada reparo tem sua própria transação protegida; uma falha pode preservar reparos anteriores e impedir o avanço da página. Não se anuncia atomicidade da chamada inteira.
+- A paginação Z-API não oferece snapshot imutável comprovado. Lista cheia exige página seguinte; `complete` é término observado do percurso. Contatos ausentes não são apagados. Nova execução zera a conclusão anterior; cursores de execução substituída são recusados. Isso não garante completude externa.
 - `forgotten_addresses` guarda HMAC do endereço antes da exclusão e é conferido na sincronização e recepção HTTP. A exclusão limpa o índice de nomes; CAS impede exclusão parcial quando a identidade muda. Exclusões anteriores à migração 0008 não tinham esse vínculo e não podem receber garantia retroativa. Rotação da chave exige preservar/migrar esses fingerprints; não trocar a chave isoladamente.
 - Exportação autenticada do dono inclui índice restrito e fingerprints; diagnóstico/MCP comum não os expõe. Não há importação retroativa de mensagens/fotos nem chamada de IA para mapear contatos.
 

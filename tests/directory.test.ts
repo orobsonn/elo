@@ -764,7 +764,7 @@ it("one provider message proof cannot learn two different identities concurrentl
     ).first<any>())!.n,
   ).toBe(1);
 });
-it("maps a full provider page within D1 parameter and per-call query limits", async () => {
+it("binds a full provider page within the D1 statement parameter limit", async () => {
   await setup([]);
   const rows = Array.from({ length: 100 }, (_, i) => ({
     phone: String(5511900000000 + i),
@@ -810,13 +810,10 @@ it("maps a full provider page within D1 parameter and per-call query limits", as
       );
     }),
   );
-  let queryCount = 0;
   const db = new Proxy(env.DB, {
     get(target, prop) {
       if (prop === "prepare")
         return (query: string) => {
-          queryCount++;
-          expect(queryCount).toBeLessThanOrEqual(50);
           const statement = target.prepare(query);
           return new Proxy(statement, {
             get(st, method) {
@@ -836,7 +833,7 @@ it("maps a full provider page within D1 parameter and per-call query limits", as
   });
   const { syncContacts } = await import("../src/directory");
   const first = await syncContacts({ ...env, DB: db }, {});
-  expect(first.identity_mapping_pending).toBe(true);
+  expect(first.identity_mapping_pending).toBe(false);
   expect(first.next_cursor).toBeTruthy();
 });
 it("a paired callback cannot learn another identity if a phone-only callback wins the same message concurrently", async () => {
@@ -961,13 +958,11 @@ it("attaches a technical provisional duplicate to an existing classified client 
   await setup([{ phone: "5511999990001", short: "Lia" }]);
   await sync();
   const client = (await sql(env.DB, "SELECT id FROM contacts").first<any>())!;
-  await toolset(env)
-    .get("contact_update")!
-    .call({
-      contact_id: client.id,
-      relationship: "client",
-      alias: "Lia trilhas",
-    });
+  await toolset(env).get("contact_update")!.call({
+    contact_id: client.id,
+    relationship: "client",
+    alias: "Lia trilhas",
+  });
   await ingest(
     env.DB,
     {

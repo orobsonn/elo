@@ -170,6 +170,11 @@ export async function syncContacts(
   if ((await deviceIdentity(c.credentials)) !== c.credentials.device_identity)
     throw new SafeError("numero_remetente_alterado_reconfigure", 409);
   let mappingLimited = false;
+  // Retain only this page's authenticated evidence, including entries outside
+  // the repair slice, so deletion can fence every import in the write batch.
+  const provedLids = new Map<string, string>();
+  let repairs: { phone: string; lid: string }[] = [];
+  const repairLimit = 5;
   const unresolved = await sql(
     env.DB,
     `SELECT 1 FROM contacts c WHERE c.deleted=0 AND c.address GLOB '*@lid'
@@ -190,6 +195,7 @@ export async function syncContacts(
       ),
     ];
     const pairs = await contactIdentityPairs(c.credentials, phones);
+    for (const pair of pairs) provedLids.set(pair.phone, pair.lid);
     if ((await deviceIdentity(c.credentials)) !== c.credentials.device_identity)
       throw new SafeError("numero_remetente_alterado_reconfigure", 409);
     const lids = pairs.map((p) => p.lid);
@@ -204,19 +210,8 @@ export async function syncContacts(
         ).results
       : [];
     const addresses = new Set(known.map((r) => r.address));
-    const repairs = pairs.filter((p) => addresses.has(p.lid));
-    mappingLimited = repairs.length > 1;
-    for (const pair of repairs.slice(0, 1)) {
-      await observePair(
-        env.DB,
-        pair.phone,
-        pair.lid,
-        c.connection_generation,
-        await hash(`${c.connection_generation}:directory:${run}:${pair.phone}`),
-        env.ENCRYPTION_KEY,
-        assert(),
-      );
-    }
+    repairs = pairs.filter((p) => addresses.has(p.lid));
+    mappingLimited = repairs.length > repairLimit;
   }
   const preparedRows = [];
   const seen = new Set<string>();
@@ -235,6 +230,10 @@ export async function syncContacts(
       id: id("ct"),
       alias: aliasFor(row.short),
       fingerprint: await addressFingerprint(phone, env.ENCRYPTION_KEY),
+      proof_lid: provedLids.get(phone) ?? null,
+      identity_fingerprint: provedLids.has(phone)
+        ? await addressFingerprint(provedLids.get(phone)!, env.ENCRYPTION_KEY)
+        : null,
       name: normalizeName(
         [row.name, row.short, row.vname]
           .filter((x): x is string => typeof x === "string")
@@ -247,13 +246,103 @@ export async function syncContacts(
   const payload = JSON.stringify(preparedRows);
   // Recompute the canonical address INSIDE the write transaction. A concurrent
   // identity merge cannot make this page re-create a retired technical record.
-  const directoryRows = `WITH input AS MATERIALIZED (SELECT json_extract(value,'$.id') id,json_extract(value,'$.phone') phone,json_extract(value,'$.alias') alias,json_extract(value,'$.name') name FROM json_each(?) WHERE NOT EXISTS(SELECT 1 FROM forgotten_addresses f WHERE f.fingerprint=json_extract(value,'$.fingerprint'))),
+  const forgottenIdentity = provedLids.size
+    ? "f.fingerprint IN (json_extract(value,'$.fingerprint'),json_extract(value,'$.identity_fingerprint'))"
+    : "f.fingerprint=json_extract(value,'$.fingerprint')";
+  const directoryRows = `WITH input AS MATERIALIZED (SELECT json_extract(value,'$.id') id,json_extract(value,'$.phone') phone,json_extract(value,'$.alias') alias,json_extract(value,'$.name') name FROM json_each(?) WHERE NOT EXISTS(SELECT 1 FROM forgotten_addresses f WHERE ${forgottenIdentity})),
     resolved AS MATERIALIZED (SELECT input.*,COALESCE(
       (SELECT c.address FROM contacts c WHERE c.address=input.phone AND c.deleted=0),
       (SELECT c.address FROM contact_identity_pairs p JOIN contacts c ON c.address=p.lid AND c.deleted=0 WHERE p.connection_generation=? AND p.phone=input.phone),
       input.phone) address FROM input)`;
+  const proofGuard = () =>
+    sql(
+      env.DB,
+      `SELECT json(CASE WHEN NOT EXISTS(SELECT 1 FROM json_each(?) j
+      WHERE json_extract(j.value,'$.proof_lid') IS NOT NULL AND (
+        EXISTS(SELECT 1 FROM contact_identity_pairs p WHERE p.connection_generation=? AND p.phone=json_extract(j.value,'$.phone') AND p.lid!=json_extract(j.value,'$.proof_lid'))
+        OR EXISTS(SELECT 1 FROM contact_identity_pairs p WHERE p.connection_generation=? AND p.lid=json_extract(j.value,'$.proof_lid') AND p.phone!=json_extract(j.value,'$.phone'))
+      )) THEN 'true' ELSE 'identity conflict' END)`,
+      payload,
+      c.connection_generation,
+      c.connection_generation,
+    );
+  const propagateForgotten = () =>
+    sql(
+      env.DB,
+      `WITH forgotten AS MATERIALIZED (
+      SELECT json_extract(j.value,'$.fingerprint') phone_fp,json_extract(j.value,'$.identity_fingerprint') lid_fp
+      FROM json_each(?) j WHERE json_extract(j.value,'$.identity_fingerprint') IS NOT NULL
+      AND EXISTS(SELECT 1 FROM forgotten_addresses f WHERE f.fingerprint IN (json_extract(j.value,'$.fingerprint'),json_extract(j.value,'$.identity_fingerprint')))
+    ) INSERT OR IGNORE INTO forgotten_addresses(fingerprint,forgotten_at)
+    SELECT phone_fp,? FROM forgotten UNION SELECT lid_fp,? FROM forgotten`,
+      payload,
+      t,
+      t,
+    );
+  const recoverOrThrow = async (error: unknown) => {
+    try {
+      const receipt = await committedResponse();
+      if (receipt) return receipt;
+    } catch {
+      throw new SafeError("agenda_gravacao_nao_confirmada_repita_cursor", 503);
+    }
+    throw error;
+  };
+  if (provedLids.size) {
+    // Commit only HMAC evidence before any independent repair can remove the
+    // final pending LID. Deletion consumes it atomically, even after page rollback
+    // and even if the provider never returns the same pair again.
+    try {
+      await env.DB.batch([
+        assert(),
+        proofGuard(),
+        sql(
+          env.DB,
+          `INSERT OR IGNORE INTO directory_identity_fingerprints(connection_generation,phone_fp,lid_fp)
+          SELECT ?,json_extract(value,'$.fingerprint'),json_extract(value,'$.identity_fingerprint')
+          FROM json_each(?) WHERE json_extract(value,'$.identity_fingerprint') IS NOT NULL`,
+          c.connection_generation,
+          payload,
+        ),
+        sql(
+          env.DB,
+          `SELECT json(CASE WHEN NOT EXISTS(SELECT 1 FROM json_each(?) j
+          WHERE json_extract(j.value,'$.identity_fingerprint') IS NOT NULL AND NOT EXISTS(
+            SELECT 1 FROM directory_identity_fingerprints p WHERE p.connection_generation=?
+            AND p.phone_fp=json_extract(j.value,'$.fingerprint') AND p.lid_fp=json_extract(j.value,'$.identity_fingerprint')
+          )) THEN 'true' ELSE 'identity conflict' END)`,
+          payload,
+          c.connection_generation,
+        ),
+        propagateForgotten(),
+      ]);
+    } catch {
+      return recoverOrThrow(
+        new SafeError("identidade_conflitante_ou_alterada_requer_revisao", 409),
+      );
+    }
+  }
+  // Sequential independent transactions retain the existing identity guards.
+  // Five leaves headroom for D1 preflights and provider calls on Workers Free.
+  for (const pair of repairs.slice(0, repairLimit)) {
+    try {
+      await observePair(
+        env.DB,
+        pair.phone,
+        pair.lid,
+        c.connection_generation,
+        await hash(`${c.connection_generation}:directory:${run}:${pair.phone}`),
+        env.ENCRYPTION_KEY,
+        assert(),
+      );
+    } catch (error) {
+      // Only the matching durable receipt can prove a concurrent page succeeded.
+      return recoverOrThrow(error);
+    }
+  }
   const statements = [
     assert(),
+    ...(provedLids.size ? [proofGuard(), propagateForgotten()] : []),
     sql(
       env.DB,
       `SELECT json(CASE WHEN NOT EXISTS(SELECT 1 FROM json_each(?) j JOIN contact_identity_pairs p ON p.phone=json_extract(j.value,'$.phone') AND p.connection_generation=? WHERE (SELECT count(*) FROM contacts c WHERE deleted=0 AND c.address IN (p.phone,p.lid))>1) THEN 'true' ELSE 'identity conflict' END)`,

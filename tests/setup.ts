@@ -11,6 +11,7 @@ import directoryMigration from "../migrations/0008_contact_directory.sql?raw";
 import identityDirectory from "../migrations/0009_identity_and_directory_runs.sql?raw";
 import sendIntent from "../migrations/0010_send_intent.sql?raw";
 import directoryReceipt from "../migrations/0011_directory_receipt.sql?raw";
+import directoryFingerprints from "../migrations/0012_directory_identity_fingerprints.sql?raw";
 beforeAll(async () => {
   await applyD1Migrations(env.DB, [
     {
@@ -90,12 +91,20 @@ beforeAll(async () => {
         .map((s) => s.trim())
         .filter(Boolean),
     },
+    {
+      name: "0012",
+      queries: directoryFingerprints
+        .split(/;(?=\s*(?:ALTER|CREATE)\b|\s*$)/i)
+        .map((s) => s.trim())
+        .filter(Boolean),
+    },
   ]);
 });
 // This Vitest plugin shares D1 within a file. Explicit reset prevents prior test rows
 // from satisfying a later assertion or concealing an out-of-order failure.
 beforeEach(async () => {
   const tables = [
+    "directory_identity_fingerprints",
     "identity_observations",
     "contact_identity_pairs",
     "contact_directory",
