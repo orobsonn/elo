@@ -48,3 +48,13 @@ Antes de publicar, conferir conta/backup e manter envios pausados. Aplicar migra
 A instalação do cliente deve fazer seu próprio upgrade e validar agenda/cobertura/histórico com a mesma identidade correta. Não foi realizado envio real como teste. Somente o aviso de release solicitado pelo dono está autorizado.
 
 A migration é aditiva, mas invalida cursores antigos. Rollback de Worker não desfaz banco, e voltar à v0.4.0 reintroduz o custo excessivo: em incidente, suspender sync e seguir recuperação de banco/epoch, sem reativar ações pendentes. Não recomendar repetição cega ou aumentar plano como substituto do fix.
+
+## Publicação observada em 30/10/2026
+
+PRs #37 e #38 integradas com CI verde; tag/release latest v0.4.1 aponta para `c7a4697919c69b63f91cb2bd941ea291cfea3e81`, com ZIP de Skills genéricas.
+
+Na conta pessoal autorizada, bookmark de D1 foi conferido e migration 0011 aplicada. O Worker `72920d92-0b5f-4e43-9d79-fbfb926b24bf` passou quatro verificações de preview, foi promovido a 100% e passou seis smokes de produção: saúde/banco, home, MCP sem autenticação, bearer inválido, webhook protegido e descoberta OAuth/PKCE. Nenhuma migration ficou pendente. Os envios continuaram pausados (`sends_paused=1`); a Z-API não foi reconectada.
+
+Plugin pessoal **1.1.1**, release `pluginrel_6ae547ce41048191906e5fc9de79d593`, publicado com guard da release anterior. Releitura conferiu Skills/referência contra o pacote; App binding e demais Skills foram preservados. Tools Elo não estavam presentes no catálogo desta sessão, portanto não se declara recarga do cliente autenticado ou validação na instalação de outra pessoa. `published_version` registra a versão salva, não a versão carregada em cada host.
+
+O aviso de atualização autorizado foi aceito pelo provedor de WhatsApp. Isso não é teste de envio do Elo nem comprovação de entrega; a confirmação do comportamento no ambiente do cliente continua pendente.

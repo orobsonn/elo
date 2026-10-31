@@ -1,8 +1,7 @@
 {
   "plugin_id": "plugin_asdk_app_6ad36d6a59f881919b3de4f512858abf",
   "scope": "USER",
-  "expected_release_id": "pluginrel_6adcbda83c748191881cc115cfec0912",
-  "installed_version": "1.1.0",
+  "expected_release_id": "pluginrel_6ae547ce41048191906e5fc9de79d593",
   "prepared_version": "1.1.1",
   "retained_paths": [
     ".app.json",
@@ -11,8 +10,9 @@
     "skills/pos-reuniao/SKILL.md",
     "skills/revisao-diaria/SKILL.md"
   ],
-  "publication": "authorized_pending_publication",
-  "previous_release_id": "pluginrel_6ad4dbd3d7988191b2414e187ec6ee7b",
-  "verified_on": "2026-10-24",
-  "client_catalog_observation": "requires_reauthentication_after_publication"
+  "publication": "published_and_read_back",
+  "previous_release_id": "pluginrel_6adcbda83c748191881cc115cfec0912",
+  "verified_on": "2026-10-30",
+  "client_catalog_observation": "Elo_tools_absent_from_current_session_catalog",
+  "published_version": "1.1.1"
 }
