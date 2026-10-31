@@ -4,6 +4,8 @@ Mudanças relevantes no formato Keep a Changelog.
 
 ## [Unreleased]
 
+## [0.4.2] - 2026-10-30
+
 ### Changed
 - Agenda processa até cinco reparos LID sequenciais por chamada, com limite de trabalho e retomada existentes, reduzindo repetições da mesma página.
 
