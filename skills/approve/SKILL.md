@@ -11,6 +11,8 @@ Descubra os schemas reais de `installation_status`, `contacts_list`, `contacts_s
 
 Busque o nome solicitado e percorra todas as páginas da busca. Se a agenda não foi mapeada, está parcial/desatualizada ou a pessoa não aparece, atualize com `contacts_sync`, continuando `next_cursor` até `complete:true`, e repita a busca. Pedido de localizar/enviar a um contato salvo autoriza a atualização necessária da agenda; explicar o produto não autoriza importação. Respeite recusa explícita e explique o impedimento concreto.
 
+Guarde o cursor enviado em cada chamada. Erro/timeout não prova que a página deixou de gravar: retome com esse mesmo cursor para recuperar o último resultado confirmado, sem reiniciar do zero por rotina. Em cota esgotada, pare e informe cobertura parcial; não insista em retries. Cursor vencido, execução substituída ou conexão/dados alterados exige iniciar outro percurso. Atualização da v0.4.0 para v0.4.1 invalida os cursores antigos.
+
 Use ID interno e alias reconhecível. Nome completo pode ser termo de busca, mas não é chave de identidade. Resultado único pelo nome solicitado pode bastar; não exija recadastro ou alias personalizado por rotina. Só peça escolha quando houver homônimos ou referências realmente indistinguíveis. Nunca selecione o primeiro de vários, una nomes parecidos, peça telefone/JID/LID ou converta identificadores. Conflito de identidade do backend exige revisão; não o contorne criando uma ficha.
 
 ## Enviar ou preparar uma prévia

@@ -113,7 +113,7 @@ export function toolset(env: AppEnv) {
   );
   add(
     "contacts_sync",
-    "Mapeia contatos salvos no WhatsApp sem precisar de mensagem prévia. Uma página por chamada; continue next_cursor até complete antes de afirmar ausência/unicidade. Não envia, não importa histórico. Nomes/telefones ficam restritos.",
+    "Mapeia a agenda sem mensagem prévia. Continue next_cursor até complete. Guarde o cursor enviado: após resposta perdida, repetir o mesmo cursor recupera o último resultado confirmado, sem nova escrita/cota. Não reinicie do zero por erro transitório; cota esgotada exige pausa. Cursor antigo, execução substituída ou conexão alterada exige reinício. Não envia nem importa histórico; identificadores ficam privados.",
     syncSchema,
     false,
     (p) => syncContacts(env, p),

@@ -507,7 +507,7 @@ it("an explicit manual alias stays manual even if identical to the provider labe
     (await sql(env.DB, "SELECT alias FROM contacts").first<any>())!.alias,
   ).toBe("Lia");
 });
-it("walks actual provider pages and rejects cursor reuse or a cursor from a superseded run", async () => {
+it("walks actual provider pages, replays the last receipt and rejects a superseded run", async () => {
   await setup([]);
   const seen: number[] = [];
   vi.stubGlobal(
@@ -539,9 +539,8 @@ it("walks actual provider pages and rejects cursor reuse or a cursor from a supe
         .call({ query: "Lia Teste" })) as any
     ).items,
   ).toHaveLength(1);
-  await expect(sync({ cursor: first.next_cursor })).rejects.toMatchObject({
-    code: "agenda_alterada_reinicie",
-  });
+  expect(await sync({ cursor: first.next_cursor })).toEqual(last);
+  expect(seen).toEqual([1, 2]);
   const old = (await sync()) as any;
   await sync();
   await expect(sync({ cursor: old.next_cursor })).rejects.toMatchObject({

@@ -10,6 +10,7 @@ import conversationBlocks from "../migrations/0007_conversation_blocks.sql?raw";
 import directoryMigration from "../migrations/0008_contact_directory.sql?raw";
 import identityDirectory from "../migrations/0009_identity_and_directory_runs.sql?raw";
 import sendIntent from "../migrations/0010_send_intent.sql?raw";
+import directoryReceipt from "../migrations/0011_directory_receipt.sql?raw";
 beforeAll(async () => {
   await applyD1Migrations(env.DB, [
     {
@@ -82,6 +83,13 @@ beforeAll(async () => {
         .map((s) => s.trim())
         .filter(Boolean),
     },
+    {
+      name: "0011",
+      queries: directoryReceipt
+        .split(/;\s*(?:\n|$)/)
+        .map((s) => s.trim())
+        .filter(Boolean),
+    },
   ]);
 });
 // This Vitest plugin shares D1 within a file. Explicit reset prevents prior test rows
@@ -114,7 +122,7 @@ beforeEach(async () => {
   await env.DB.batch([
     ...tables.map((t) => env.DB.prepare(`DELETE FROM ${t}`)),
     env.DB.prepare(
-      "UPDATE directory_state SET completed_at=NULL,connection_generation=NULL,run_id=NULL,next_page=NULL,data_generation=NULL WHERE id=1",
+      "UPDATE directory_state SET completed_at=NULL,connection_generation=NULL,run_id=NULL,next_page=NULL,data_generation=NULL,step=0,last_step=NULL,last_result=NULL,epoch=NULL WHERE id=1",
     ),
     env.DB.prepare(
       "UPDATE settings SET sends_paused=1,connection_generation=0,connection_cipher=NULL,last_received=NULL,last_error=NULL,data_generation=1 WHERE id=1",

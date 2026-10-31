@@ -28,7 +28,21 @@ const cursorSchema = z
     page: z.number().int().min(1).max(1000),
     generation: z.number().int(),
     data: z.number().int(),
+    step: z.number().int().nonnegative(),
+    epoch: z.string(),
     expires: z.number().int(),
+  })
+  .strict();
+const resultSchema = z
+  .object({
+    processed: z.number().int().min(0).max(100),
+    identity_mapping_pending: z.boolean(),
+    eligible: z.number().int().min(0).max(100),
+    complete: z.boolean(),
+    next_cursor: z.string().max(2000).nullable(),
+    limited: z.boolean(),
+    coverage: z.string().max(500),
+    next: z.string().max(500),
   })
   .strict();
 export const normalizeName = (name: string) =>
@@ -49,7 +63,10 @@ function aliasFor(short: unknown) {
     return "Contato da agenda";
   }
 }
-export async function syncContacts(env: AppEnv, input: unknown) {
+export async function syncContacts(
+  env: AppEnv,
+  input: unknown,
+): Promise<z.infer<typeof resultSchema>> {
   const p = syncSchema.parse(input),
     c = await getConnection(env),
     t = now();
@@ -59,6 +76,7 @@ export async function syncContacts(env: AppEnv, input: unknown) {
   ).first<{ data_generation: number }>();
   let run = id("dsync");
   let page = 1,
+    step = 0,
     expires = t + 3600000;
   if (p.cursor) {
     let saved: z.infer<typeof cursorSchema>;
@@ -70,31 +88,72 @@ export async function syncContacts(env: AppEnv, input: unknown) {
     if (
       saved.expires < t ||
       saved.generation !== c.connection_generation ||
-      saved.data !== settings!.data_generation
+      saved.data !== settings!.data_generation ||
+      saved.epoch !== env.AUTH_EPOCH
     )
       throw new SafeError("agenda_alterada_reinicie", 409);
     run = saved.run;
     page = saved.page;
+    step = saved.step;
     expires = saved.expires;
   }
   if (!p.cursor) {
     await sql(
       env.DB,
-      "UPDATE directory_state SET completed_at=NULL,connection_generation=?,data_generation=?,run_id=?,next_page=1 WHERE id=1",
+      "UPDATE directory_state SET completed_at=NULL,connection_generation=?,data_generation=?,run_id=?,next_page=1,step=0,last_step=NULL,last_result=NULL,epoch=? WHERE id=1",
       c.connection_generation,
       settings!.data_generation,
       run,
+      env.AUTH_EPOCH,
     ).run();
+  }
+  // Keep only the last committed response. Replaying that exact step returns its
+  // original sealed cursor without another provider request, quota or write.
+  const committedResponse = async () => {
+    const receipt = await sql(
+      env.DB,
+      `SELECT d.last_result FROM directory_state d JOIN settings s ON s.id=d.id
+      WHERE d.id=1 AND d.run_id=? AND d.connection_generation=? AND d.data_generation=?
+      AND d.epoch=? AND d.last_step=? AND d.step=? AND s.connection_generation=? AND s.data_generation=?`,
+      run,
+      c.connection_generation,
+      settings!.data_generation,
+      env.AUTH_EPOCH,
+      step,
+      step + 1,
+      c.connection_generation,
+      settings!.data_generation,
+    ).first<{ last_result: string | null }>();
+    return receipt?.last_result
+      ? resultSchema.parse(JSON.parse(receipt.last_result))
+      : null;
+  };
+  if (p.cursor) {
+    const receipt = await committedResponse();
+    if (receipt) return receipt;
   }
   const active = await sql(
     env.DB,
-    "SELECT 1 FROM directory_state WHERE id=1 AND run_id=? AND next_page=? AND connection_generation=? AND data_generation=?",
+    "SELECT 1 FROM directory_state WHERE id=1 AND run_id=? AND next_page=? AND connection_generation=? AND data_generation=? AND step=? AND epoch=?",
     run,
     page,
     c.connection_generation,
     settings!.data_generation,
+    step,
+    env.AUTH_EPOCH,
   ).first();
   if (!active) throw new SafeError("agenda_alterada_reinicie", 409);
+  const assert = () =>
+    sql(
+      env.DB,
+      "SELECT json(CASE WHEN EXISTS(SELECT 1 FROM settings WHERE id=1 AND connection_generation=? AND data_generation=?) AND EXISTS(SELECT 1 FROM directory_state WHERE id=1 AND run_id=? AND next_page=? AND step=? AND epoch=?) THEN 'true' ELSE 'agenda alterada' END)",
+      c.connection_generation,
+      settings!.data_generation,
+      run,
+      page,
+      step,
+      env.AUTH_EPOCH,
+    );
   if (
     !c.credentials.device_identity ||
     (await deviceIdentity(c.credentials)) !== c.credentials.device_identity
@@ -113,7 +172,7 @@ export async function syncContacts(env: AppEnv, input: unknown) {
   let mappingLimited = false;
   const unresolved = await sql(
     env.DB,
-    `SELECT 1 FROM contacts c WHERE c.deleted=0 AND c.address LIKE '%@lid'
+    `SELECT 1 FROM contacts c WHERE c.deleted=0 AND c.address GLOB '*@lid'
     AND NOT EXISTS(SELECT 1 FROM contact_identity_pairs p WHERE p.connection_generation=? AND p.lid=c.address) LIMIT 1`,
     c.connection_generation,
   ).first();
@@ -155,18 +214,10 @@ export async function syncContacts(env: AppEnv, input: unknown) {
         c.connection_generation,
         await hash(`${c.connection_generation}:directory:${run}:${pair.phone}`),
         env.ENCRYPTION_KEY,
+        assert(),
       );
     }
   }
-  const assert = () =>
-    sql(
-      env.DB,
-      "SELECT json(CASE WHEN EXISTS(SELECT 1 FROM settings WHERE id=1 AND connection_generation=? AND data_generation=?) AND EXISTS(SELECT 1 FROM directory_state WHERE id=1 AND run_id=? AND next_page=?) THEN 'true' ELSE 'agenda alterada' END)",
-      c.connection_generation,
-      settings!.data_generation,
-      run,
-      page,
-    );
   const preparedRows = [];
   const seen = new Set<string>();
   for (const row of rows) {
@@ -196,8 +247,11 @@ export async function syncContacts(env: AppEnv, input: unknown) {
   const payload = JSON.stringify(preparedRows);
   // Recompute the canonical address INSIDE the write transaction. A concurrent
   // identity merge cannot make this page re-create a retired technical record.
-  const directoryRows = `WITH input AS (SELECT json_extract(value,'$.id') id,json_extract(value,'$.phone') phone,json_extract(value,'$.alias') alias,json_extract(value,'$.name') name FROM json_each(?) WHERE NOT EXISTS(SELECT 1 FROM forgotten_addresses f WHERE f.fingerprint=json_extract(value,'$.fingerprint'))),
-    resolved AS (SELECT input.*,COALESCE((SELECT c.address FROM contacts c LEFT JOIN contact_identity_pairs p ON p.connection_generation=? AND p.phone=input.phone WHERE c.deleted=0 AND (c.address=input.phone OR c.address=p.lid) LIMIT 1),input.phone) address FROM input)`;
+  const directoryRows = `WITH input AS MATERIALIZED (SELECT json_extract(value,'$.id') id,json_extract(value,'$.phone') phone,json_extract(value,'$.alias') alias,json_extract(value,'$.name') name FROM json_each(?) WHERE NOT EXISTS(SELECT 1 FROM forgotten_addresses f WHERE f.fingerprint=json_extract(value,'$.fingerprint'))),
+    resolved AS MATERIALIZED (SELECT input.*,COALESCE(
+      (SELECT c.address FROM contacts c WHERE c.address=input.phone AND c.deleted=0),
+      (SELECT c.address FROM contact_identity_pairs p JOIN contacts c ON c.address=p.lid AND c.deleted=0 WHERE p.connection_generation=? AND p.phone=input.phone),
+      input.phone) address FROM input)`;
   const statements = [
     assert(),
     sql(
@@ -215,13 +269,13 @@ export async function syncContacts(env: AppEnv, input: unknown) {
     ),
     sql(
       env.DB,
-      `${directoryRows} UPDATE contacts SET alias=(SELECT r.alias FROM resolved r WHERE r.address=contacts.address),alias_origin='provider' WHERE deleted=0 AND alias_origin IN ('system','provider') AND EXISTS(SELECT 1 FROM resolved r WHERE r.address=contacts.address)`,
+      `${directoryRows} UPDATE contacts SET alias=(SELECT r.alias FROM resolved r WHERE r.address=contacts.address),alias_origin='provider' WHERE deleted=0 AND alias_origin IN ('system','provider') AND address IN (SELECT address FROM resolved)`,
       payload,
       c.connection_generation,
     ),
     sql(
       env.DB,
-      `${directoryRows} INSERT INTO contact_directory(contact_id,search_name,connection_generation,synced_at) SELECT c.id,r.name,?,? FROM contacts c JOIN resolved r ON r.address=c.address WHERE c.deleted=0 ON CONFLICT(contact_id) DO UPDATE SET search_name=excluded.search_name,connection_generation=excluded.connection_generation,synced_at=excluded.synced_at`,
+      `${directoryRows} INSERT INTO contact_directory(contact_id,search_name,connection_generation,synced_at) SELECT c.id,r.name,?,? FROM resolved r CROSS JOIN contacts c WHERE c.address=r.address AND c.deleted=0 ON CONFLICT(contact_id) DO UPDATE SET search_name=excluded.search_name,connection_generation=excluded.connection_generation,synced_at=excluded.synced_at`,
       payload,
       c.connection_generation,
       c.connection_generation,
@@ -230,6 +284,35 @@ export async function syncContacts(env: AppEnv, input: unknown) {
   ];
   const complete = rows.length < 100 && !mappingLimited;
   const nextPage = mappingLimited ? page : page + 1;
+  // Build the whole reply before writing. Encryption/serialization must not
+  // fail after D1 has already advanced the only cursor the client can use.
+  const response = {
+    processed: rows.length,
+    identity_mapping_pending: mappingLimited,
+    eligible,
+    complete,
+    next_cursor:
+      complete || page >= 1000
+        ? null
+        : await seal(
+            {
+              run,
+              page: nextPage,
+              generation: c.connection_generation,
+              data: settings!.data_generation,
+              step: step + 1,
+              epoch: env.AUTH_EPOCH,
+              expires,
+            },
+            env.ENCRYPTION_KEY,
+          ),
+    limited: !complete && page >= 1000,
+    coverage:
+      "Percurso paginado da agenda; o provedor pode mudar a lista durante a consulta. Sem histórico retroativo.",
+    next: complete
+      ? "Busque pelo nome com contacts_list. Homônimos exigem escolha por alias/ID."
+      : "Continue contacts_sync com next_cursor antes de concluir ausência ou unicidade.",
+  };
   if (complete)
     statements.push(
       sql(
@@ -243,41 +326,28 @@ export async function syncContacts(env: AppEnv, input: unknown) {
   statements.push(
     sql(
       env.DB,
-      "UPDATE directory_state SET next_page=? WHERE id=1 AND run_id=? AND next_page=?",
+      "UPDATE directory_state SET next_page=?,step=step+1,last_step=?,last_result=? WHERE id=1 AND run_id=? AND next_page=? AND step=? AND epoch=?",
       complete ? null : nextPage,
+      step,
+      JSON.stringify(response),
       run,
       page,
+      step,
+      env.AUTH_EPOCH,
     ),
   );
   try {
     await env.DB.batch(statements);
   } catch {
+    // A binding/transport failure need not mean the transaction rolled back.
+    // Return only a matching durable receipt, never success inferred from page.
+    try {
+      const receipt = await committedResponse();
+      if (receipt) return receipt;
+    } catch {
+      throw new SafeError("agenda_gravacao_nao_confirmada_repita_cursor", 503);
+    }
     throw new SafeError("agenda_alterada_ou_gravacao_falhou_repita", 409);
   }
-  return {
-    processed: rows.length,
-    identity_mapping_pending: mappingLimited,
-    eligible,
-    complete,
-    next_cursor: complete
-      ? null
-      : page < 1000
-        ? await seal(
-            {
-              run,
-              page: nextPage,
-              generation: c.connection_generation,
-              data: settings!.data_generation,
-              expires,
-            },
-            env.ENCRYPTION_KEY,
-          )
-        : null,
-    limited: !complete && page >= 1000,
-    coverage:
-      "Percurso paginado da agenda; o provedor pode mudar a lista durante a consulta. Sem histórico retroativo.",
-    next: complete
-      ? "Busque pelo nome com contacts_list. Homônimos exigem escolha por alias/ID."
-      : "Continue contacts_sync com next_cursor antes de concluir ausência ou unicidade.",
-  };
+  return response;
 }
