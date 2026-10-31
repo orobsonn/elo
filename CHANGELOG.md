@@ -4,6 +4,14 @@ Mudanças relevantes no formato Keep a Changelog.
 
 ## [Unreleased]
 
+### Fixed
+- Sincronização da agenda usa consultas por endereço indexado e materialização limitada à página, evitando milhões de leituras por chamada em agendas com pares telefone/LID.
+- Resultado e cursor do último avanço são persistidos na mesma transação; resposta perdida e repetição do cursor recuperam o resultado confirmado sem repetir página, cota ou reconciliação.
+- Reconciliação de identidades verifica a execução ativa; índices limitam leituras de LIDs pendentes, ações e tarefas ao contexto relevante.
+
+### Security
+- Atualizadas dependências transitivas de produção body-parser para 2.4.0 e fast-uri para 3.1.9, sem mudar a versão do SDK MCP.
+
 ## [0.4.0] - 2026-10-24
 
 ### Added

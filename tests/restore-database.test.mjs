@@ -132,3 +132,16 @@ test('send intent upgrade revokes pending legacy actions and keeps attempted sen
     assert.match(db.prepare("SELECT sql FROM sqlite_master WHERE name='actions_open_request'").get().sql,/'prepared'/);
   }finally{db.close();}
 });
+
+test('directory receipt upgrade invalidates old paging state and preserves contacts and paused sends',()=>{
+  const db=new DatabaseSync(':memory:');
+  try{
+    for(const name of readdirSync(new URL('../migrations/',import.meta.url)).filter(n=>n.endsWith('.sql')&&n<'0011_directory_receipt.sql').sort())db.exec(readFileSync(new URL('../migrations/'+name,import.meta.url),'utf8'));
+    db.exec("INSERT INTO contacts(id,alias,created_at) VALUES('ct_upgrade','Pessoa',1); UPDATE directory_state SET run_id='old',next_page=3,completed_at=123,connection_generation=1,data_generation=1 WHERE id=1; UPDATE settings SET sends_paused=1");
+    db.exec(readFileSync(new URL('../migrations/0011_directory_receipt.sql',import.meta.url),'utf8'));
+    const state=db.prepare('SELECT run_id,next_page,completed_at,step,last_result FROM directory_state WHERE id=1').get();
+    assert.deepEqual({...state},{run_id:null,next_page:null,completed_at:null,step:0,last_result:null});
+    assert.equal(db.prepare("SELECT alias FROM contacts WHERE id='ct_upgrade'").get().alias,'Pessoa');
+    assert.equal(db.prepare('SELECT sends_paused FROM settings WHERE id=1').get().sends_paused,1);
+  }finally{db.close();}
+});

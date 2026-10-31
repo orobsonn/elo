@@ -65,6 +65,7 @@ export async function observePair(
   generation: number,
   proof: string,
   encryptionKey?: string,
+  directoryGuard?: D1PreparedStatement,
 ) {
   if (!isPhone(phone) || !isLid(lid))
     throw new SafeError("endereco_do_evento_invalido");
@@ -109,6 +110,7 @@ export async function observePair(
     "SELECT data_generation FROM settings WHERE id=1",
   ).first<{ data_generation: number }>();
   const statements: D1PreparedStatement[] = [
+    ...(directoryGuard ? [directoryGuard] : []),
     sql(
       db,
       "SELECT json(CASE WHEN EXISTS(SELECT 1 FROM settings WHERE id=1 AND (connection_generation=0 OR connection_generation=?) AND data_generation=?) THEN 'true' ELSE 'identity changed' END)",
