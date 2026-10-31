@@ -22,6 +22,8 @@ Na **v0.2.0**, a extração agrupa mensagens por contato e usa cota padrão de 2
 
 Para encontrar alguém sem conversa prévia, a Skill `configurar-elo` mapeia a agenda via `contacts_sync`; a busca aceita o nome e retorna referência interna, sem número. [Fluxo e limites](docs/implementacao/agenda-whatsapp.md). [Demonstrações](docs/demonstracoes/README.md).
 
+[Reparos LID em lotes limitados](docs/implementacao/reparos-lid-v042.md): custo medido, exclusão concorrente, falhas parciais e limites de validação.
+
 ## Desenvolvimento
 
 Node 22+; `npm ci`, `npm run test:all`, `npm run check`, `npm run build`. Os testes workerd usam D1 local, identidades sintéticas e respostas de provedores controladas. Não dependem de Z-API nem chamam inferência paga.

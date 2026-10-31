@@ -4,6 +4,15 @@ Mudanças relevantes no formato Keep a Changelog.
 
 ## [Unreleased]
 
+### Changed
+- Agenda processa até cinco reparos LID sequenciais por chamada, com limite de trabalho e retomada existentes, reduzindo repetições da mesma página.
+
+### Fixed
+- Recibo canônico também é recuperado quando uma execução concorrente termina durante um reparo de identidade.
+
+### Security
+- Exclusão de um LID durante a sincronização bloqueia recriação pelo telefone comprovado, inclusive fora do lote e após rollback sem LID pendente; prova privada em HMAC (migration 0012) sobrevive à página e é verificada por captura/exclusão, sem ampliar o bloqueio por evidências contraditórias.
+
 ## [0.4.1] - 2026-10-30
 
 ### Fixed

@@ -125,6 +125,19 @@ export async function observePair(
     statements.push(
       sql(
         db,
+        `SELECT json(CASE WHEN
+          NOT EXISTS(SELECT 1 FROM directory_identity_fingerprints WHERE connection_generation=? AND phone_fp=? AND lid_fp!=?)
+          AND NOT EXISTS(SELECT 1 FROM directory_identity_fingerprints WHERE connection_generation=? AND lid_fp=? AND phone_fp!=?)
+        THEN 'true' ELSE 'identity conflict' END)`,
+        generation,
+        fingerprints[0],
+        fingerprints[1],
+        generation,
+        fingerprints[1],
+        fingerprints[0],
+      ),
+      sql(
+        db,
         "SELECT json(CASE WHEN NOT EXISTS(SELECT 1 FROM forgotten_addresses WHERE fingerprint IN (?,?)) THEN 'true' ELSE 'forgotten identity' END)",
         ...fingerprints,
       ),

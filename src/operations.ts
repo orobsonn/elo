@@ -93,6 +93,18 @@ export async function deleteContact(
         contact?.address ?? null,
         contact?.address ?? null,
       ),
+      // A directory page may know a proved alias before its repair commits.
+      // Consume that HMAC-only evidence in the deletion transaction itself.
+      sql(
+        db,
+        `INSERT OR IGNORE INTO forgotten_addresses(fingerprint,forgotten_at)
+        SELECT lid_fp,? FROM directory_identity_fingerprints WHERE connection_generation=(SELECT connection_generation FROM settings WHERE id=1) AND phone_fp=?
+        UNION SELECT phone_fp,? FROM directory_identity_fingerprints WHERE connection_generation=(SELECT connection_generation FROM settings WHERE id=1) AND lid_fp=?`,
+        t,
+        fingerprint,
+        t,
+        fingerprint,
+      ),
     ])
     .catch(() => {
       throw new SafeError("contato_alterado_repita_exclusao", 409);
@@ -117,6 +129,7 @@ export async function exportData(env: AppEnv) {
     "contacts",
     "contact_directory",
     "contact_identity_pairs",
+    "directory_identity_fingerprints",
     "identity_observations",
     "forgotten_addresses",
     "sources",
