@@ -4,6 +4,8 @@ Mudanças relevantes no formato Keep a Changelog.
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-10-30
+
 ### Fixed
 - Sincronização da agenda usa consultas por endereço indexado e materialização limitada à página, evitando milhões de leituras por chamada em agendas com pares telefone/LID.
 - Resultado e cursor do último avanço são persistidos na mesma transação; resposta perdida e repetição do cursor recuperam o resultado confirmado sem repetir página, cota ou reconciliação.
