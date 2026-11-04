@@ -4,6 +4,8 @@ Mudanças relevantes no formato Keep a Changelog.
 
 ## [Unreleased]
 
+## [0.4.3] - 2026-11-04
+
 ### Fixed
 - Consultas de memória e tarefas incluem identificação canônica do contato no briefing, inclusive sem itens, sem expor identificadores de entrega.
 - Alias curto seguro aceita espaços externos; nomes completos e campos de perfil continuam restritos.
