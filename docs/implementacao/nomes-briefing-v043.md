@@ -27,10 +27,12 @@ Ensaio das Skills com dados sintéticos: contato Mario trilhas + itens de memór
 
 ## Ativação e limites
 
-Sem migration nova. Atualizar backend v0.4.3, pacote de Skills e plugin, recarregar Skills/catálogo no cliente e executar uma nova rodada do briefing; saídas históricas não são reescritas. Se o Radar externo usa alias incorreto ou ignora o campo fornecido, conferir nele o `contact_id`, alias devolvido pelo Elo e o texto final, sem compartilhar telefones, LIDs ou nomes completos.
+Sem migration nova. Atualizar backend v0.4.3, pacote de Skills e plugin, recarregar Skills/catálogo no cliente e executar uma nova rodada do briefing; saídas históricas não são reescritas. Para aliases genéricos causados só por espaços externos em short, atualizar a agenda com contacts_sync até complete:true. Isso não muda a política para rótulos compostos. Se o Radar externo usa alias incorreto ou ignora o campo fornecido, conferir nele o `contact_id`, alias devolvido pelo Elo e o texto final, sem compartilhar telefones, LIDs ou nomes completos.
 
 A alteração é aditiva ao MCP. Um cliente com parser próprio estrito deve aceitar o novo campo `contact` ou atualizar seu adaptador. Não introduzimos Telegram, scheduler ou proatividade, nem alteramos as regras de envio. Rollback de backend perde a projeção adicional; instruções novas já contemplam ausência de `contact` em snapshots/versões anteriores. Não anunciar validação de nomes na instalação de outra pessoa sem nova evidência.
 
 ## Verificação final local
 
 270 testes da aplicação em 17 arquivos e 26 testes do instalador/recuperação passaram. TypeScript, build seco e diff-check passaram; audit de dependências de produção sem vulnerabilidades. O ZIP 1.1.2 foi aberto e comparado byte a byte com as fontes pelo empacotador; inclui revisão e pauta, preservando App binding e demais Skills por overlay.
+
+Plugin pessoal 1.1.2 publicado e relido: duas Skills conferidas byte a byte com o ZIP e manifestos equivalentes (diretório skills normalizado pelo serviço). App e demais Skills preservados por overlay. Isso não prova recarga no cliente nem execução no Radar externo.
