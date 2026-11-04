@@ -611,7 +611,7 @@ describe("memory and retention", () => {
   });
   it("keeps meetings and relevant contacts as different interaction timestamps", async () => {
     const c = await contact(),
-      s = await source(c);
+      s = await source(c, 1);
     await recordInteraction(env.DB, {
       contact_id: c,
       source_id: s,

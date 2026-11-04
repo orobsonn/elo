@@ -39,3 +39,5 @@ Primeira minor: **v0.1.0**, aceita pelo dono para uso diário. `CHANGELOG.md` re
 Harness Pi preservado em `.pi/`. A autorização deste goal dispensa sua cerimônia e mantém testes, revisão e evidências. `fontes/privadas/`, credenciais, mensagens reais e sessões nunca são versionadas.
 
 [Homologação no ChatGPT: testes, evidências e limites](docs/implementacao/homologacao-chatgpt.md).
+
+[Identificação nos briefings](docs/implementacao/nomes-briefing-v043.md): projeções, Skills e limites da configuração externa.

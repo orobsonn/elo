@@ -159,15 +159,15 @@ export function parse<T>(schema: z.ZodType<T>, input: unknown): T {
   return p.data;
 }
 async function activeContact(db: D1Database, contact: string) {
-  if (
-    !(await sql(
-      db,
-      "SELECT 1 FROM contacts WHERE id=? AND deleted=0",
-      contact,
-    ).first())
-  )
-    throw new SafeError("contato_indisponivel", 404);
+  const row = await sql(
+    db,
+    "SELECT id,alias FROM contacts WHERE id=? AND deleted=0",
+    contact,
+  ).first<{ id: string; alias: string }>();
+  if (!row) throw new SafeError("contato_indisponivel", 404);
+  return { id: row.id, alias: row.alias };
 }
+
 export type SourceFence = {
   source_id: string;
   contact_id: string;
@@ -431,7 +431,7 @@ function contextFor(
 }
 export async function getMemory(db: D1Database, input: unknown) {
   const p = parse(memoryQuerySchema, input);
-  await activeContact(db, p.contact_id);
+  const contact = await activeContact(db, p.contact_id);
   const limit = p.limit ?? 25,
     t = now();
   const r = await sql(
@@ -482,6 +482,7 @@ export async function getMemory(db: D1Database, input: unknown) {
     return values.length ? Math.max(...values) : null;
   };
   return {
+    contact,
     items: r.results.slice(0, limit).map((x) => ({
       ...x,
       source_available: !!x.source_available,
@@ -810,13 +811,11 @@ export async function attention(db: D1Database, input: unknown = {}) {
   ).first<{ n: number }>())!.n;
   return {
     day,
-    tasks: tasks.results
-      .slice(0, limit)
-      .map((x) => ({
-        ...x,
-        source_available: !!x.source_available,
-        needs_review: !!x.needs_review,
-      })),
+    tasks: tasks.results.slice(0, limit).map((x) => ({
+      ...x,
+      source_available: !!x.source_available,
+      needs_review: !!x.needs_review,
+    })),
     pending: pending.results
       .slice(0, limit)
       .map((x) => ({ ...x, source_available: !!x.source_available })),
@@ -843,7 +842,7 @@ export async function attention(db: D1Database, input: unknown = {}) {
 }
 export async function getTasks(db: D1Database, input: unknown) {
   const p = parse(taskQuerySchema, input);
-  await activeContact(db, p.contact_id);
+  const contact = await activeContact(db, p.contact_id);
   const limit = p.limit ?? 25;
   const r = await sql(
     db,
@@ -868,6 +867,7 @@ export async function getTasks(db: D1Database, input: unknown) {
     p.contact_id,
   );
   return {
+    contact,
     items: r.results.slice(0, limit).map((x) => ({
       ...x,
       source_available: !!x.source_available,
@@ -1153,7 +1153,7 @@ export function toolDefinitions(
     ],
     [
       "memory_get",
-      "Consulta memória paginada com origem, datas, revisão e disponibilidade da fonte; mostra interações distintas.",
+      "Consulta memória paginada com origem, datas, revisão e disponibilidade da fonte; mostra interações distintas e contact.id/contact.alias para identificação no briefing.",
       memoryQuerySchema,
       (p) => getMemory(db, p),
       true,
@@ -1174,7 +1174,7 @@ export function toolDefinitions(
     ],
     [
       "tasks_get",
-      "Consulta tarefas por contato e estado com cursor, inclusive retornos futuros e fonte expirada.",
+      "Consulta tarefas por contato e estado com cursor, inclusive retornos futuros e fonte expirada; contact.id/contact.alias identifica o contato mesmo sem itens.",
       taskQuerySchema,
       (p) => getTasks(db, p),
       true,

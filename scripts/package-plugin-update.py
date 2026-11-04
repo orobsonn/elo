@@ -11,14 +11,16 @@ openai = manifest['extensions']['com.openai']
 legacy = {k: v for k, v in manifest.items() if k not in ('$schema', 'extensions')}
 legacy.update(openai)
 legacy['skills'] = './skills/'
+legacy.setdefault('keywords', [])
 files = {
     'plugin.json': json.dumps(manifest, ensure_ascii=False, indent=2).encode(),
     '.codex-plugin/plugin.json': json.dumps(legacy, ensure_ascii=False, indent=2).encode(),
 }
-for skill in ('approve', 'configurar-elo'):
+for skill in ('approve', 'configurar-elo', 'revisao-diaria'):
     for path in (root / 'skills' / skill).rglob('*'):
         if path.is_file():
             files[path.relative_to(root).as_posix()] = path.read_bytes()
+files['skills/elo-preparar-pauta/SKILL.md'] = (root / 'docs/exemplos/elo-preparar-pauta/SKILL.md').read_bytes()
 with zipfile.ZipFile(output, 'w', zipfile.ZIP_DEFLATED) as archive:
     for name, content in files.items():
         archive.writestr(name, content)
