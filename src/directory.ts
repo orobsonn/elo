@@ -55,6 +55,7 @@ export const normalizeName = (name: string) =>
 export const escapeLike = (value: string) => value.replace(/[\\%_]/g, "\\$&");
 function aliasFor(short: unknown) {
   // Only a provider's explicit single-word short label is eligible. Never split a full name.
+  if (typeof short === "string") short = short.trim();
   if (typeof short !== "string" || !/^\p{L}[\p{L}'’-]{1,23}$/u.test(short))
     return "Contato da agenda";
   try {

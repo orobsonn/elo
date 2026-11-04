@@ -1004,3 +1004,11 @@ it("attaches a technical provisional duplicate to an existing classified client 
     ).items,
   ).toHaveLength(2);
 });
+
+it("normalizes outer whitespace of an explicit safe short label without falling back to profile fields", async () => {
+  await setup([{phone:"5511999990001",name:"Lia Teste",short:"  Lia  ",vname:"Outro Perfil",notify:"Nome Perfil",about:"na paz de Deus"}]);
+  await sync();
+  const r=await toolset(env).get("contacts_list")!.call({query:"Lia Teste"}) as any;
+  expect(r.items).toHaveLength(1);expect(r.items[0].alias).toBe("Lia");
+  expect(JSON.stringify(r)).not.toMatch(/Teste|Perfil|Deus|551199999/);
+});

@@ -4,6 +4,11 @@ Mudanças relevantes no formato Keep a Changelog.
 
 ## [Unreleased]
 
+### Fixed
+- Consultas de memória e tarefas incluem identificação canônica do contato no briefing, inclusive sem itens, sem expor identificadores de entrega.
+- Alias curto seguro aceita espaços externos; nomes completos e campos de perfil continuam restritos.
+- Pacote de plugin atualiza efetivamente as Skills de revisão diária e pauta, com preservação de alias/ID e limites explícitos para nomes indisponíveis.
+
 ## [0.4.2] - 2026-10-30
 
 ### Changed
