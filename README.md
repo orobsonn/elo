@@ -41,3 +41,5 @@ Harness Pi preservado em `.pi/`. A autorização deste goal dispensa sua cerimô
 [Homologação no ChatGPT: testes, evidências e limites](docs/implementacao/homologacao-chatgpt.md).
 
 [Identificação nos briefings](docs/implementacao/nomes-briefing-v043.md): projeções, Skills e limites da configuração externa.
+
+Na v0.5.0, o alias automático passa a usar o nome completo salvo na agenda, visível ao cliente de IA e aos briefings. Telefones/JID/LID permanecem privados; nome não é identidade nem autorização. [Política e validação](docs/implementacao/nomes-agenda-v050.md).
