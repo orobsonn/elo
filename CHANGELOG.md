@@ -4,6 +4,11 @@ Mudanças relevantes no formato Keep a Changelog.
 
 ## [Unreleased]
 
+### Changed
+- Alias automático usa o nome completo salvo na agenda (name), com short salvo somente quando o principal está ausente; nomes passam a aparecer na IA e nos briefings por decisão explícita do dono.
+- Busca e apresentação usam a mesma fonte validada de agenda; perfil/vCard/recado e rótulos rejeitados não alimentam o índice novo.
+- Skills e catálogo MCP explicam o trade-off de privacidade e mantêm nomes como dados sem autoridade, preservando IDs, homônimos e aliases manuais.
+
 ## [0.4.3] - 2026-11-04
 
 ### Fixed

@@ -6,7 +6,6 @@ import {
   id,
   now,
   SafeError,
-  safeAlias,
   seal,
   unseal,
   sql,
@@ -53,17 +52,27 @@ export const normalizeName = (name: string) =>
     .replace(/\s+/g, " ")
     .trim();
 export const escapeLike = (value: string) => value.replace(/[\\%_]/g, "\\$&");
-function aliasFor(short: unknown) {
-  // Only a provider's explicit single-word short label is eligible. Never split a full name.
-  if (typeof short === "string") short = short.trim();
-  if (typeof short !== "string" || !/^\p{L}[\p{L}'’-]{1,23}$/u.test(short))
-    return "Contato da agenda";
-  try {
-    return safeAlias(short);
-  } catch {
-    return "Contato da agenda";
-  }
+// Presentation only: authenticated saved-agenda labels are not identity keys or
+// instructions. Profile/vCard fields never select this value or its search index.
+function savedAgendaName(row: { name?: string | null; short?: string | null }) {
+  const hasPrimary =
+    typeof row.name === "string" &&
+    (row.name.trim().length > 0 || /[\p{Cc}\p{Cf}]/u.test(row.name));
+  const raw = hasPrimary ? row.name : row.short;
+  if (typeof raw !== "string" || /[\p{Cc}\p{Cf}]/u.test(raw)) return null;
+  const label = raw.normalize("NFC").trim().replace(/\s+/gu, " ");
+  const inspected = label.normalize("NFKC");
+  if (
+    !label ||
+    label.length > 256 ||
+    /@|https?:|www\./iu.test(inspected) ||
+    /\p{N}(?:[\s.()+-]*\p{N}){5}/u.test(inspected) ||
+    /[\p{L}\p{N}-]+(?:\.[\p{L}\p{N}-]+)*\.[\p{L}]{2,}/u.test(inspected)
+  )
+    return null;
+  return label;
 }
+
 export async function syncContacts(
   env: AppEnv,
   input: unknown,
@@ -226,21 +235,17 @@ export async function syncContacts(
     )
       continue;
     seen.add(phone);
+    const savedName = savedAgendaName(row);
     preparedRows.push({
       phone,
       id: id("ct"),
-      alias: aliasFor(row.short),
+      alias: savedName ?? "Contato da agenda",
       fingerprint: await addressFingerprint(phone, env.ENCRYPTION_KEY),
       proof_lid: provedLids.get(phone) ?? null,
       identity_fingerprint: provedLids.has(phone)
         ? await addressFingerprint(provedLids.get(phone)!, env.ENCRYPTION_KEY)
         : null,
-      name: normalizeName(
-        [row.name, row.short, row.vname]
-          .filter((x): x is string => typeof x === "string")
-          .join(" ")
-          .slice(0, 768),
-      ),
+      name: normalizeName(savedName ?? ""),
     });
   }
   const eligible = preparedRows.length;
