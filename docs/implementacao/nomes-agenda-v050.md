@@ -37,3 +37,5 @@ Rollback de Worker para v0.4.x não remove nomes já gravados no banco, saídas 
 ## Evidência local final
 
 290 testes da aplicação em 18 arquivos e 26 do instalador/recuperação passaram; TypeScript, build seco e diff-check passaram. Audit de produção retornou zero vulnerabilidades. Os 20 testes novos usam D1/workerd e ferramentas/código reais com provedor sintético; não constituem ensaio com clientes reais nem validação na instalação de outra pessoa.
+
+Plugin pessoal 1.2.0 publicado e relido: quatro Skills conferidas byte a byte com o ZIP e manifestos equivalentes (diretório skills normalizado pelo serviço). Conexão e demais Skills preservadas por overlay. Recarga no cliente/briefing na instalação de outra pessoa permanecem validações distintas.

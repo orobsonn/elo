@@ -4,6 +4,8 @@ Mudanças relevantes no formato Keep a Changelog.
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-05
+
 ### Changed
 - Alias automático usa o nome completo salvo na agenda (name), com short salvo somente quando o principal está ausente; nomes passam a aparecer na IA e nos briefings por decisão explícita do dono.
 - Busca e apresentação usam a mesma fonte validada de agenda; perfil/vCard/recado e rótulos rejeitados não alimentam o índice novo.
